@@ -43,6 +43,7 @@ class _RavePayWidgetState extends State<RavePayWidget>
   @override
   Widget build(BuildContext context) {
     // TODO: Handle empty pages ie when all payment methods are disabled
+    // TODO: Check for phone state permission
     return Column(
       children: <Widget>[
         Container(
@@ -56,7 +57,7 @@ class _RavePayWidgetState extends State<RavePayWidget>
             appBar: TabBar(
               controller: _controller,
               labelColor: Colors.grey[900],
-              isScrollable: _pages.length >3,
+              isScrollable: _pages.length > 3,
               unselectedLabelColor: Colors.grey[600],
               tabs: _pages.map((page) => Tab(text: page.title.toUpperCase())).toList(),
             ),
@@ -82,28 +83,29 @@ class _RavePayWidgetState extends State<RavePayWidget>
   List<_Page> _getPages() {
     var pages = <_Page>[];
     if (initializer.acceptCardPayments) {
-      pages.add(_Page(Strings.card, CardPaymentWidget()));
+      pages.add(_Page(Strings.card, CardPaymentWidget(initializer)));
     }
 
     if (initializer.acceptAccountPayments) {
       if (initializer.country.toLowerCase() == 'us' &&
           initializer.currency.toLowerCase() == 'usd') {
-        pages.add(_Page(Strings.ach, AchPaymentWidget()));
+        pages.add(_Page(Strings.ach, AchPaymentWidget(initializer)));
       } else {
-        pages.add(_Page(Strings.account, AccountPaymentWidget()));
+        pages.add(_Page(Strings.account, AccountPaymentWidget(initializer)));
       }
     }
 
     if (initializer.acceptMpesaPayments) {
-      pages.add(_Page(Strings.mpesa, MpesaPaymentWidget()));
+      pages.add(_Page(Strings.mpesa, MpesaPaymentWidget(initializer)));
     }
 
     if (initializer.acceptGHMobileMoneyPayments) {
-      pages.add(_Page(Strings.ghanaMobileMoney, GhMobileMoneyPaymentWidget()));
+      pages.add(_Page(Strings.ghanaMobileMoney, GhMobileMoneyPaymentWidget(initializer)));
     }
 
     if (initializer.acceptUgMobileMoneyPayments) {
-      pages.add(_Page(Strings.ugandaMobileMoney, UgMobileMoneyPaymentWidget()));
+      pages
+          .add(_Page(Strings.ugandaMobileMoney, UgMobileMoneyPaymentWidget(initializer)));
     }
     return pages;
   }

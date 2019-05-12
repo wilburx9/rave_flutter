@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^0.12.4+1
 
 dev_dependencies:
   flutter_test:
@@ -19,3 +20,13 @@ flutter:
   plugin:
     androidPackage: com.flutterwave.rave_flutter
     pluginClass: RaveFlutterPlugin
+
+  assets:
+    - assets/images/amex.svg
+    - assets/images/diners.svg
+    - assets/images/discover.svg
+    - assets/images/generic_card.svg
+    - assets/images/jcb.svg
+    - assets/images/mastercard.svg
+    - assets/images/verve.svg
+    - assets/images/visa.svg

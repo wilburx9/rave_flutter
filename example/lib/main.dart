@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.indigo, accentColor: Colors.pink),
+      theme: ThemeData(primarySwatch: Colors.blue, accentColor: Colors.pink),
       home: HomeWidget(),
     );
   }
@@ -288,8 +288,19 @@ class _HomeWidgetState extends State<HomeWidget> {
       ..staging = live
       ..isPreAuth = preAuthCharge
       ..displayFee = shouldDisplayFee;
-    var response =
-        await RavePayManager.initialize(context: context, initializer: initializer);
+
+//    var themeData = Theme.of(context).copyWith(
+//      primaryColor: Colors.red,
+//      buttonTheme: Theme.of(context).buttonTheme.copyWith(
+//            colorScheme:
+//                Theme.of(context).buttonTheme.colorScheme.copyWith(primary: Colors.green),
+//          ),
+//    );
+
+    var response = await RavePayManager.initialize(
+      context: context,
+      initializer: initializer,
+    );
     print(response);
   }
 }

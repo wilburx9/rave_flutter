@@ -7,6 +7,10 @@ class Strings {
   static const mpesa = 'Mpesa';
   static const ghanaMobileMoney = 'Ghana Mobile Money';
   static const ugandaMobileMoney = 'Uganda Mobile Money';
+  static const pay = 'Pay';
+  static const invalidCVV = 'Enter a valid cvv';
+  static String invalidExpiry = 'Enter a valid expiry date';
+  static var invalidNumber = 'Enter a valid card number';
 
   static cannotBeNull(String name) => '$name cannot be null';
 
