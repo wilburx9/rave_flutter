@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - rave_flutter (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - rave_flutter (from `.symlinks/plugins/rave_flutter/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  rave_flutter:
+    :path: ".symlinks/plugins/rave_flutter/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  rave_flutter: 118cb86e5ef78a65ecace21dbbd4dfbdda54b907
+
+PODFILE CHECKSUM: ebd43b443038e611b86ede96e613bd6033c49497
+
+COCOAPODS: 1.5.3

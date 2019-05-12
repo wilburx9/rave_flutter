@@ -21,13 +21,13 @@ class RaveUtils {
     if (init.fName == null) message = Strings.cannotBeNull('fName');
     if (init.lName == null) message = Strings.cannotBeNull('lName');
     if (init.subAccounts == null) message = Strings.cannotBeNull('subAccounts');
-    if (init.withAch == null) message = Strings.cannotBeNull('withAch');
-    if (init.withMpesa == null) message = Strings.cannotBeNull('withMpesa');
-    if (init.withAccount == null) message = Strings.cannotBeNull('withAccount');
-    if (init.withCard == null) message = Strings.cannotBeNull('withCard');
-    if (init.withGHMobileMoney == null)
+    if (init.acceptAchPayments == null) message = Strings.cannotBeNull('withAch');
+    if (init.acceptMpesaPayments == null) message = Strings.cannotBeNull('withMpesa');
+    if (init.acceptAccountPayments == null) message = Strings.cannotBeNull('withAccount');
+    if (init.acceptCardPayments == null) message = Strings.cannotBeNull('withCard');
+    if (init.acceptGHMobileMoneyPayments == null)
       message = Strings.cannotBeNull('withGHMobileMoney');
-    if (init.withUgMobileMoney == null)
+    if (init.acceptUgMobileMoneyPayments == null)
       message = Strings.cannotBeNull('withUgMobileMoney');
     if (init.isPreAuth == null) message = Strings.cannotBeNull('isPreAuth');
     if (init.displayFee == null) message = Strings.cannotBeNull('displayFee');

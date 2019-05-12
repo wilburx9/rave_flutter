@@ -9,6 +9,10 @@ class AchPaymentWidget extends BasePaymentPage {
 class _AchPaymentWidgetState extends BasePaymentPageState<AchPaymentWidget> {
   @override
   Widget buildPage(BuildContext context) {
-    return Container();
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      color: Colors.brown,
+    );
   }
 }

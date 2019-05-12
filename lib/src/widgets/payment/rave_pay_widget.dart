@@ -18,7 +18,8 @@ class RavePayWidget extends StatefulWidget {
   _RavePayWidgetState createState() => _RavePayWidgetState(initializer);
 }
 
-class _RavePayWidgetState extends State<RavePayWidget> with SingleTickerProviderStateMixin {
+class _RavePayWidgetState extends State<RavePayWidget>
+    with SingleTickerProviderStateMixin {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   final RavePayInitializer initializer;
   TabController _controller;
@@ -41,35 +42,50 @@ class _RavePayWidgetState extends State<RavePayWidget> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: TabBar(
-        controller: _controller,
-        tabs: _pages.map((page) => Tab(text: page.title)).toList(),
-      ),
-      body: TabBarView(
-        controller: _controller,
-        children: _pages.map((page) {
-          return SafeArea(
-            top: false,
-            bottom: false,
-            child: Container(
-              key: ValueKey(page.title),
-              child: page.widget,
+    // TODO: Handle empty pages ie when all payment methods are disabled
+    return Column(
+      children: <Widget>[
+        Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).padding.top,
+          color: Theme.of(context).primaryColor,
+        ),
+        Expanded(
+          child: Scaffold(
+            key: _scaffoldKey,
+            appBar: TabBar(
+              controller: _controller,
+              labelColor: Colors.grey[900],
+              isScrollable: _pages.length >3,
+              unselectedLabelColor: Colors.grey[600],
+              tabs: _pages.map((page) => Tab(text: page.title.toUpperCase())).toList(),
             ),
-          );
-        }).toList(),
-      ),
+            body: TabBarView(
+              controller: _controller,
+              children: _pages.map((page) {
+                return SafeArea(
+                  top: false,
+                  bottom: false,
+                  child: Container(
+                    key: ValueKey(page.title),
+                    child: page.widget,
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   List<_Page> _getPages() {
     var pages = <_Page>[];
-    if (initializer.withCard) {
+    if (initializer.acceptCardPayments) {
       pages.add(_Page(Strings.card, CardPaymentWidget()));
     }
 
-    if (initializer.withAccount) {
+    if (initializer.acceptAccountPayments) {
       if (initializer.country.toLowerCase() == 'us' &&
           initializer.currency.toLowerCase() == 'usd') {
         pages.add(_Page(Strings.ach, AchPaymentWidget()));
@@ -78,15 +94,15 @@ class _RavePayWidgetState extends State<RavePayWidget> with SingleTickerProvider
       }
     }
 
-    if (initializer.withMpesa) {
+    if (initializer.acceptMpesaPayments) {
       pages.add(_Page(Strings.mpesa, MpesaPaymentWidget()));
     }
-    
-    if (initializer.withGHMobileMoney) {
+
+    if (initializer.acceptGHMobileMoneyPayments) {
       pages.add(_Page(Strings.ghanaMobileMoney, GhMobileMoneyPaymentWidget()));
     }
 
-    if (initializer.withUgMobileMoney) {
+    if (initializer.acceptUgMobileMoneyPayments) {
       pages.add(_Page(Strings.ugandaMobileMoney, UgMobileMoneyPaymentWidget()));
     }
     return pages;

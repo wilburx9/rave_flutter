@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
+import 'package:rave_flutter/src/responses/sub_account.dart';
 
 class RavePayInitializer {
   // TODO: Write documentation
-  String email;
+  String email; //  TODO: Validate before payment
   double amount;
   String publicKey;
   String encryptionKey;
@@ -15,14 +16,14 @@ class RavePayInitializer {
   String fName;
   String lName;
   String meta;
-  String subAccounts;
+  String _subAccounts;
   String paymentPlan;
-  bool withAch;
-  bool withMpesa;
-  bool withCard;
-  bool withAccount;
-  bool withGHMobileMoney;
-  bool withUgMobileMoney;
+  bool acceptAchPayments;
+  bool acceptMpesaPayments;
+  bool acceptCardPayments;
+  bool acceptAccountPayments;
+  bool acceptGHMobileMoneyPayments;
+  bool acceptUgMobileMoneyPayments;
   bool staging;
   bool isPreAuth;
   bool displayFee;
@@ -37,18 +38,21 @@ class RavePayInitializer {
     this.fName = '',
     this.lName = '',
     this.meta = '',
-    this.subAccounts = '',
-    this.withAch = false,
-    this.withMpesa = false,
-    this.withCard = true,
-    this.withAccount = true,
-    this.withGHMobileMoney = false,
-    this.withUgMobileMoney = false,
+    List<SubAccount> subAccounts,
+    this.acceptAchPayments = false,
+    this.acceptMpesaPayments = false,
+    this.acceptCardPayments = true,
+    this.acceptAccountPayments = true,
+    this.acceptGHMobileMoneyPayments = false,
+    this.acceptUgMobileMoneyPayments = false,
     this.isPreAuth = false,
     this.displayFee = true,
     bool staging,
     this.email,
     this.txRef,
     this.paymentPlan,
-  }) : this.staging = staging ?? isInDebugMode;
+  })  : this.staging = staging ?? isInDebugMode,
+        this._subAccounts = SubAccount.serializeList(subAccounts) ?? '';
+
+  String get subAccounts => _subAccounts;
 }

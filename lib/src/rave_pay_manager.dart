@@ -6,11 +6,13 @@ import 'package:rave_flutter/src/widgets/payment/rave_pay_widget.dart';
 
 class RavePayManager {
   // TODO: Write documentation for this
+
   static Future<RaveResult> initialize({
     @required BuildContext context,
     @required RavePayInitializer initializer,
   }) async {
     assert(context != null);
+    assert(initializer != null);
 
     // Validate the initializer params
     var error = RaveUtils.validateInitializer(initializer);
@@ -29,4 +31,6 @@ class RavePayManager {
     // Return a cancelled response is null
     return response == null ? RaveResult(status: RaveStatus.cancelled) : response;
   }
+
+  RavePayManager._();
 }

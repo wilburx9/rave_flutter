@@ -9,6 +9,10 @@ class MpesaPaymentWidget extends BasePaymentPage {
 class _MpesaPaymentWidgetState extends BasePaymentPageState<MpesaPaymentWidget> {
   @override
   Widget buildPage(BuildContext context) {
-    return Container();
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      color: Colors.black,
+    );
   }
 }

@@ -9,6 +9,10 @@ class CardPaymentWidget extends BasePaymentPage {
 class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
   @override
   Widget buildPage(BuildContext context) {
-    return Container();
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      color: Colors.red,
+    );
   }
 }

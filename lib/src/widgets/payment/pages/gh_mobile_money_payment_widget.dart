@@ -9,6 +9,10 @@ class GhMobileMoneyPaymentWidget extends BasePaymentPage {
 class _GhMobileMoneyPaymentWidgetState extends BasePaymentPageState<GhMobileMoneyPaymentWidget> {
   @override
   Widget buildPage(BuildContext context) {
-    return Container();
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      color: Colors.purple,
+    );
   }
 }
