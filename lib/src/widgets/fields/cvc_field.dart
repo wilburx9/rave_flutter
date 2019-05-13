@@ -19,9 +19,4 @@ class CVVField extends BaseTextField {
 
   static String validateCVV(String value) =>
       ValidatorUtils.isCVVValid(value) ? null : Strings.invalidCVV;
-
-  @override
-  createState() {
-    return super.createState();
-  }
 }

@@ -44,9 +44,4 @@ class DateField extends BaseTextField {
 
     return null;
   }
-
-  @override
-  createState() {
-    return super.createState();
-  }
 }

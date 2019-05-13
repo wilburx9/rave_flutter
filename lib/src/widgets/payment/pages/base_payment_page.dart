@@ -60,33 +60,23 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
   @override
   Widget build(BuildContext context) {
-    var amountText = ValidatorUtils.isAmountValid(widget.initializer.amount.toString())
-        ? Flexible(child: RichText(
-      text: TextSpan(
-          text: '${widget.initializer.currency} ',
-          style: TextStyle(
-              fontSize: 10, color: Colors.grey[800], fontWeight: FontWeight.w600),
-          children: <TextSpan>[
-            TextSpan(
-              text: RaveUtils.formatAmount(
-                widget.initializer.amount,
-              ),
-              style: TextStyle(
-                fontSize: 15,
-              ),
-            )
-          ]),
-    ))
-        : SizedBox();
-
-    var emailText = Text(
-      widget.initializer.email,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style:
-          TextStyle(color: Colors.grey[700], fontSize: 12, fontWeight: FontWeight.w600),
+    return FadeTransition(
+      opacity: _animation,
+      child: SlideTransition(
+        position: _slideInTween.animate(_animation),
+        child: SingleChildScrollView(
+          child: DecoratedBox(
+            decoration: BoxDecoration(color: MyColors.buttercup.withOpacity(.09)),
+            child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                child: buildWidget(context)),
+          ),
+        ),
+      ),
     );
+  }
 
+  Widget buildMainFields([data]) {
     var amountAndEmailFields = <Widget>[
       _cameWithValidAmount
           ? SizedBox()
@@ -107,7 +97,6 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       child: FlatButton(
         onPressed: validateInputs,
         color: MyColors.buttercup,
-        textColor: Colors.white,
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         child: Row(
           children: <Widget>[
@@ -119,7 +108,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
                   duration: Duration(milliseconds: 300),
                   child: Text(
                     getPaymentText(),
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
                 alignment: Alignment.center,
@@ -148,48 +137,60 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
               ],
             ),
           );
-    return FadeTransition(
-      opacity: _animation,
-      child: SlideTransition(
-        position: _slideInTween.animate(_animation),
-        child: SingleChildScrollView(
-          child: DecoratedBox(
-            decoration: BoxDecoration(color: MyColors.buttercup.withOpacity(.09)),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        amountText,
-                        SizedBox(width: 20),
-                        Flexible(child: emailText)
-                      ],
+
+    return Form(
+      key: formKey,
+      autovalidate: _autoValidate,
+      child: Column(
+        children: amountAndEmailFields
+          ..addAll(buildLocalFields(data))
+          ..add(payButton)
+          ..add(creditsWidget),
+      ),
+    );
+  }
+
+  Widget buildHeader() {
+    var amountText = ValidatorUtils.isAmountValid(widget.initializer.amount.toString())
+        ? Flexible(
+            child: RichText(
+            text: TextSpan(
+                text: '${widget.initializer.currency} ',
+                style: TextStyle(
+                    fontSize: 10, color: Colors.grey[800], fontWeight: FontWeight.w600),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: RaveUtils.formatAmount(
+                      widget.initializer.amount,
                     ),
-                  ),
-                  Form(
-                    key: formKey,
-                    autovalidate: _autoValidate,
-                    child: Column(
-                      children: amountAndEmailFields
-                        ..addAll(buildFormChildren())
-                        ..add(payButton)
-                        ..add(creditsWidget),
+                    style: TextStyle(
+                      fontSize: 15,
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+                  )
+                ]),
+          ))
+        : SizedBox();
+
+    var emailText = Text(
+      widget.initializer.email,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style:
+          TextStyle(color: Colors.grey[700], fontSize: 12, fontWeight: FontWeight.w600),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[amountText, SizedBox(width: 20), Flexible(child: emailText)],
       ),
     );
   }
 
   bool showRaveCredits() => false;
+
+  List<Widget> buildLocalFields([data]);
 
   String getPaymentText() {
     if (widget.initializer.amount == null || widget.initializer.amount.isNegative) {
@@ -198,8 +199,6 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
     return '${Strings.pay} ${widget.initializer.currency}${RaveUtils.formatAmount(widget.initializer.amount)}';
   }
-
-  List<Widget> buildFormChildren();
 
   validateInputs() {
     var formState = formKey.currentState;
@@ -218,4 +217,8 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       setState(() => widget.initializer.amount = double.tryParse(_amountController.text));
 
   void _updateEmail() => setState(() => widget.initializer.email = _emailController.text);
+
+  Widget buildWidget(BuildContext context) => Column(
+        children: <Widget>[buildHeader(), buildMainFields()],
+      );
 }

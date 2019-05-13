@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:rave_flutter/src/common/strings.dart';
+import 'package:rave_flutter/src/models/Bank.dart';
 
 class Payload {
   String expiryMonth;
@@ -21,6 +22,10 @@ class Payload {
   String voucher;
   bool isPreAuth;
   bool isUsBankCharge;
+  String phoneNumber;
+  String accountNumber;
+  Bank bank;
+  String passCode;
 
   Payload.empty();
 
@@ -40,6 +45,9 @@ class Payload {
       @required this.network,
       @required this.bvn,
       @required this.voucher,
+      @required this.phoneNumber,
+      @required this.accountNumber,
+      @required this.passCode,
       this.currency = Strings.ngn,
       this.country = Strings.ng,
       this.isPreAuth = false,

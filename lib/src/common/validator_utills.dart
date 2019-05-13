@@ -28,6 +28,23 @@ class ValidatorUtils {
     return number != null && !number.isNegative && number > 0;
   }
 
+  static bool isPhoneValid(String value) {
+    if (value == null || value.trim().isEmpty) return false;
+
+    // We are assuming no phone number is less than 3 characters
+    return value.trim().length > 3;
+  }
+
+  static bool isAccountValid(String value) {
+    if (value == null || value.trim().isEmpty) return false;
+    return value.trim().length == 10;
+  }
+
+  static bool isBVNValid(String value) {
+    if (value == null || value.trim().isEmpty) return false;
+    return value.trim().length == 11;
+  }
+
   static bool isEmailValid(String value) {
     if (value == null || value.trim().isEmpty) return false;
     String p =

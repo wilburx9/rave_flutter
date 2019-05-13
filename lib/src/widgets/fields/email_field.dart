@@ -19,9 +19,4 @@ class EmailField extends BaseTextField {
   static String validateNum(String input) {
     return ValidatorUtils.isEmailValid(input) ? null : Strings.invalidEmail;
   }
-
-  @override
-  createState() {
-    return super.createState();
-  }
 }

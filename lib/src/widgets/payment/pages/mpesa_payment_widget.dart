@@ -11,7 +11,7 @@ class MpesaPaymentWidget extends BasePaymentPage {
 
 class _MpesaPaymentWidgetState extends BasePaymentPageState<MpesaPaymentWidget> {
   @override
-  List<Widget> buildFormChildren() {
+  List<Widget> buildLocalFields([data]) {
     return [];
   }
 

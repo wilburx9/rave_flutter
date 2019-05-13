@@ -22,10 +22,5 @@ class AmountField extends BaseTextField {
   static String validateNum(String input) {
     return ValidatorUtils.isAmountValid(input) ? null : Strings.invalidAmount;
   }
-
-  @override
-  createState() {
-    return super.createState();
-  }
 }
 

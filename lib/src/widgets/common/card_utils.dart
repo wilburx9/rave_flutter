@@ -1,4 +1,4 @@
-import 'package:rave_flutter/src/widgets/fields/number_field.dart';
+import 'package:rave_flutter/src/widgets/fields/card_number_field.dart';
 
 class CardUtils {
   static CardType getTypeForIIN(String value) {

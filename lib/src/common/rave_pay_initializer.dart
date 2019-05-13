@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
-import 'package:rave_flutter/src/responses/sub_account.dart';
+import 'package:rave_flutter/src/models/sub_account.dart';
 
 class RavePayInitializer {
   // TODO: Write documentation

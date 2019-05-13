@@ -284,8 +284,8 @@ class _HomeWidgetState extends State<HomeWidget> {
       ..isPreAuth = preAuthCharge
       ..displayFee = shouldDisplayFee;
 
-    var response = await RavePayManager().initialize(
-        context: context, initializer: initializer, themeData: Theme.of(context));
+    var response =
+        await RavePayManager().initialize(context: context, initializer: initializer);
     print(response);
   }
 }

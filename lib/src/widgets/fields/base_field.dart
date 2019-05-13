@@ -13,6 +13,7 @@ class BaseTextField extends TextFormField {
     List<TextInputFormatter> inputFormatters,
     FormFieldSetter<String> onSaved,
     FormFieldValidator<String> validator,
+    TextStyle labelStyle = const TextStyle(color: Colors.grey, fontSize: 14),
     TextEditingController controller,
     String initialValue,
   }) : super(
@@ -26,7 +27,7 @@ class BaseTextField extends TextFormField {
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: labelText,
-                labelStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                labelStyle: labelStyle,
                 hintStyle: TextStyle(
                     color: Colors.grey[400], fontSize: 14, fontWeight: FontWeight.w500),
                 suffixIcon: suffixIcon == null
@@ -58,11 +59,6 @@ class BaseTextField extends TextFormField {
                         BorderSide(color: Colors.grey[400].withOpacity(.7), width: 1),
                     borderRadius: radius),
                 hintText: hintText));
-
-  @override
-  createState() {
-    return super.createState();
-  }
 }
 
 const radius = BorderRadius.all(Radius.circular(1.5));

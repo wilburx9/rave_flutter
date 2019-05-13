@@ -12,7 +12,7 @@ class AchPaymentWidget extends BasePaymentPage {
 class _AchPaymentWidgetState extends BasePaymentPageState<AchPaymentWidget> {
   @override
   @override
-  List<Widget> buildFormChildren() {
+  List<Widget> buildLocalFields([data]) {
     return [];
   }
 

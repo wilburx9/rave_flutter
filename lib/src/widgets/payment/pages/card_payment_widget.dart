@@ -3,7 +3,7 @@ import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/widgets/common/card_utils.dart';
 import 'package:rave_flutter/src/widgets/fields/cvc_field.dart';
 import 'package:rave_flutter/src/widgets/fields/date_field.dart';
-import 'package:rave_flutter/src/widgets/fields/number_field.dart';
+import 'package:rave_flutter/src/widgets/fields/card_number_field.dart';
 import 'package:rave_flutter/src/widgets/payment/pages/base_payment_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -33,9 +33,9 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
   }
 
   @override
-  List<Widget> buildFormChildren() {
+  List<Widget> buildLocalFields([data]) {
     return [
-      NumberField(
+      CardNumberField(
         controller: numberController,
         onSaved: (value) => payload.cardNo = CardUtils.getCleanedNumber(value),
         suffix: SvgPicture.asset(
@@ -81,6 +81,5 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
 
   @override
   bool showRaveCredits() => true;
-
 
 }

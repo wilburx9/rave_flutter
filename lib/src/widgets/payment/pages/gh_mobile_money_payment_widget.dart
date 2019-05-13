@@ -9,15 +9,11 @@ class GhMobileMoneyPaymentWidget extends BasePaymentPage {
   _GhMobileMoneyPaymentWidgetState createState() => _GhMobileMoneyPaymentWidgetState();
 }
 
-class _GhMobileMoneyPaymentWidgetState extends BasePaymentPageState<GhMobileMoneyPaymentWidget> {
+class _GhMobileMoneyPaymentWidgetState
+    extends BasePaymentPageState<GhMobileMoneyPaymentWidget> {
   @override
-  List<Widget> buildFormChildren() {
-    return [
-      Container(
-        width: double.infinity,
-        height: 200,
-      )
-    ];
+  List<Widget> buildLocalFields([data]) {
+    return [];
   }
 
   @override

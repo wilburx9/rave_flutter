@@ -12,7 +12,7 @@ class UgMobileMoneyPaymentWidget extends BasePaymentPage {
 class _UgMobileMoneyPaymentWidgetState
     extends BasePaymentPageState<UgMobileMoneyPaymentWidget> {
   @override
-  List<Widget> buildFormChildren() {
+  List<Widget> buildLocalFields([data]) {
     return [];
   }
 

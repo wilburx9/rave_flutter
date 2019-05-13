@@ -11,9 +11,12 @@ class Strings {
   static const pay = 'Pay';
   static const invalidCVV = 'Enter a valid cvv';
   static String invalidExpiry = 'Enter a valid expiry date';
-  static var invalidNumber = 'Enter a valid card number';
+  static var invalidCardNumber = 'Enter a valid card number';
+  static var invalidPhoneNumber = 'Enter a valid phone number';
+  static var invalidAccountNumber = 'Enter a valid account number';
   static var invalidAmount = 'Enter a valid amount';
   static var invalidEmail = 'Enter a valid email';
+  static var invalidBVN = 'Enter a valid BVN';
   static var demo = 'Demo';
 
   static cannotBeNull(String name) => '$name cannot be null';
@@ -21,4 +24,7 @@ class Strings {
   static cannotBeNullOrNegative(String name) => '${cannotBeNull(name)} or negative';
 
   static cannotBeNullOrEmpty(String name) => '${cannotBeNull(name)} or empty';
+
+  static const String stagingUrl = 'ravesandbox.azurewebsites.net';
+  static const String liveUrl = 'raveapi.azurewebsites.net';
 }

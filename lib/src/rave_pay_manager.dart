@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
+import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/common/validator_utills.dart';
 import 'package:rave_flutter/src/rave_result.dart';
 import 'package:rave_flutter/src/widgets/payment/rave_pay_widget.dart';
@@ -18,7 +19,6 @@ class RavePayManager {
   Future<RaveResult> initialize({
     @required BuildContext context,
     @required RavePayInitializer initializer,
-    ThemeData themeData,
   }) async {
     assert(context != null);
     assert(initializer != null);
@@ -29,11 +29,13 @@ class RavePayManager {
       return RaveResult(status: RaveStatus.error, rawResponse: {'error': error});
     }
 
+    _baseUrl = initializer.staging ? Strings.stagingUrl : Strings.liveUrl;
+
     var result = showDialog<RaveResult>(
         context: context,
         barrierDismissible: false,
         builder: (_) => Theme(
-              data: themeData ?? _getDefaultTheme(context),
+              data: _getDefaultTheme(context),
               child: RavePayWidget(
                 initializer: initializer,
               ),
@@ -53,5 +55,11 @@ class RavePayManager {
                 borderRadius: BorderRadius.all(Radius.circular(5))),
           ),
     );
+  }
+
+  String _baseUrl;
+
+  String buildUrl(String endpoint, {Map<String, String> params}) {
+    return new Uri.https(_baseUrl, endpoint, params).toString();
   }
 }
