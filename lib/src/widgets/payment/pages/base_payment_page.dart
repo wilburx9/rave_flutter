@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
+import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
+import 'package:rave_flutter/src/common/validator_utills.dart';
 import 'package:rave_flutter/src/payload.dart';
+import 'package:rave_flutter/src/widgets/fields/amount_field.dart';
+import 'package:rave_flutter/src/widgets/fields/email_field.dart';
 
 abstract class BasePaymentPage extends StatefulWidget {
   final RavePayInitializer initializer;
@@ -10,16 +16,31 @@ abstract class BasePaymentPage extends StatefulWidget {
 }
 
 abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   var formKey = GlobalKey<FormState>();
+  TextEditingController _amountController;
+  TextEditingController _emailController;
   AnimationController _animationController;
   Animation _animation;
-  var slideInTween = Tween<Offset>(begin: Offset(0, -0.1), end: Offset.zero);
-  bool autoValidate = false;
+  var _slideInTween = Tween<Offset>(begin: Offset(0, -0.5), end: Offset.zero);
+  bool _autoValidate = false;
   var payload = Payload.empty();
+  bool _cameWithValidAmount = true;
+  bool _cameWithValidEmail = true;
 
   @override
   void initState() {
+    if (!ValidatorUtils.isAmountValid(widget.initializer.amount.toString())) {
+      _cameWithValidAmount = false;
+      _amountController = TextEditingController();
+      _amountController.addListener(_updateAmount);
+    }
+
+    if (!ValidatorUtils.isEmailValid(widget.initializer.email)) {
+      _cameWithValidEmail = false;
+      _emailController = TextEditingController();
+      _emailController.addListener(_updateEmail);
+    }
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     _animation = CurvedAnimation(
@@ -31,35 +52,135 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
   @override
   void dispose() {
+    _amountController?.dispose();
+    _emailController?.dispose();
     _animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    var amountText = ValidatorUtils.isAmountValid(widget.initializer.amount.toString())
+        ? Flexible(child: RichText(
+      text: TextSpan(
+          text: '${widget.initializer.currency} ',
+          style: TextStyle(
+              fontSize: 10, color: Colors.grey[800], fontWeight: FontWeight.w600),
+          children: <TextSpan>[
+            TextSpan(
+              text: RaveUtils.formatAmount(
+                widget.initializer.amount,
+              ),
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            )
+          ]),
+    ))
+        : SizedBox();
+
+    var emailText = Text(
+      widget.initializer.email,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style:
+          TextStyle(color: Colors.grey[700], fontSize: 12, fontWeight: FontWeight.w600),
+    );
+
+    var amountAndEmailFields = <Widget>[
+      _cameWithValidAmount
+          ? SizedBox()
+          : AmountField(
+              currency: widget.initializer.currency,
+              controller: _amountController,
+              onSaved: (value) => payload.amount = value,
+            ),
+      _cameWithValidEmail
+          ? SizedBox()
+          : EmailField(
+              controller: _emailController, onSaved: (value) => payload.email = value)
+    ];
+
+    var payButton = Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(top: 20),
+      child: FlatButton(
+        onPressed: validateInputs,
+        color: MyColors.buttercup,
+        textColor: Colors.white,
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Align(
+                child: AnimatedSize(
+                  vsync: this,
+                  alignment: Alignment.centerLeft,
+                  duration: Duration(milliseconds: 300),
+                  child: Text(
+                    getPaymentText(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                alignment: Alignment.center,
+              ),
+            ),
+            Icon(Icons.keyboard_arrow_right, color: Colors.white)
+          ],
+        ),
+      ),
+    );
+
+    var creditsWidget = !showRaveCredits()
+        ? SizedBox()
+        : Container(
+            padding: EdgeInsets.symmetric(vertical: 25),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SvgPicture.asset(
+                  'assets/images/rave.svg',
+                  package: 'rave_flutter',
+                ),
+                Text(' by Flutterwave')
+              ],
+            ),
+          );
     return FadeTransition(
       opacity: _animation,
       child: SlideTransition(
-        position: slideInTween.animate(_animation),
+        position: _slideInTween.animate(_animation),
         child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-            child: Form(
-              key: formKey,
-              autovalidate: autoValidate,
+          child: DecoratedBox(
+            decoration: BoxDecoration(color: MyColors.buttercup.withOpacity(.09)),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               child: Column(
-                children: buildFormChildren()
-                  ..add(
-                    SizedBox(
-                      width: double.infinity,
-                      child: RaisedButton(
-                        onPressed: validateInputs,
-                        color: Theme.of(context).buttonTheme.colorScheme.primary,
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text(Strings.pay),
-                      ),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        amountText,
+                        SizedBox(width: 20),
+                        Flexible(child: emailText)
+                      ],
                     ),
                   ),
+                  Form(
+                    key: formKey,
+                    autovalidate: _autoValidate,
+                    child: Column(
+                      children: amountAndEmailFields
+                        ..addAll(buildFormChildren())
+                        ..add(payButton)
+                        ..add(creditsWidget),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -68,12 +189,22 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     );
   }
 
+  bool showRaveCredits() => false;
+
+  String getPaymentText() {
+    if (widget.initializer.amount == null || widget.initializer.amount.isNegative) {
+      return Strings.pay;
+    }
+
+    return '${Strings.pay} ${widget.initializer.currency}${RaveUtils.formatAmount(widget.initializer.amount)}';
+  }
+
   List<Widget> buildFormChildren();
 
   validateInputs() {
     var formState = formKey.currentState;
     if (!formState.validate()) {
-      setState(() => autoValidate = true);
+      setState(() => _autoValidate = true);
       return;
     }
 
@@ -82,4 +213,9 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   }
 
   onFormValidated();
+
+  void _updateAmount() =>
+      setState(() => widget.initializer.amount = double.tryParse(_amountController.text));
+
+  void _updateEmail() => setState(() => widget.initializer.email = _emailController.text);
 }

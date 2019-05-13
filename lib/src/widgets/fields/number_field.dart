@@ -15,7 +15,7 @@ class NumberField extends BaseTextField {
           hintText: '0000 0000 0000 0000',
           controller: controller,
           onSaved: onSaved,
-          suffix: suffix,
+          suffixIcon: suffix,
           validator: (String value) => validateCardNum(value),
           inputFormatters: [
             WhitelistingTextInputFormatter.digitsOnly,

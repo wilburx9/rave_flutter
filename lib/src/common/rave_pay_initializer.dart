@@ -27,13 +27,16 @@ class RavePayInitializer {
   bool staging;
   bool isPreAuth;
   bool displayFee;
+  bool fullScreen;
+  Widget companyLogo;
+  Widget companyName;
 
   RavePayInitializer({
     @required this.amount,
     @required this.publicKey,
     @required this.encryptionKey,
-    this.currency = Strings.ng,
-    this.country = Strings.ngn,
+    this.currency = Strings.ngn,
+    this.country = Strings.ng,
     this.narration = '',
     this.fName = '',
     this.lName = '',
@@ -46,10 +49,13 @@ class RavePayInitializer {
     this.acceptGHMobileMoneyPayments = false,
     this.acceptUgMobileMoneyPayments = false,
     this.isPreAuth = false,
+    this.fullScreen = false,
     this.displayFee = true,
     bool staging,
     this.email,
     this.txRef,
+    this.companyLogo,
+    this.companyName,
     this.paymentPlan,
   })  : this.staging = staging ?? isInDebugMode,
         this._subAccounts = SubAccount.serializeList(subAccounts) ?? '';

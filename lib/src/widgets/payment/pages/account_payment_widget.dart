@@ -12,8 +12,7 @@ class AccountPaymentWidget extends BasePaymentPage {
 class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidget> {
   @override
   List<Widget> buildFormChildren() {
-    // TODO: implement buildFormChildren
-    return null;
+    return [];
   }
 
   @override
@@ -21,5 +20,4 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
     // TODO: implement onFormValidated
     return null;
   }
-
 }

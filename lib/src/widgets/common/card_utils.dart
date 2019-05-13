@@ -70,7 +70,7 @@ class CardUtils {
         img = 'jcb';
         break;
       case CardType.unknown:
-        img = 'geneneric_card';
+        img = 'generic_card';
         break;
     }
     return img;

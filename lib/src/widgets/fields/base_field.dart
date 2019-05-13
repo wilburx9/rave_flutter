@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rave_flutter/src/common/my_colors.dart';
 
 class BaseTextField extends TextFormField {
   BaseTextField({
-    Widget suffix,
+    Widget suffixIcon,
+    Widget prefix,
     String labelText,
     String hintText,
+    TextStyle prefixStyle,
+    TextInputType keyboardType = TextInputType.number,
     List<TextInputFormatter> inputFormatters,
     FormFieldSetter<String> onSaved,
     FormFieldValidator<String> validator,
@@ -18,31 +22,47 @@ class BaseTextField extends TextFormField {
             validator: validator,
             maxLines: 1,
             initialValue: initialValue,
-            keyboardType: TextInputType.number,
-            decoration: new InputDecoration(
+            keyboardType: keyboardType,
+            decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: labelText,
-                labelStyle: const TextStyle(color: Colors.grey, fontSize: 14.0),
-                suffixIcon: suffix == null
+                labelStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                hintStyle: TextStyle(
+                    color: Colors.grey[400], fontSize: 14, fontWeight: FontWeight.w500),
+                suffixIcon: suffixIcon == null
                     ? null
-                    : new Padding(
-                        padding: const EdgeInsetsDirectional.only(end: 12.0),
-                        child: suffix,
+                    : Padding(
+                        padding: EdgeInsetsDirectional.only(end: 12),
+                        child: suffixIcon,
                       ),
-                errorStyle: const TextStyle(fontSize: 12.0),
+                hasFloatingPlaceholder: false,
+                prefix: prefix,
+                fillColor: Colors.grey[50],
+                filled: true,
+                prefixStyle: prefixStyle,
+                errorStyle: TextStyle(fontSize: 12),
                 errorMaxLines: 3,
                 isDense: true,
-                enabledBorder: const OutlineInputBorder(
+                focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: MyColors.buttercup, width: 1.5),
+                    borderRadius: radius),
+                errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: MyColors.buttercup, width: 1),
+                    borderRadius: radius),
+                enabledBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(color: Colors.grey, width: 0.5)),
-                focusedBorder: const OutlineInputBorder(
+                        BorderSide(color: Colors.grey[400].withOpacity(.7), width: .5),
+                    borderRadius: radius),
+                focusedBorder: OutlineInputBorder(
                     borderSide:
-                        const BorderSide(color: Colors.green, width: 1.0)),
-                hintText: hintText,
-                suffixStyle: TextStyle(color: Colors.green)));
+                        BorderSide(color: Colors.grey[400].withOpacity(.7), width: 1),
+                    borderRadius: radius),
+                hintText: hintText));
 
   @override
   createState() {
     return super.createState();
   }
 }
+
+const radius = BorderRadius.all(Radius.circular(1.5));

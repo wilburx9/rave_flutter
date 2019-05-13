@@ -21,6 +21,21 @@ class ValidatorUtils {
     return isWholeNumberPositive(number) && _isValidLuhnNumber(number);
   }
 
+  static bool isAmountValid(String value) {
+    if (value == null || value.trim().isEmpty) return false;
+    double number = double.tryParse(value.trim());
+    //check if formattedNumber is empty or card isn't a whole positive number or isn't Luhn-valid
+    return number != null && !number.isNegative && number > 0;
+  }
+
+  static bool isEmailValid(String value) {
+    if (value == null || value.trim().isEmpty) return false;
+    String p =
+        '[a-zA-Z0-9\+\.\_\%\-\+]{1,256}\\@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})';
+
+    return RegExp(p).hasMatch(value);
+  }
+
   static bool isWholeNumberPositive(String value) {
     if (value == null) {
       return false;
@@ -72,7 +87,6 @@ class ValidatorUtils {
     return !hasYearPassed(year) && !hasMonthPassed(year, month);
   }
 
-
   /// Validates the number against Luhn algorithm https://de.wikipedia.org/wiki/Luhn-Algorithmus#Java
   /// [number]  - number to validate
   /// Returns true if the number is passes the verification.
@@ -103,8 +117,6 @@ class ValidatorUtils {
   /// empty
   static String validateInitializer(RavePayInitializer init) {
     String message;
-    if (init.amount == null || init.amount.isNegative)
-      message = Strings.cannotBeNullOrNegative('amount');
     if (RaveUtils.isEmpty(init.publicKey))
       message = Strings.cannotBeNullOrEmpty('publicKey');
     if (RaveUtils.isEmpty(init.encryptionKey) == null)

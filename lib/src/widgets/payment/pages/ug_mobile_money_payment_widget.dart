@@ -13,8 +13,7 @@ class _UgMobileMoneyPaymentWidgetState
     extends BasePaymentPageState<UgMobileMoneyPaymentWidget> {
   @override
   List<Widget> buildFormChildren() {
-    // TODO: implement buildFormChildren
-    return null;
+    return [];
   }
 
   @override

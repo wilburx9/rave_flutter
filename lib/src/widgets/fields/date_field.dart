@@ -32,8 +32,8 @@ class DateField extends BaseTextField {
       var split = value.split(new RegExp(r'(\/)'));
       // The value before the slash is the month while the value to right of
       // it is the year.
-      month = int.parse(split[0]);
-      year = int.parse(split[1]);
+      month = int.tryParse(split[0]);
+      year = int.tryParse(split[1]);
     } else {
       // Only the month was entered
       month = int.parse(value.substring(0, (value.length)));

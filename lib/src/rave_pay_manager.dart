@@ -22,19 +22,18 @@ class RavePayManager {
       return RaveResult(status: RaveStatus.error, rawResponse: {'error': error});
     }
 
-    var response = await Navigator.of(context).push<RaveResult>(
-      MaterialPageRoute<RaveResult>(
-        builder: (context) => Theme(
+    var result = showDialog<RaveResult>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => Theme(
               data: themeData ?? _getDefaultTheme(context),
               child: RavePayWidget(
                 initializer: initializer,
               ),
-            ),
-      ),
-    );
+            ));
 
     // Return a cancelled response is null
-    return response == null ? RaveResult(status: RaveStatus.cancelled) : response;
+    return result == null ? RaveResult(status: RaveStatus.cancelled) : result;
   }
 
   RavePayManager._();

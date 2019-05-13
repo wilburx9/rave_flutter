@@ -12,8 +12,7 @@ class MpesaPaymentWidget extends BasePaymentPage {
 class _MpesaPaymentWidgetState extends BasePaymentPageState<MpesaPaymentWidget> {
   @override
   List<Widget> buildFormChildren() {
-    // TODO: implement buildFormChildren
-    return null;
+    return [];
   }
 
   @override

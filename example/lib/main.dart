@@ -120,17 +120,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                         TextFormField(
                           decoration: InputDecoration(hintText: 'Email'),
                           onSaved: (value) => email = value,
-                          validator: (value) =>
-                              value.trim().isEmpty ? 'Field is required' : null,
                         ),
                         SizedBox(height: 20),
                         TextFormField(
                           decoration: InputDecoration(hintText: 'Amount to charge'),
                           onSaved: (value) => amount = double.tryParse(value),
                           keyboardType: TextInputType.number,
-                          validator: (value) =>
-                              value.trim().isEmpty ? 'Field is required' : null,
-                          inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                         ),
                         SizedBox(height: 20),
                         TextFormField(
@@ -285,7 +280,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       ..acceptAchPayments = acceptAchPayments
       ..acceptGHMobileMoneyPayments = acceptGhMMPayments
       ..acceptUgMobileMoneyPayments = acceptUgMMPayments
-      ..staging = live
+      ..staging = !live
       ..isPreAuth = preAuthCharge
       ..displayFee = shouldDisplayFee;
 

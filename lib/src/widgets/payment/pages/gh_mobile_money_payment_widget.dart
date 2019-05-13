@@ -12,8 +12,12 @@ class GhMobileMoneyPaymentWidget extends BasePaymentPage {
 class _GhMobileMoneyPaymentWidgetState extends BasePaymentPageState<GhMobileMoneyPaymentWidget> {
   @override
   List<Widget> buildFormChildren() {
-    // TODO: implement buildFormChildren
-    return null;
+    return [
+      Container(
+        width: double.infinity,
+        height: 200,
+      )
+    ];
   }
 
   @override

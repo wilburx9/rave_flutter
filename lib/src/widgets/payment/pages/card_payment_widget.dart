@@ -16,7 +16,7 @@ class CardPaymentWidget extends BasePaymentPage {
 
 class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
   TextEditingController numberController;
-  CardType cardType;
+  CardType cardType = CardType.unknown;
 
   @override
   void initState() {
@@ -34,23 +34,19 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
 
   @override
   List<Widget> buildFormChildren() {
-    var children = <Widget>[];
-//    if (widget.initializer.amount <= 0) {
-//      children.add(value)
-//    }
-    children.addAll([
+    return [
       NumberField(
-          controller: numberController,
-          onSaved: (value) => payload.cardNo = CardUtils.getCleanedNumber(value),
-          suffix: cardType == null
-              ? null
-              : SvgPicture.asset(
-                  'assets/images/${CardUtils.getCardIcon(cardType)}.svg',
-                  package: 'rave_flutter',
-                  width: 30,
-                  height: 15,
-                )),
+        controller: numberController,
+        onSaved: (value) => payload.cardNo = CardUtils.getCleanedNumber(value),
+        suffix: SvgPicture.asset(
+          'assets/images/${CardUtils.getCardIcon(cardType)}.svg',
+          package: 'rave_flutter',
+          width: 30,
+          height: 15,
+        ),
+      ),
       Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             child: DateField(
@@ -61,15 +57,14 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
               },
             ),
           ),
-          SizedBox(width: 20),
           Expanded(
             child: CVVField(onSaved: (value) => payload.cvv = value),
           ),
         ],
       )
-    ]);
-    return children;
+    ];
   }
+
 
   @override
   onFormValidated() {
@@ -80,7 +75,12 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
   void _setCardTypeFrmNumber() {
     String input = CardUtils.getCleanedNumber(numberController.text);
     setState(() {
-      cardType = input.isEmpty ? null : CardUtils.getTypeForIIN(input);
+      cardType = CardUtils.getTypeForIIN(input);
     });
   }
+
+  @override
+  bool showRaveCredits() => true;
+
+
 }
