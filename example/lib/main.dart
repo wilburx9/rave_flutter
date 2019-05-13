@@ -157,7 +157,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                         SizedBox(height: 20),
                         TextFormField(
-                          decoration: InputDecoration(hintText: 'Currency code e.g NGG'),
+                          decoration: InputDecoration(hintText: 'Currency code e.g NGN'),
                           onSaved: (value) => currency = value,
                         ),
                         SizedBox(height: 20),
@@ -284,18 +284,8 @@ class _HomeWidgetState extends State<HomeWidget> {
       ..isPreAuth = preAuthCharge
       ..displayFee = shouldDisplayFee;
 
-//    var themeData = Theme.of(context).copyWith(
-//      primaryColor: Colors.red,
-//      buttonTheme: Theme.of(context).buttonTheme.copyWith(
-//            colorScheme:
-//                Theme.of(context).buttonTheme.colorScheme.copyWith(primary: Colors.green),
-//          ),
-//    );
-
-    var response = await RavePayManager.initialize(
-      context: context,
-      initializer: initializer,
-    );
+    var response = await RavePayManager().initialize(
+        context: context, initializer: initializer, themeData: Theme.of(context));
     print(response);
   }
 }

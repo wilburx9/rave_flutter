@@ -6,9 +6,16 @@ import 'package:rave_flutter/src/rave_result.dart';
 import 'package:rave_flutter/src/widgets/payment/rave_pay_widget.dart';
 
 class RavePayManager {
-  // TODO: Write documentation for this
+  RavePayManager._internal();
 
-  static Future<RaveResult> initialize({
+  static final RavePayManager _manager = RavePayManager._internal();
+
+  factory RavePayManager() {
+    return _manager;
+  }
+
+  // TODO: Write documentation for this
+  Future<RaveResult> initialize({
     @required BuildContext context,
     @required RavePayInitializer initializer,
     ThemeData themeData,
@@ -36,9 +43,7 @@ class RavePayManager {
     return result == null ? RaveResult(status: RaveStatus.cancelled) : result;
   }
 
-  RavePayManager._();
-
-  static ThemeData _getDefaultTheme(BuildContext context) {
+  ThemeData _getDefaultTheme(BuildContext context) {
     // Primary and accent colors are from Flutterwave's logo color
     return Theme.of(context).copyWith(
       primaryColor: Colors.black,
@@ -46,10 +51,6 @@ class RavePayManager {
       buttonTheme: Theme.of(context).buttonTheme.copyWith(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5))),
-            colorScheme: Theme.of(context)
-                .buttonTheme
-                .colorScheme
-                .copyWith(primary: MyColors.emerald),
           ),
     );
   }
