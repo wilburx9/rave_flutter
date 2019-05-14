@@ -26,7 +26,7 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
   var _phoneFocusNode = FocusNode();
   var _bvnFocusNode = FocusNode();
   var _accountFocusNode = FocusNode();
-  Bank _currentBank;
+  Bank _selectedBank;
   DateTime _pickedDate;
 
   @override
@@ -96,23 +96,23 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
           textInputAction: TextInputAction.next,
           onFieldSubmitted: (value) => swapFocus(
               _phoneFocusNode,
-              _currentBank == null
+              _selectedBank == null
                   ? null
-                  : _currentBank.showAccountNumField()
+                  : _selectedBank.showAccountNumField()
                       ? _accountFocusNode
-                      : _currentBank.showBVNField() ? _bvnFocusNode : null),
+                      : _selectedBank.showBVNField() ? _bvnFocusNode : null),
           onSaved: (value) => payload.phoneNumber),
-      _currentBank != null && _currentBank.showAccountNumField()
+      _selectedBank != null && _selectedBank.showAccountNumField()
           ? AccountNumberField(
               focusNode: _accountFocusNode,
-              textInputAction: _currentBank.showBVNField()
+              textInputAction: _selectedBank.showBVNField()
                   ? TextInputAction.next
                   : TextInputAction.done,
               onFieldSubmitted: (value) => swapFocus(
-                  _accountFocusNode, _currentBank.showBVNField() ? _bvnFocusNode : null),
+                  _accountFocusNode, _selectedBank.showBVNField() ? _bvnFocusNode : null),
               onSaved: (value) => payload.accountNumber)
           : SizedBox(),
-      _currentBank != null && _currentBank.showBVNField()
+      _selectedBank != null && _selectedBank.showBVNField()
           ? BVNField(
               focusNode: _bvnFocusNode,
               textInputAction: TextInputAction.done,
@@ -125,6 +125,7 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
           border: OutlineInputBorder(),
           isDense: true,
           filled: true,
+          errorText: autoValidate && _selectedBank == null ? 'Select a bank' : null,
           fillColor: Colors.grey[50],
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey[400].withOpacity(.7), width: .5),
@@ -132,15 +133,15 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey[400].withOpacity(.7), width: 1),
               borderRadius: BorderRadius.all(Radius.circular(1.5))),
-          hintText: 'Tap here to choose',
+          hintText: 'Select bank',
         ),
-        isEmpty: _currentBank == null,
+        isEmpty: _selectedBank == null,
         child: new DropdownButton<Bank>(
-          value: _currentBank,
+          value: _selectedBank,
           isDense: true,
           onChanged: (Bank newValue) {
-            setState(() => _currentBank = newValue);
-            payload.bank = _currentBank;
+            setState(() => _selectedBank = newValue);
+            payload.bank = _selectedBank;
           },
           items: data
               .cast<Bank>()
@@ -154,7 +155,7 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
               .toList(),
         ),
       )),
-      _currentBank != null && _currentBank.showDOBField()
+      _selectedBank != null && _selectedBank.showDOBField()
           ? InkWell(
               onTap: _selectBirthday,
               child: IgnorePointer(

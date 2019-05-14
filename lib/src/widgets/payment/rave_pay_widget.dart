@@ -106,7 +106,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
             ? SizedBox()
             : RichText(
                 text: TextSpan(
-                    text: '${initializer.currency} ',
+                    text: '${initializer.currency} '.toUpperCase(),
                     style: TextStyle(
                         fontSize: 10,
                         color: Colors.grey[800],

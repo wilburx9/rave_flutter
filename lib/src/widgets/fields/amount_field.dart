@@ -15,7 +15,7 @@ class AmountField extends BaseTextField {
           labelText: 'AMOUNT',
           hintText: '0.0',
           onSaved: onSaved,
-          prefix: Text('$currency '),
+          prefix: Text('$currency '.toUpperCase()),
           controller: controller,
           focusNode: focusNode,
           onFieldSubmitted: onFieldSubmitted,

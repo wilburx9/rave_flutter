@@ -150,11 +150,14 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
             ),
           );
 
+    Widget topWidget = buildTopWidget();
+
     return Form(
       key: formKey,
       autovalidate: _autoValidate,
       child: Column(
         children: amountAndEmailFields
+          ..insert(0, topWidget)
           ..addAll(buildLocalFields(data))
           ..add(payButton)
           ..add(creditsWidget),
@@ -167,7 +170,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
         ? Flexible(
             child: RichText(
             text: TextSpan(
-                text: '${widget.initializer.currency} ',
+                text: '${widget.initializer.currency} '.toUpperCase(),
                 style: TextStyle(
                     fontSize: 12, color: Colors.grey[800], fontWeight: FontWeight.w600),
                 children: <TextSpan>[
@@ -225,7 +228,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       return Strings.pay;
     }
 
-    return '${Strings.pay} ${widget.initializer.currency}${RaveUtils.formatAmount(widget.initializer.amount)}';
+    return '${Strings.pay} ${widget.initializer.currency.toUpperCase()}${RaveUtils.formatAmount(widget.initializer.amount)}';
   }
 
   _validateInputs() {
@@ -251,4 +254,10 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       );
 
   FocusNode getNextFocusNode();
+
+  Widget buildTopWidget() => SizedBox();
+
+  bool get autoValidate => _autoValidate;
+
+
 }

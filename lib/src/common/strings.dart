@@ -17,6 +17,7 @@ class Strings {
   static var invalidAmount = 'Enter a valid amount';
   static var invalidEmail = 'Enter a valid email';
   static var invalidBVN = 'Enter a valid BVN';
+  static var invalidVoucher = 'Enter a valid voucher code';
   static var invalidDOB = 'Enter a valid date of birth';
   static var demo = 'Demo';
 
