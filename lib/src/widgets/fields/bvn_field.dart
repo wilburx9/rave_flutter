@@ -7,11 +7,17 @@ import 'package:rave_flutter/src/widgets/fields/base_field.dart';
 class BVNField extends BaseTextField {
   BVNField({
     @required FormFieldSetter<String> onSaved,
+    FocusNode focusNode,
+    TextInputAction textInputAction,
+    ValueChanged<String> onFieldSubmitted,
   }) : super(
           labelText: 'BVN',
           hintText: '123456789',
           onSaved: onSaved,
           validator: (String value) => validatePhoneNum(value),
+          focusNode: focusNode,
+          onFieldSubmitted: onFieldSubmitted,
+          textInputAction: textInputAction,
           inputFormatters: [
             WhitelistingTextInputFormatter.digitsOnly,
             LengthLimitingTextInputFormatter(11)

@@ -21,4 +21,10 @@ class _UgMobileMoneyPaymentWidgetState
     // TODO: implement onFormValidated
     return null;
   }
+
+  @override
+  FocusNode getNextFocusNode() {
+    // TODO: implement getNextFocusNode
+    return null;
+  }
 }

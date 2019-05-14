@@ -21,6 +21,8 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   TextEditingController _amountController;
   TextEditingController _emailController;
   AnimationController _animationController;
+  var _emailFocusNode = FocusNode();
+  var _amountFocusNode = FocusNode();
   Animation _animation;
   var _slideInTween = Tween<Offset>(begin: Offset(0, -0.5), end: Offset.zero);
   bool _autoValidate = false;
@@ -81,6 +83,9 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       _cameWithValidAmount
           ? SizedBox()
           : AmountField(
+              focusNode: _amountFocusNode,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (value) => swapFocus(_amountFocusNode, _emailFocusNode),
               currency: widget.initializer.currency,
               controller: _amountController,
               onSaved: (value) => payload.amount = value,
@@ -88,14 +93,18 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       _cameWithValidEmail
           ? SizedBox()
           : EmailField(
-              controller: _emailController, onSaved: (value) => payload.email = value)
+              focusNode: _emailFocusNode,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (value) => swapFocus(_emailFocusNode, getNextFocusNode()),
+              controller: _emailController,
+              onSaved: (value) => payload.email = value)
     ];
 
     var payButton = Container(
       width: double.infinity,
       margin: EdgeInsets.only(top: 20),
       child: FlatButton(
-        onPressed: validateInputs,
+        onPressed: _validateInputs,
         color: MyColors.buttercup,
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         child: Row(
@@ -188,6 +197,16 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     );
   }
 
+  swapFocus(FocusNode oldFocus, [FocusNode newFocus]) {
+    oldFocus.unfocus();
+    if (newFocus != null) {
+      FocusScope.of(context).requestFocus(newFocus);
+    } else {
+      // The user has reached the end of the form
+      _validateInputs();
+    }
+  }
+
   bool showRaveCredits() => false;
 
   List<Widget> buildLocalFields([data]);
@@ -200,7 +219,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     return '${Strings.pay} ${widget.initializer.currency}${RaveUtils.formatAmount(widget.initializer.amount)}';
   }
 
-  validateInputs() {
+  _validateInputs() {
     var formState = formKey.currentState;
     if (!formState.validate()) {
       setState(() => _autoValidate = true);
@@ -221,4 +240,6 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   Widget buildWidget(BuildContext context) => Column(
         children: <Widget>[buildHeader(), buildMainFields()],
       );
+
+  FocusNode getNextFocusNode();
 }

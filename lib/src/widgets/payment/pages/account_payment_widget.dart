@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
+import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/helper/banks_helper.dart';
 import 'package:rave_flutter/src/models/Bank.dart';
 import 'package:rave_flutter/src/widgets/fields/account_number_field.dart';
@@ -22,6 +23,9 @@ class AccountPaymentWidget extends BasePaymentPage {
 
 class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidget> {
   Future<List<Bank>> _banks;
+  var _phoneFocusNode = FocusNode();
+  var _bvnFocusNode = FocusNode();
+  var _accountFocusNode = FocusNode();
   Bank _currentBank;
   DateTime _pickedDate;
 
@@ -79,12 +83,33 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
   @override
   List<Widget> buildLocalFields([data]) {
     return [
-      PhoneNumberField(onSaved: (value) => payload.phoneNumber),
+      PhoneNumberField(
+          focusNode: _phoneFocusNode,
+          textInputAction: TextInputAction.next,
+          onFieldSubmitted: (value) => swapFocus(
+              _phoneFocusNode,
+              _currentBank == null
+                  ? null
+                  : _currentBank.showAccountNumField()
+                      ? _accountFocusNode
+                      : _currentBank.showBVNField() ? _bvnFocusNode : null),
+          onSaved: (value) => payload.phoneNumber),
       _currentBank != null && _currentBank.showAccountNumField()
-          ? AccountNumberField(onSaved: (value) => payload.accountNumber)
+          ? AccountNumberField(
+              focusNode: _accountFocusNode,
+              textInputAction: _currentBank.showBVNField()
+                  ? TextInputAction.next
+                  : TextInputAction.done,
+              onFieldSubmitted: (value) => swapFocus(
+                  _accountFocusNode, _currentBank.showBVNField() ? _bvnFocusNode : null),
+              onSaved: (value) => payload.accountNumber)
           : SizedBox(),
       _currentBank != null && _currentBank.showBVNField()
-          ? BVNField(onSaved: (value) => payload.bvn)
+          ? BVNField(
+              focusNode: _bvnFocusNode,
+              textInputAction: TextInputAction.done,
+              onFieldSubmitted: (value) => swapFocus(_bvnFocusNode),
+              onSaved: (value) => payload.bvn)
           : SizedBox(),
       DropdownButtonHideUnderline(
           child: InputDecorator(
@@ -127,6 +152,7 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
               child: IgnorePointer(
                 child: BaseTextField(
                   labelText: _pickedDate == null ? 'DATE OF BIRTH' : geFormattedDate(),
+                  validator: (value) => _pickedDate == null ? Strings.invalidDOB : null,
                   labelStyle: TextStyle(
                       color: _pickedDate == null ? Colors.grey : Colors.grey[800],
                       fontSize: 14),
@@ -196,6 +222,9 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
   }
 
   String geFormattedDate() => DateFormat.yMMMMd().format(_pickedDate);
+
+  @override
+  FocusNode getNextFocusNode() => _phoneFocusNode;
 }
 
 const double _kPickerSheetHeight = 216.0;

@@ -16,6 +16,9 @@ class BaseTextField extends TextFormField {
     TextStyle labelStyle = const TextStyle(color: Colors.grey, fontSize: 14),
     TextEditingController controller,
     String initialValue,
+    FocusNode focusNode,
+    TextInputAction textInputAction,
+    ValueChanged<String> onFieldSubmitted,
   }) : super(
             controller: controller,
             inputFormatters: inputFormatters,
@@ -24,6 +27,9 @@ class BaseTextField extends TextFormField {
             maxLines: 1,
             initialValue: initialValue,
             keyboardType: keyboardType,
+            focusNode: focusNode,
+            textInputAction: textInputAction,
+            onFieldSubmitted: onFieldSubmitted,
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: labelText,

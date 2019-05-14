@@ -17,6 +17,7 @@ class Strings {
   static var invalidAmount = 'Enter a valid amount';
   static var invalidEmail = 'Enter a valid email';
   static var invalidBVN = 'Enter a valid BVN';
+  static var invalidDOB = 'Enter a valid date of birth';
   static var demo = 'Demo';
 
   static cannotBeNull(String name) => '$name cannot be null';

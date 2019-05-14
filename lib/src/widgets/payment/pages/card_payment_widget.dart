@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/widgets/common/card_utils.dart';
 import 'package:rave_flutter/src/widgets/fields/cvc_field.dart';
-import 'package:rave_flutter/src/widgets/fields/date_field.dart';
+import 'package:rave_flutter/src/widgets/fields/expiry_date_field.dart';
 import 'package:rave_flutter/src/widgets/fields/card_number_field.dart';
 import 'package:rave_flutter/src/widgets/payment/pages/base_payment_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,6 +17,9 @@ class CardPaymentWidget extends BasePaymentPage {
 class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
   TextEditingController numberController;
   CardType cardType = CardType.unknown;
+  var _numberFocusNode = FocusNode();
+  var _expiryFocusNode = FocusNode();
+  var _cvvFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -37,6 +40,9 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
     return [
       CardNumberField(
         controller: numberController,
+        focusNode: _numberFocusNode,
+        textInputAction: TextInputAction.next,
+        onFieldSubmitted: (value) => swapFocus(_numberFocusNode, _expiryFocusNode),
         onSaved: (value) => payload.cardNo = CardUtils.getCleanedNumber(value),
         suffix: SvgPicture.asset(
           'assets/images/${CardUtils.getCardIcon(cardType)}.svg',
@@ -49,7 +55,10 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            child: DateField(
+            child: ExpiryDateField(
+              focusNode: _expiryFocusNode,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (value) => swapFocus(_expiryFocusNode, _cvvFocusNode),
               onSaved: (value) {
                 List<String> expiryDate = CardUtils.getExpiryDate(value);
                 payload.expiryMonth = expiryDate[0];
@@ -58,13 +67,18 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
             ),
           ),
           Expanded(
-            child: CVVField(onSaved: (value) => payload.cvv = value),
+            child: CVVField(
+                focusNode: _cvvFocusNode,
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (value) => swapFocus(
+                      _cvvFocusNode,
+                    ),
+                onSaved: (value) => payload.cvv = value),
           ),
         ],
       )
     ];
   }
-
 
   @override
   onFormValidated() {
@@ -82,4 +96,6 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
   @override
   bool showRaveCredits() => true;
 
+  @override
+  FocusNode getNextFocusNode() => _numberFocusNode;
 }

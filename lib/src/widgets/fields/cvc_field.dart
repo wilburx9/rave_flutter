@@ -5,12 +5,19 @@ import 'package:rave_flutter/src/common/validator_utills.dart';
 import 'package:rave_flutter/src/widgets/fields/base_field.dart';
 
 class CVVField extends BaseTextField {
-  CVVField({@required FormFieldSetter<String> onSaved})
-      : super(
+  CVVField({
+    @required FormFieldSetter<String> onSaved,
+    FocusNode focusNode,
+    TextInputAction textInputAction,
+    ValueChanged<String> onFieldSubmitted,
+  }) : super(
           labelText: 'CVV',
           hintText: '123',
           onSaved: onSaved,
           validator: (String value) => validateCVV(value),
+          focusNode: focusNode,
+          onFieldSubmitted: onFieldSubmitted,
+          textInputAction: textInputAction,
           inputFormatters: [
             WhitelistingTextInputFormatter.digitsOnly,
             new LengthLimitingTextInputFormatter(4),

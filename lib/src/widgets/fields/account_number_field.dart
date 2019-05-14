@@ -7,11 +7,17 @@ import 'package:rave_flutter/src/widgets/fields/base_field.dart';
 class AccountNumberField extends BaseTextField {
   AccountNumberField({
     @required FormFieldSetter<String> onSaved,
+    FocusNode focusNode,
+    TextInputAction textInputAction,
+    ValueChanged<String> onFieldSubmitted,
   }) : super(
           labelText: 'ACCOUNT NUMBER',
           hintText: '1234567789',
           onSaved: onSaved,
           validator: (String value) => validatePhoneNum(value),
+          focusNode: focusNode,
+          onFieldSubmitted: onFieldSubmitted,
+          textInputAction: textInputAction,
           inputFormatters: [
             WhitelistingTextInputFormatter.digitsOnly,
             LengthLimitingTextInputFormatter(10)

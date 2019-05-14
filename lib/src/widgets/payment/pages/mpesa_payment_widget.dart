@@ -20,4 +20,10 @@ class _MpesaPaymentWidgetState extends BasePaymentPageState<MpesaPaymentWidget> 
     // TODO: implement onFormValidated
     return null;
   }
+
+  @override
+  FocusNode getNextFocusNode() {
+    // TODO: implement getNextFocusNode
+    return null;
+  }
 }

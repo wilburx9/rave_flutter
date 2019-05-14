@@ -7,6 +7,9 @@ class AmountField extends BaseTextField {
   AmountField({
     @required FormFieldSetter<String> onSaved,
     @required String currency,
+    FocusNode focusNode,
+    TextInputAction textInputAction,
+    ValueChanged<String> onFieldSubmitted,
     TextEditingController controller,
   }) : super(
           labelText: 'AMOUNT',
@@ -14,13 +17,14 @@ class AmountField extends BaseTextField {
           onSaved: onSaved,
           prefix: Text('$currency '),
           controller: controller,
+          focusNode: focusNode,
+          onFieldSubmitted: onFieldSubmitted,
+          textInputAction: textInputAction,
           prefixStyle: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.w600),
           validator: (String value) => validateNum(value),
-    
         );
 
   static String validateNum(String input) {
     return ValidatorUtils.isAmountValid(input) ? null : Strings.invalidAmount;
   }
 }
-

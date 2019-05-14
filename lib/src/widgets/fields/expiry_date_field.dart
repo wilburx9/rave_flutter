@@ -5,13 +5,20 @@ import 'package:rave_flutter/src/common/validator_utills.dart';
 import 'package:rave_flutter/src/widgets/common/input_formatters.dart';
 import 'package:rave_flutter/src/widgets/fields/base_field.dart';
 
-class DateField extends BaseTextField {
-  DateField({@required FormFieldSetter<String> onSaved})
-      : super(
+class ExpiryDateField extends BaseTextField {
+  ExpiryDateField({
+    @required FormFieldSetter<String> onSaved,
+    FocusNode focusNode,
+    TextInputAction textInputAction,
+    ValueChanged<String> onFieldSubmitted,
+  }) : super(
           labelText: 'CARD EXPIRY',
           hintText: 'MM/YY',
           validator: validateDate,
           onSaved: onSaved,
+          focusNode: focusNode,
+          onFieldSubmitted: onFieldSubmitted,
+          textInputAction: textInputAction,
           inputFormatters: [
             WhitelistingTextInputFormatter.digitsOnly,
             new LengthLimitingTextInputFormatter(4),

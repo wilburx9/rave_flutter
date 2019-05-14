@@ -6,12 +6,18 @@ import 'package:rave_flutter/src/widgets/fields/base_field.dart';
 class EmailField extends BaseTextField {
   EmailField({
     @required FormFieldSetter<String> onSaved,
+    FocusNode focusNode,
+    TextInputAction textInputAction,
+    ValueChanged<String> onFieldSubmitted,
     TextEditingController controller,
   }) : super(
           labelText: 'EMAIL',
           hintText: 'EXAMPLE@EMAIL.COM',
           onSaved: onSaved,
           keyboardType: TextInputType.emailAddress,
+          focusNode: focusNode,
+          onFieldSubmitted: onFieldSubmitted,
+          textInputAction: textInputAction,
           controller: controller,
           validator: (String value) => validateNum(value),
         );
