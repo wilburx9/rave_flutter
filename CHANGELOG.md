@@ -1,3 +1,4 @@
-## 0.0.1
+## 0.0.1-alpha.1
 
-* TODO: Describe initial release.
+* Initial release. Payment is not happening yet but the UI is somewhat
+  ready.

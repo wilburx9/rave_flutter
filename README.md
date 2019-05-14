@@ -1,14 +1,10 @@
-# rave_flutter
+# Flutterwave's Rave Plugin for Flutter
 
-A new Flutter plugin for rave.
+[![pub package](https://img.shields.io/pub/v/rave_flutter.svg)](https://pub.dartlang.org/packages/rave_flutter)
 
-## Getting Started
+A Flutter plugin for making payments via Flutterwave's Rave Payment
+Gateway.
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+##  Information
+Though the UI is a somewhat ready, payment is not happening yet. Feel
+very free to poke around. Also, suggestions are welcome.
