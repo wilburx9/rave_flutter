@@ -32,7 +32,8 @@ class _AddVendorWidgetState extends State<AddVendorWidget> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(hintText: 'Your Vendor\'s Rave Reference'),
+              decoration:
+                  InputDecoration(hintText: 'Your Vendor\'s Rave Reference'),
               onSaved: (value) => id = value,
               textCapitalization: TextCapitalization.words,
               focusNode: refFocusNode,
@@ -42,7 +43,8 @@ class _AddVendorWidgetState extends State<AddVendorWidget> {
                 refFocusNode.unfocus();
                 FocusScope.of(context).requestFocus(ratioFocusNode);
               },
-              validator: (value) => value.trim().isEmpty ? 'Field is required' : null,
+              validator: (value) =>
+                  value.trim().isEmpty ? 'Field is required' : null,
             ),
             SizedBox(
               height: 30,
@@ -58,13 +60,16 @@ class _AddVendorWidgetState extends State<AddVendorWidget> {
                 validateInputs();
               },
               inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-              validator: (value) => value.trim().isEmpty ? 'Field is required' : null,
+              validator: (value) =>
+                  value.trim().isEmpty ? 'Field is required' : null,
             )
           ],
         ),
       ),
       actions: <Widget>[
-        FlatButton(onPressed: () => Navigator.of(context).pop(), child: Text('CANCEL')),
+        FlatButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('CANCEL')),
         FlatButton(onPressed: validateInputs, child: Text('ADD')),
       ],
     );

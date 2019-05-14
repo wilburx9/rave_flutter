@@ -63,37 +63,44 @@ class _HomeWidgetState extends State<HomeWidget> {
                 SwitchWidget(
                   value: acceptCardPayment,
                   title: 'Accept card payments',
-                  onChanged: (value) => setState(() => acceptCardPayment = value),
+                  onChanged: (value) =>
+                      setState(() => acceptCardPayment = value),
                 ),
                 SwitchWidget(
                   value: acceptAccountPayment,
                   title: 'Accept account payments',
-                  onChanged: (value) => setState(() => acceptAccountPayment = value),
+                  onChanged: (value) =>
+                      setState(() => acceptAccountPayment = value),
                 ),
                 SwitchWidget(
                   value: acceptMpesaPayment,
                   title: 'Accept Mpesa payments',
-                  onChanged: (value) => setState(() => acceptMpesaPayment = value),
+                  onChanged: (value) =>
+                      setState(() => acceptMpesaPayment = value),
                 ),
                 SwitchWidget(
                   value: shouldDisplayFee,
                   title: 'Should Display Fee',
-                  onChanged: (value) => setState(() => shouldDisplayFee = value),
+                  onChanged: (value) =>
+                      setState(() => shouldDisplayFee = value),
                 ),
                 SwitchWidget(
                   value: acceptAchPayments,
                   title: 'Accept ACH payments',
-                  onChanged: (value) => setState(() => acceptAchPayments = value),
+                  onChanged: (value) =>
+                      setState(() => acceptAchPayments = value),
                 ),
                 SwitchWidget(
                   value: acceptGhMMPayments,
                   title: 'Accept GH Mobile money payments',
-                  onChanged: (value) => setState(() => acceptGhMMPayments = value),
+                  onChanged: (value) =>
+                      setState(() => acceptGhMMPayments = value),
                 ),
                 SwitchWidget(
                   value: acceptUgMMPayments,
                   title: 'Accept UG Mobile money payments',
-                  onChanged: (value) => setState(() => acceptUgMMPayments = value),
+                  onChanged: (value) =>
+                      setState(() => acceptUgMMPayments = value),
                 ),
                 SwitchWidget(
                   value: live,
@@ -111,7 +118,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                     onChanged: onAddAccountsChange),
                 buildVendorRefs(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Form(
                     key: formKey,
                     autovalidate: autoValidate,
@@ -123,7 +131,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                         SizedBox(height: 20),
                         TextFormField(
-                          decoration: InputDecoration(hintText: 'Amount to charge'),
+                          decoration:
+                              InputDecoration(hintText: 'Amount to charge'),
                           onSaved: (value) => amount = double.tryParse(value),
                           keyboardType: TextInputType.number,
                         ),
@@ -138,7 +147,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                         SizedBox(height: 20),
                         TextFormField(
                           // TODO: Set default value
-                          decoration: InputDecoration(hintText: 'Encryption key'),
+                          decoration:
+                              InputDecoration(hintText: 'Encryption key'),
                           onSaved: (value) => encryptionKey = value,
                           validator: (value) =>
                               value.trim().isEmpty ? 'Field is required' : null,
@@ -157,12 +167,14 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                         SizedBox(height: 20),
                         TextFormField(
-                          decoration: InputDecoration(hintText: 'Currency code e.g NGN'),
+                          decoration: InputDecoration(
+                              hintText: 'Currency code e.g NGN'),
                           onSaved: (value) => currency = value,
                         ),
                         SizedBox(height: 20),
                         TextFormField(
-                          decoration: InputDecoration(hintText: 'Country code e.g NG'),
+                          decoration:
+                              InputDecoration(hintText: 'Country code e.g NG'),
                           onSaved: (value) => country = value,
                         ),
                         SizedBox(height: 20),
@@ -285,8 +297,8 @@ class _HomeWidgetState extends State<HomeWidget> {
       ..isPreAuth = preAuthCharge
       ..displayFee = shouldDisplayFee;
 
-    var response =
-        await RavePayManager().initialize(context: context, initializer: initializer);
+    var response = await RavePayManager()
+        .initialize(context: context, initializer: initializer);
     print(response);
   }
 }
