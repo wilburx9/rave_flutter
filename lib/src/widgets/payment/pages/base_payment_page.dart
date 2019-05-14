@@ -57,6 +57,8 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     _amountController?.dispose();
     _emailController?.dispose();
     _animationController.dispose();
+    _emailFocusNode.dispose();
+    _amountFocusNode.dispose();
     super.dispose();
   }
 
@@ -85,12 +87,13 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
           : AmountField(
               focusNode: _amountFocusNode,
               textInputAction: TextInputAction.next,
-              onFieldSubmitted: (value) => swapFocus(_amountFocusNode, _emailFocusNode),
+              onFieldSubmitted: (value) => swapFocus(_amountFocusNode,
+                  showEmailField() ? _emailFocusNode : getNextFocusNode()),
               currency: widget.initializer.currency,
               controller: _amountController,
               onSaved: (value) => payload.amount = value,
             ),
-      _cameWithValidEmail
+      _cameWithValidEmail || !showEmailField()
           ? SizedBox()
           : EmailField(
               focusNode: _emailFocusNode,
@@ -166,14 +169,14 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
             text: TextSpan(
                 text: '${widget.initializer.currency} ',
                 style: TextStyle(
-                    fontSize: 10, color: Colors.grey[800], fontWeight: FontWeight.w600),
+                    fontSize: 12, color: Colors.grey[800], fontWeight: FontWeight.w600),
                 children: <TextSpan>[
                   TextSpan(
                     text: RaveUtils.formatAmount(
                       widget.initializer.amount,
                     ),
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 18,
                     ),
                   )
                 ]),
@@ -192,7 +195,11 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       padding: const EdgeInsets.only(bottom: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[amountText, SizedBox(width: 20), Flexible(child: emailText)],
+        children: <Widget>[
+          amountText,
+          SizedBox(width: 20),
+          showEmailField() ? Flexible(child: emailText) : SizedBox()
+        ],
       ),
     );
   }
@@ -208,6 +215,8 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   }
 
   bool showRaveCredits() => false;
+
+  bool showEmailField() => true;
 
   List<Widget> buildLocalFields([data]);
 

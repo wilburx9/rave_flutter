@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
+import 'package:rave_flutter/src/widgets/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/widgets/payment/pages/base_payment_page.dart';
 
 class MpesaPaymentWidget extends BasePaymentPage {
@@ -10,9 +11,24 @@ class MpesaPaymentWidget extends BasePaymentPage {
 }
 
 class _MpesaPaymentWidgetState extends BasePaymentPageState<MpesaPaymentWidget> {
+  var _phoneFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _phoneFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   List<Widget> buildLocalFields([data]) {
-    return [];
+    return [
+      PhoneNumberField(
+          focusNode: _phoneFocusNode,
+          textInputAction: TextInputAction.done,
+          hintText: '234xxxxxxxxx',
+          onFieldSubmitted: (value) => swapFocus(_phoneFocusNode),
+          onSaved: (value) => payload.phoneNumber),
+    ];
   }
 
   @override
@@ -22,8 +38,8 @@ class _MpesaPaymentWidgetState extends BasePaymentPageState<MpesaPaymentWidget> 
   }
 
   @override
-  FocusNode getNextFocusNode() {
-    // TODO: implement getNextFocusNode
-    return null;
-  }
+  FocusNode getNextFocusNode() => _phoneFocusNode;
+
+  @override
+  bool showEmailField() => false;
 }

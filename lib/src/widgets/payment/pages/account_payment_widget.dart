@@ -36,6 +36,14 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
   }
 
   @override
+  void dispose() {
+    _phoneFocusNode.dispose();
+    _bvnFocusNode.dispose();
+    _accountFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget buildWidget(BuildContext context) {
     return FutureBuilder<List<Bank>>(
       future: _banks,
