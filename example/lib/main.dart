@@ -269,6 +269,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         encryptionKey: encryptionKey,
         subAccounts: subAccounts)
       ..country = country
+      ..currency = currency
       ..email = email
       ..fName = firstName
       ..lName = lastName
