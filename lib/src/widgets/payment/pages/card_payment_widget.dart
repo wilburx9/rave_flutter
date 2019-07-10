@@ -94,8 +94,5 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
   }
 
   @override
-  bool showRaveCredits() => true;
-
-  @override
   FocusNode getNextFocusNode() => _numberFocusNode;
 }

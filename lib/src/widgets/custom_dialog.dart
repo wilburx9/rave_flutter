@@ -10,7 +10,6 @@ class CustomAlertDialog extends StatelessWidget {
     Key key,
     this.title,
     this.titlePadding,
-    this.onCancelPress,
     this.contentPadding = const EdgeInsets.symmetric(vertical: 10),
     this.expanded = false,
     this.fullscreen = false,
@@ -27,7 +26,6 @@ class CustomAlertDialog extends StatelessWidget {
   final EdgeInsetsGeometry titlePadding;
   final Widget content;
   final EdgeInsetsGeometry contentPadding;
-  final VoidCallback onCancelPress;
   final bool expanded;
   final bool fullscreen;
   final BorderRadiusGeometry borderRadius;
@@ -65,43 +63,21 @@ class CustomAlertDialog extends StatelessWidget {
       widget = Material(
         color: Colors.white,
         child: Container(
-            child: onCancelPress == null
-                ? Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                      vertical: 20.0,
-                    ),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start, children: children),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: onCancelPress,
-                          color: Colors.black54,
-                          padding: EdgeInsets.all(15.0),
-                          iconSize: 30.0,
-                        ),
-                      ),
-                      Expanded(
-                          child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Column(
-                          children: children,
-                        ),
-                      ))
-                    ],
-                  )),
+            child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 20.0,
+          ),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start, children: children),
+        )),
       );
     } else {
       var body = Material(
         type: MaterialType.card,
         borderRadius: borderRadius,
         color: Colors.white,
+        clipBehavior: Clip.antiAlias,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -109,35 +85,7 @@ class CustomAlertDialog extends StatelessWidget {
         ),
       );
       var child = IntrinsicWidth(
-        child: onCancelPress == null
-            ? body
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: IconButton(
-                        highlightColor: Colors.white54,
-                        splashColor: Colors.white54,
-                        color: Colors.white,
-                        iconSize: 26,
-                        padding: EdgeInsets.all(3.0),
-                        icon: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.black,
-                          ),
-                          child: Icon(
-                            Icons.cancel,
-                          ),
-                        ),
-                        onPressed: onCancelPress),
-                  ),
-                  Flexible(child: body),
-                ],
-              ),
+        child: body,
       );
       widget = CustomDialog(child: child, expanded: expanded);
     }

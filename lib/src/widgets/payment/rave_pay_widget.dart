@@ -22,20 +22,24 @@ class RavePayWidget extends StatefulWidget {
   _RavePayWidgetState createState() => _RavePayWidgetState(initializer);
 }
 
-class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderStateMixin {
-  final RavePayInitializer initializer;
+class _RavePayWidgetState extends BaseState<RavePayWidget>
+    with TickerProviderStateMixin {
+  final RavePayInitializer _initializer;
   AnimationController _animationController;
   Animation _animation;
-  var slideUpTween = Tween<Offset>(begin: Offset(0, 0.4), end: Offset.zero);
-  var slideRightTween = Tween<Offset>(begin: Offset(-0.4, 0), end: Offset.zero);
-  int selectedIndex;
+  var _slideUpTween = Tween<Offset>(begin: Offset(0, 0.4), end: Offset.zero);
+  var _slideRightTween = Tween<Offset>(begin: Offset(-0.4, 0), end: Offset.zero);
+  int _selectedIndex;
   List<_Item> _items;
 
-  _RavePayWidgetState(this.initializer);
+  _RavePayWidgetState(this._initializer);
 
   @override
   void initState() {
     _items = _getItems();
+    if (_items.length == 1) {
+      _selectedIndex = 0;
+    }
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 600));
     _animation = CurvedAnimation(
@@ -56,12 +60,11 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
     // TODO: Handle empty pages ie when all payment methods are disabled
     // TODO: Check for phone state permission
     return CustomAlertDialog(
-      fullscreen: initializer.fullScreen,
+      fullscreen: _initializer.fullScreen,
       titlePadding: EdgeInsets.all(0),
       contentPadding: EdgeInsets.all(0),
       title: _buildHeader(),
       expanded: true,
-      onCancelPress: onCancelPress,
       content: AnimatedSize(
         vsync: this,
         duration: Duration(milliseconds: 400),
@@ -69,7 +72,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
         child: FadeTransition(
           opacity: _animation,
           child: SlideTransition(
-            position: slideUpTween.animate(_animation),
+            position: _slideUpTween.animate(_animation),
             child: SingleChildScrollView(
               child: Column(
                 children: _items.map((item) {
@@ -79,7 +82,9 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
                     curve: Curves.fastOutSlowIn,
                     alignment: Alignment.topCenter,
                     vsync: this,
-                    child: selectedIndex == index ? item.content : buildItemHeader(index),
+                    child: _selectedIndex == index
+                        ? item.content
+                        : buildItemHeader(index),
                   );
                 }).toList(),
               ),
@@ -94,19 +99,19 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
     var rightWidget = Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        initializer.email != null
+        _initializer.email != null
             ? Text(
-                initializer.email,
+                _initializer.email,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Colors.grey[700], fontSize: 12.0),
               )
             : SizedBox(),
-        initializer.amount == null || initializer.amount.isNegative
+        _initializer.amount == null || _initializer.amount.isNegative
             ? SizedBox()
             : RichText(
                 text: TextSpan(
-                    text: '${initializer.currency} '.toUpperCase(),
+                    text: '${_initializer.currency} '.toUpperCase(),
                     style: TextStyle(
                         fontSize: 10,
                         color: Colors.grey[800],
@@ -114,7 +119,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
                     children: <TextSpan>[
                       TextSpan(
                         text: RaveUtils.formatAmount(
-                          initializer.amount,
+                          _initializer.amount,
                         ),
                         style: TextStyle(
                           fontSize: 15,
@@ -126,13 +131,13 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
     );
 
     var rightText = Text(
-      initializer.companyName ?? initializer.staging ? Strings.demo : '',
+      _initializer.companyName ?? _initializer.staging ? Strings.demo : '',
       maxLines: 1,
       style: TextStyle(color: Colors.grey[800], fontSize: 16),
     );
 
     Widget header = AnimatedPadding(
-      padding: EdgeInsets.symmetric(vertical: selectedIndex == null ? 20 : 10),
+      padding: EdgeInsets.only(bottom: _selectedIndex == null ? 20 : 10),
       duration: Duration(milliseconds: 500),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -140,7 +145,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
         children: <Widget>[
           ConstrainedBox(
             constraints: BoxConstraints.tightFor(width: 40, height: 40),
-            child: initializer.companyLogo ??
+            child: _initializer.companyLogo ??
                 SvgPicture.asset('assets/images/flutterwave_logo.svg',
                     package: 'rave_flutter'),
           ),
@@ -149,20 +154,20 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
           ),
           Flexible(
               child: AnimatedSize(
-                  child: selectedIndex == null ? rightWidget : rightText,
+                  child: _selectedIndex == null ? rightWidget : rightText,
                   vsync: this,
                   duration: Duration(milliseconds: 2000))),
         ],
       ),
     );
 
-    if (selectedIndex == null) {
+    if (_selectedIndex == null) {
       header = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           header,
           SlideTransition(
-            position: slideRightTween.animate(_animation),
+            position: _slideRightTween.animate(_animation),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,7 +175,9 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
                 Text(
                   'How would \nyou like to pay?',
                   style: TextStyle(
-                      color: Colors.grey[900], fontWeight: FontWeight.w400, fontSize: 18),
+                      color: Colors.grey[900],
+                      fontWeight: FontWeight.w400,
+                      fontSize: 18),
                 ),
                 SizedBox(
                   height: 10,
@@ -191,40 +198,55 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
     }
     return FadeTransition(
       opacity: _animation,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-        child: header,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.cancel),
+            onPressed: onCancelPress,
+            color: Colors.red,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: 10,
+            ),
+            child: header,
+          ),
+        ],
       ),
     );
   }
 
   List<_Item> _getItems() {
     var items = <_Item>[];
-    if (initializer.acceptCardPayments) {
-      items.add(_Item(Strings.card, 'card', CardPaymentWidget(initializer)));
+    if (_initializer.acceptCardPayments) {
+      items.add(_Item(Strings.card, 'card', CardPaymentWidget(_initializer)));
     }
 
-    if (initializer.acceptAccountPayments) {
-      if (initializer.country.toLowerCase() == 'us' &&
-          initializer.currency.toLowerCase() == 'usd') {
-        items.add(_Item(Strings.ach, 'note', AchPaymentWidget(initializer)));
+    if (_initializer.acceptAccountPayments) {
+      if (_initializer.country.toLowerCase() == 'us' &&
+          _initializer.currency.toLowerCase() == 'usd') {
+        items.add(_Item(Strings.ach, 'note', AchPaymentWidget(_initializer)));
       } else {
-        items.add(_Item(Strings.account, 'bank', AccountPaymentWidget(initializer)));
+        items.add(
+            _Item(Strings.account, 'bank', AccountPaymentWidget(_initializer)));
       }
     }
 
-    if (initializer.acceptMpesaPayments) {
-      items.add(_Item(Strings.mpesa, 'note', MpesaPaymentWidget(initializer)));
+    if (_initializer.acceptMpesaPayments) {
+      items.add(_Item(Strings.mpesa, 'note', MpesaPaymentWidget(_initializer)));
     }
 
-    if (initializer.acceptGHMobileMoneyPayments) {
-      items.add(_Item(
-          Strings.ghanaMobileMoney, 'note', GhMobileMoneyPaymentWidget(initializer)));
+    if (_initializer.acceptGHMobileMoneyPayments) {
+      items.add(_Item(Strings.ghanaMobileMoney, 'note',
+          GhMobileMoneyPaymentWidget(_initializer)));
     }
 
-    if (initializer.acceptUgMobileMoneyPayments) {
-      items.add(_Item(
-          Strings.ugandaMobileMoney, 'note', UgMobileMoneyPaymentWidget(initializer)));
+    if (_initializer.acceptUgMobileMoneyPayments) {
+      items.add(_Item(Strings.ugandaMobileMoney, 'note',
+          UgMobileMoneyPaymentWidget(_initializer)));
     }
     return items;
   }
@@ -250,11 +272,12 @@ class _RavePayWidgetState extends BaseState<RavePayWidget> with TickerProviderSt
             Flexible(child: Text('Pay with ${item.title}')),
           ],
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(0))),
         padding: EdgeInsets.symmetric(vertical: 17, horizontal: 20),
         onPressed: () {
           setState(() {
-            selectedIndex = index;
+            _selectedIndex = index;
           });
         },
       ),

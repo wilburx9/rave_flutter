@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
@@ -70,9 +69,10 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
         position: _slideInTween.animate(_animation),
         child: SingleChildScrollView(
           child: DecoratedBox(
-            decoration: BoxDecoration(color: MyColors.buttercup.withOpacity(.09)),
+            decoration:
+                BoxDecoration(color: MyColors.buttercup.withOpacity(.09)),
             child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 15),
                 child: buildWidget(context)),
           ),
         ),
@@ -98,14 +98,15 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
           : EmailField(
               focusNode: _emailFocusNode,
               textInputAction: TextInputAction.next,
-              onFieldSubmitted: (value) => swapFocus(_emailFocusNode, getNextFocusNode()),
+              onFieldSubmitted: (value) =>
+                  swapFocus(_emailFocusNode, getNextFocusNode()),
               controller: _emailController,
               onSaved: (value) => payload.email = value)
     ];
 
     var payButton = Container(
       width: double.infinity,
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 20, bottom: 15),
       child: FlatButton(
         onPressed: _validateInputs,
         color: MyColors.buttercup,
@@ -120,7 +121,8 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
                   duration: Duration(milliseconds: 300),
                   child: Text(
                     getPaymentText(),
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
                 alignment: Alignment.center,
@@ -132,24 +134,6 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       ),
     );
 
-    var creditsWidget = !showRaveCredits()
-        ? SizedBox()
-        : Container(
-            padding: EdgeInsets.symmetric(vertical: 25),
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SvgPicture.asset(
-                  'assets/images/rave.svg',
-                  package: 'rave_flutter',
-                ),
-                Text(' by Flutterwave')
-              ],
-            ),
-          );
-
     Widget topWidget = buildTopWidget();
 
     return Form(
@@ -159,43 +143,46 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
         children: amountAndEmailFields
           ..insert(0, topWidget)
           ..addAll(buildLocalFields(data))
-          ..add(payButton)
-          ..add(creditsWidget),
+          ..add(payButton),
       ),
     );
   }
 
   Widget buildHeader() {
-    var amountText = ValidatorUtils.isAmountValid(widget.initializer.amount.toString())
-        ? Flexible(
-            child: RichText(
-            text: TextSpan(
-                text: '${widget.initializer.currency} '.toUpperCase(),
-                style: TextStyle(
-                    fontSize: 12, color: Colors.grey[800], fontWeight: FontWeight.w600),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: RaveUtils.formatAmount(
-                      widget.initializer.amount,
+    var amountText =
+        ValidatorUtils.isAmountValid(widget.initializer.amount.toString())
+            ? Flexible(
+                child: RichText(
+                text: TextSpan(
+                  text: '${widget.initializer.currency} '.toUpperCase(),
+                  style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[800],
+                      fontWeight: FontWeight.w600),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: RaveUtils.formatAmount(
+                        widget.initializer.amount,
+                      ),
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
                     ),
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  )
-                ]),
-          ))
-        : SizedBox();
+                  ],
+                ),
+              ))
+            : SizedBox();
 
     var emailText = Text(
       widget.initializer.email,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style:
-          TextStyle(color: Colors.grey[700], fontSize: 12, fontWeight: FontWeight.w600),
+      style: TextStyle(
+          color: Colors.grey[700], fontSize: 12, fontWeight: FontWeight.w600),
     );
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -217,14 +204,13 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     }
   }
 
-  bool showRaveCredits() => false;
-
   bool showEmailField() => true;
 
   List<Widget> buildLocalFields([data]);
 
   String getPaymentText() {
-    if (widget.initializer.amount == null || widget.initializer.amount.isNegative) {
+    if (widget.initializer.amount == null ||
+        widget.initializer.amount.isNegative) {
       return Strings.pay;
     }
 
@@ -244,13 +230,18 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
   onFormValidated();
 
-  void _updateAmount() =>
-      setState(() => widget.initializer.amount = double.tryParse(_amountController.text));
+  void _updateAmount() => setState(() =>
+      widget.initializer.amount = double.tryParse(_amountController.text));
 
-  void _updateEmail() => setState(() => widget.initializer.email = _emailController.text);
+  void _updateEmail() =>
+      setState(() => widget.initializer.email = _emailController.text);
 
   Widget buildWidget(BuildContext context) => Column(
-        children: <Widget>[buildHeader(), buildMainFields()],
+        children: <Widget>[
+          SizedBox(height: 10),
+          buildHeader(),
+          buildMainFields(),
+        ],
       );
 
   FocusNode getNextFocusNode();
@@ -258,6 +249,4 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   Widget buildTopWidget() => SizedBox();
 
   bool get autoValidate => _autoValidate;
-
-
 }
