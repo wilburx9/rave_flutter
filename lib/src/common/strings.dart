@@ -20,13 +20,12 @@ class Strings {
   static var invalidVoucher = 'Enter a valid voucher code';
   static var invalidDOB = 'Enter a valid date of birth';
   static var demo = 'Demo';
+  static var youCancelled = 'You cancelled';
+  static var sthWentWrong = 'Something went wrong';
 
   static cannotBeNull(String name) => '$name cannot be null';
 
   static cannotBeNullOrNegative(String name) => '${cannotBeNull(name)} or negative';
 
   static cannotBeNullOrEmpty(String name) => '${cannotBeNull(name)} or empty';
-
-  static const String stagingUrl = 'ravesandbox.azurewebsites.net';
-  static const String liveUrl = 'raveapi.azurewebsites.net';
 }

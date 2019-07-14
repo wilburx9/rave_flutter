@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
-import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/common/validator_utills.dart';
 import 'package:rave_flutter/src/rave_result.dart';
-import 'package:rave_flutter/src/widgets/payment/rave_pay_widget.dart';
+import 'package:rave_flutter/src/repository/repository.dart';
+import 'package:rave_flutter/src/ui/payment/rave_pay_widget.dart';
 
 class RavePayManager {
   RavePayManager._internal();
@@ -26,20 +26,20 @@ class RavePayManager {
     // Validate the initializer params
     var error = ValidatorUtils.validateInitializer(initializer);
     if (error != null) {
-      return RaveResult(status: RaveStatus.error, rawResponse: {'error': error});
+      return RaveResult(
+          status: RaveStatus.error, rawResponse: {'error': error});
     }
 
-    _baseUrl = initializer.staging ? Strings.stagingUrl : Strings.liveUrl;
+    Repository.bootStrap(initializer);
 
     var result = showDialog<RaveResult>(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => Theme(
-              data: _getDefaultTheme(context),
-              child: RavePayWidget(
-                initializer: initializer,
-              ),
-            ));
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => Theme(
+        data: _getDefaultTheme(context),
+        child: RavePayWidget(),
+      ),
+    );
 
     // Return a cancelled response is null
     return result == null ? RaveResult(status: RaveStatus.cancelled) : result;
@@ -57,9 +57,4 @@ class RavePayManager {
     );
   }
 
-  String _baseUrl;
-
-  String buildUrl(String endpoint, {Map<String, String> params}) {
-    return new Uri.https(_baseUrl, endpoint, params).toString();
-  }
 }

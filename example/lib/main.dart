@@ -26,6 +26,7 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  var scaffoldKey = GlobalKey<ScaffoldState>();
   var formKey = GlobalKey<FormState>();
   var autoValidate = false;
   bool acceptCardPayment = true;
@@ -53,6 +54,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       body: SafeArea(
         top: true,
         child: SingleChildScrollView(
@@ -280,8 +282,9 @@ class _HomeWidgetState extends State<HomeWidget> {
         publicKey: publicKey,
         encryptionKey: encryptionKey,
         subAccounts: subAccounts)
-      ..country = country
-      ..currency = currency
+      ..country =
+          country = country != null && country.isNotEmpty ? country : "NG"
+      ..currency = currency != null && currency.isNotEmpty ? currency : "NGN"
       ..email = email
       ..fName = firstName
       ..lName = lastName
@@ -300,5 +303,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     var response = await RavePayManager()
         .initialize(context: context, initializer: initializer);
     print(response);
+    scaffoldKey.currentState
+        .showSnackBar(SnackBar(content: Text(response?.message)));
   }
 }

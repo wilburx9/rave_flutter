@@ -10,11 +10,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^0.12.4+1
+  flutter_svg: ^0.13.1
   http: ^0.12.0+2
   intl: ^0.15.8
   meta: ^1.1.6
   async: ^2.1.0
+  dio: ^2.1.13
+  get_it: ^1.0.3+2
+  equatable: ^0.2.6
 
 dev_dependencies:
   flutter_test:
