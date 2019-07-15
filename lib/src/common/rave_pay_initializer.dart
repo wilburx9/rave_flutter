@@ -15,8 +15,8 @@ class RavePayInitializer {
   String country;
   String fName;
   String lName;
-  String meta;
-  String _subAccounts;
+  Map<String, String> meta;
+  List<SubAccount> subAccounts;
   String paymentPlan;
   bool acceptAchPayments;
   bool acceptMpesaPayments;
@@ -40,8 +40,8 @@ class RavePayInitializer {
     this.narration = '',
     this.fName = '',
     this.lName = '',
-    this.meta = '',
-    List<SubAccount> subAccounts,
+    this.meta,
+    this.subAccounts,
     this.acceptAchPayments = false,
     this.acceptMpesaPayments = false,
     this.acceptCardPayments = true,
@@ -57,8 +57,6 @@ class RavePayInitializer {
     this.companyLogo,
     this.companyName,
     this.paymentPlan,
-  })  : this.staging = staging ?? isInDebugMode,
-        this._subAccounts = SubAccount.serializeList(subAccounts) ?? '';
+  })  : this.staging = staging ?? isInDebugMode;
 
-  String get subAccounts => _subAccounts;
 }

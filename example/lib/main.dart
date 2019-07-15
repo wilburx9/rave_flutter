@@ -165,7 +165,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                         SizedBox(height: 20),
                         TextFormField(
                           decoration: InputDecoration(hintText: 'Narration'),
-                          onSaved: (value) => txRef = value,
+                          onSaved: (value) => narration = value,
                         ),
                         SizedBox(height: 20),
                         TextFormField(

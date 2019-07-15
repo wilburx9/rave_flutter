@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class FeeCheckModel extends Equatable {
+class FeeCheckResponseModel extends Equatable {
   final String message;
   final String status;
   final String fee;
@@ -8,7 +8,7 @@ class FeeCheckModel extends Equatable {
   final String merchantFee;
   final String raveFee;
 
-  FeeCheckModel({
+  FeeCheckResponseModel({
     this.message,
     this.status,
     this.fee,
@@ -17,9 +17,9 @@ class FeeCheckModel extends Equatable {
     this.raveFee,
   }) : super([message, status, fee, chargeAmount, merchantFee, raveFee]);
 
-  factory FeeCheckModel.fromJson(Map<String, dynamic> json) {
+  factory FeeCheckResponseModel.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic> data = json["data"];
-    return FeeCheckModel(
+    return FeeCheckResponseModel(
         message: json["message"],
         status: json["status"],
         fee: data["fee"].toString(),

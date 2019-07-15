@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
-import 'package:rave_flutter/src/blocs/result_bloc.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
+import 'package:rave_flutter/src/manager/transaction_manager.dart';
 import 'package:rave_flutter/src/rave_result.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/ui/base_widget.dart';
@@ -33,10 +33,10 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
       Tween<Offset>(begin: Offset(-0.4, 0), end: Offset.zero);
   int _selectedIndex;
   List<_Item> _items;
+  TransactionManager _transactionManager;
 
   @override
   void initState() {
-    ResultBloc.instance.stream.listen(_onTransactionStateChange);
     _items = _getItems();
     if (_items.length == 1) {
       _selectedIndex = 0;
@@ -51,8 +51,14 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
   }
 
   @override
+  void didChangeDependencies() {
+    _transactionManager = TransactionManager(
+        context: context, onTransactionComplete: _onTransactionComplete);
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
-    ResultBloc.instance.dispose();
     ConnectionBloc.instance.dispose();
     _animationController.dispose();
     super.dispose();
@@ -241,7 +247,8 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
   List<_Item> _getItems() {
     var items = <_Item>[];
     if (_initializer.acceptCardPayments) {
-      items.add(_Item(Strings.card, 'card', CardPaymentWidget()));
+      items.add(_Item(
+          Strings.card, 'card', CardPaymentWidget(t: _transactionManager)));
     }
 
     if (_initializer.acceptAccountPayments) {
@@ -302,17 +309,14 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
     );
   }
 
-  _onTransactionStateChange(RaveResult event) =>
-      Navigator.of(context).pop(event);
-
   @override
   getPopReturnValue() {
-    print("222222222222");
-    var result =
-        RaveResult(status: RaveStatus.cancelled, message: Strings.youCancelled);
-    print("2222222222");
-    return result;
+    return RaveResult(
+        status: RaveStatus.cancelled, message: Strings.youCancelled);
   }
+
+  _onTransactionComplete(RaveResult result) =>
+      Navigator.of(context).pop(result);
 }
 
 class _Item {

@@ -1,10 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rave_flutter/rave_flutter.dart';
-import 'package:rave_flutter/src/blocs/connection_bloc.dart';
-import 'package:rave_flutter/src/dto/fee_check_request_body.dart';
-import 'package:rave_flutter/src/exception/exception.dart';
-import 'package:rave_flutter/src/models/fee_check_model.dart';
-import 'package:rave_flutter/src/services/card_service.dart';
+import 'package:rave_flutter/src/manager/transaction_manager.dart';
 import 'package:rave_flutter/src/ui/common/card_utils.dart';
 import 'package:rave_flutter/src/ui/fields/cvc_field.dart';
 import 'package:rave_flutter/src/ui/fields/expiry_date_field.dart';
@@ -13,6 +9,8 @@ import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CardPaymentWidget extends BasePaymentPage {
+  CardPaymentWidget({@required TransactionManager t}) : super(transactionManager: t);
+
   @override
   _CardPaymentWidgetState createState() => _CardPaymentWidgetState();
 }
@@ -67,7 +65,7 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
               onSaved: (value) {
                 List<String> expiryDate = CardUtils.getExpiryDate(value);
                 payload.expiryMonth = expiryDate[0];
-                payload.expiryYear = expiryDate[0];
+                payload.expiryYear = expiryDate[1];
               },
             ),
           ),
@@ -75,7 +73,8 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
             child: CVVField(
                 focusNode: _cvvFocusNode,
                 textInputAction: TextInputAction.done,
-                onFieldSubmitted: (value) => swapFocus(
+                onFieldSubmitted: (value) =>
+                    swapFocus(
                       _cvvFocusNode,
                     ),
                 onSaved: (value) => payload.cvv = value),
@@ -85,29 +84,7 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
     ];
   }
 
-  @override
-  onFormValidated() async {
-    setDataState(DataState.waiting);
-    if (initializer.displayFee) {
-      var response = await fetchFee();
-     if (response != null) {
 
-     }
-    } else {
-      print("Not displaying fee");
-    }
-  }
-
-  Future<FeeCheckModel> fetchFee() async {
-    try {
-      return await CardService.instance
-          .fetchFee(FeeCheckRequestBody.fromPayload(payload));
-    } on RaveException catch (e) {
-      setTransactionResult(
-          RaveResult(status: RaveStatus.error, message: e.message));
-      return null;
-    }
-  }
 
   void _setCardTypeFrmNumber() {
     String input = CardUtils.getCleanedNumber(numberController.text);
@@ -118,4 +95,5 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
 
   @override
   FocusNode getNextFocusNode() => _numberFocusNode;
+
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/strings.dart';
-import 'package:rave_flutter/src/models/bank.dart';
+import 'package:rave_flutter/src/models/bank_model.dart';
 import 'package:rave_flutter/src/services/bank_service.dart';
 import 'package:rave_flutter/src/ui/fields/account_number_field.dart';
 import 'package:rave_flutter/src/ui/fields/base_field.dart';
@@ -20,11 +20,11 @@ class AccountPaymentWidget extends BasePaymentPage {
 }
 
 class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidget> {
-  Future<List<Bank>> _banks;
+  Future<List<BankModel>> _banks;
   var _phoneFocusNode = FocusNode();
   var _bvnFocusNode = FocusNode();
   var _accountFocusNode = FocusNode();
-  Bank _selectedBank;
+  BankModel _selectedBank;
   DateTime _pickedDate;
 
   @override
@@ -43,7 +43,7 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
 
   @override
   Widget buildWidget(BuildContext context) {
-    return FutureBuilder<List<Bank>>(
+    return FutureBuilder<List<BankModel>>(
       future: _banks,
       builder: (_, snapshot) {
         Widget widget;
@@ -134,22 +134,22 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
           hintText: 'Select bank',
         ),
         isEmpty: _selectedBank == null,
-        child: new DropdownButton<Bank>(
+        child: new DropdownButton<BankModel>(
           value: _selectedBank,
           isDense: true,
-          onChanged: (Bank newValue) {
+          onChanged: (BankModel newValue) {
             setState(() => _selectedBank = newValue);
             payload.bank = _selectedBank;
           },
           items: data
-              .cast<Bank>()
-              .map((Bank value) {
-                return new DropdownMenuItem<Bank>(
+              .cast<BankModel>()
+              .map((BankModel value) {
+                return new DropdownMenuItem<BankModel>(
                   value: value,
                   child: new Text(value.name),
                 );
               })
-              .cast<DropdownMenuItem<Bank>>()
+              .cast<DropdownMenuItem<BankModel>>()
               .toList(),
         ),
       )),

@@ -1,9 +1,9 @@
-class Bank {
+class BankModel {
   final String name;
   final String code;
   final bool internetBanking;
 
-  Bank.fromJson(Map map)
+  BankModel.fromJson(Map map)
       : this.name = map['bankname'],
         this.code = map['bankcode'],
         this.internetBanking = map['internetbanking'];

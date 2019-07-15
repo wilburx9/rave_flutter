@@ -1,9 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
+import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
-import 'package:rave_flutter/src/models/bank.dart';
+import 'package:rave_flutter/src/models/bank_model.dart';
+import 'package:rave_flutter/src/models/sub_account.dart';
 
-class Payload {
+class Payload extends Equatable {
   String expiryMonth;
   String pbfPubKey;
   String ip;
@@ -25,12 +28,15 @@ class Payload {
   bool isUsBankCharge;
   String phoneNumber;
   String accountNumber;
-  Bank bank;
+  BankModel bank;
   String passCode;
   String txRef;
-  String meta = "";
-  String subAccounts = "";
+  Map<String, String> meta;
+  List<SubAccount> subAccounts;
   String cardBIN;
+  String pin;
+  String suggestedAuth;
+  String narration;
 
   Payload.initFrmInitializer(RavePayInitializer i)
       : this.amount = i.amount.toString(),
@@ -70,4 +76,41 @@ class Payload {
       this.isUsBankCharge = false,
       this.txRef,
       this.cardBIN});
+
+  Map<String, dynamic> toCardJson() {
+    var json = <String, dynamic>{
+      "narration": narration,
+      "expirymonth": expiryMonth,
+      "PBFPubKey": pbfPubKey,
+      "lastname": lastName,
+      "firstname": firstName,
+      "currency": currency,
+      "country": country,
+      "amount": amount,
+      "email": email,
+      "expiryyear": expiryYear,
+      "cvv": cvv,
+      "cardno": cardNo,
+      "txRef": txRef,
+    };
+
+    putIfNotNull(map: json, key: "payment_plan", value: paymentPlan);
+
+    putIfNotNull(
+        map: json, key: "charge_type", value: isPreAuth ? "preauth" : null);
+
+    if (meta == null) meta = {};
+    meta["sdk"] = "flutter";
+    json["meta"] = [
+      for (var e in meta.entries) {"metaname": e.key, "metavalue": e.value}
+    ];
+    putIfNotNull(
+        map: json,
+        key: "subaccounts",
+        value: subAccounts == null || subAccounts.isEmpty
+            ? null
+            : subAccounts.map((a) => a.toJson()).toList());
+
+    return json;
+  }
 }

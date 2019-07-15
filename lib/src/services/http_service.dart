@@ -17,8 +17,8 @@ class HttpService {
           ? "https://ravesandbox.azurewebsites.net"
           : "https://raveapi.azurewebsites.net",
       responseType: ResponseType.json,
-      connectTimeout: 6000,
-      receiveTimeout: 6000,
+      connectTimeout: 60000,
+      receiveTimeout: 60000,
       headers: {
         HttpHeaders.contentTypeHeader: "application/json"
       },

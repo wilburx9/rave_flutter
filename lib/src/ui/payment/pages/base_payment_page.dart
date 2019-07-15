@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
-import 'package:rave_flutter/src/blocs/result_bloc.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/common/validator_utills.dart';
 import 'package:rave_flutter/src/dto/payload.dart';
-import 'package:rave_flutter/src/rave_result.dart';
+import 'package:rave_flutter/src/manager/transaction_manager.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/ui/fields/amount_field.dart';
 import 'package:rave_flutter/src/ui/fields/email_field.dart';
 
-abstract class BasePaymentPage extends StatefulWidget {}
+abstract class BasePaymentPage extends StatefulWidget {
+  final TransactionManager transactionManager;
+
+  BasePaymentPage({@required this.transactionManager});
+}
 
 abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     with TickerProviderStateMixin {
   var formKey = GlobalKey<FormState>();
   final initializer = Repository.instance.initializer;
-  final _transactionBloc = ResultBloc.instance;
   final _connectionBloc = ConnectionBloc.instance;
   TextEditingController _amountController;
   TextEditingController _emailController;
@@ -242,7 +244,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     onFormValidated();
   }
 
-  onFormValidated();
+  onFormValidated() => widget.transactionManager.start(payload);
 
   void _updateAmount() => setState(
       () => initializer.amount = double.tryParse(_amountController.text));
@@ -265,6 +267,4 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   bool get autoValidate => _autoValidate;
 
   setDataState(DataState state) => _connectionBloc.setState(state);
-
-  setTransactionResult(RaveResult result) => _transactionBloc.setState(result);
 }

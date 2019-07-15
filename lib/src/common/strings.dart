@@ -22,6 +22,9 @@ class Strings {
   static var demo = 'Demo';
   static var youCancelled = 'You cancelled';
   static var sthWentWrong = 'Something went wrong';
+  static var noResponseData = 'No response data was returned';
+  static var unknownAuthModel = 'Unknown auth model';
+  static var enterOtp = 'Enter your one  time password (OTP)';
 
   static cannotBeNull(String name) => '$name cannot be null';
 
