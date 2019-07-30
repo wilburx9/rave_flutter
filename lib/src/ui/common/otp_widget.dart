@@ -56,7 +56,7 @@ class _OtpWidgetState extends BaseState<OtpWidget> {
                 fontSize: 25.0,
                 letterSpacing: 15.0,
               ),
-              autofocus: true,
+              autoFocus: true,
               inputFormatters: [
                 WhitelistingTextInputFormatter.digitsOnly,
               ],

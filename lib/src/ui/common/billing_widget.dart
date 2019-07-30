@@ -33,7 +33,7 @@ class _BillingWidgetState extends State<BillingWidget> {
           SizedBox(height: 40),
           BaseTextField(
             keyboardType: TextInputType.text,
-            autofocus: true,
+            autoFocus: true,
             validator: _validate,
             onSaved: (value) => address = value,
             hintText: "Address e.g 20 Saltlake Eldorado",

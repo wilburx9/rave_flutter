@@ -68,7 +68,7 @@ class TransactionManager {
   _handleChargeResult(ChargeResponseModel response, Payload payload) {
     _setConnectionState(ConnectionState.done);
     print("ChargerResponse = $response");
-    if (response.hasValidData()) {
+    if (response.hasData) {
       var suggestedAuth = response.suggestedAuth?.toUpperCase();
       if (suggestedAuth != null) {
         if (suggestedAuth == RaveConstants.PIN) {
@@ -145,6 +145,7 @@ class TransactionManager {
   }
 
   _handleError(RaveException e) {
+    print("Error called");
     _setConnectionState(ConnectionState.done);
     _onTransactionComplete(
         RaveResult(status: RaveStatus.error, message: e.message));
@@ -230,29 +231,34 @@ class TransactionManager {
   void _handlePinOrBillingInput(Payload payload) async {
     _setConnectionState(ConnectionState.waiting);
 
-    var response =
-        await _service.charge(ChargeRequestBody.fromPayload(payload));
+    try {
+      var response =
+      await _service.charge(ChargeRequestBody.fromPayload(payload));
+      print("Charge response (PIN) = $response");
 
-    var responseCode = response.chargeResponseCode;
-    if (response.hasValidData() && responseCode != null) {
-      if (responseCode == "00") {
-        _reQueryTransaction(payload, response.flwRef);
-      } else if (responseCode == "02") {
-        var authModel = response.authModelUsed?.toLowerCase();
-        if (authModel == RaveConstants.PIN) {
-          _onOtpRequested(payload, response.flwRef, response.message);
-        } else if (authModel == RaveConstants.AVS_VBVSECURECODE ||
-            authModel == RaveConstants.VBV) {
-          _onAVSVBVSecureCodeModelUsed(
-              payload, response.authUrl, response.flwRef);
+      var responseCode = response.chargeResponseCode;
+      if (response.hasData && responseCode != null) {
+        if (responseCode == "00") {
+          _reQueryTransaction(payload, response.flwRef);
+        } else if (responseCode == "02") {
+          var authModel = response.authModelUsed?.toLowerCase();
+          if (authModel == RaveConstants.PIN) {
+            _onOtpRequested(payload, response.flwRef, response.message);
+          } else if (authModel == RaveConstants.AVS_VBVSECURECODE ||
+              authModel == RaveConstants.VBV) {
+            _onAVSVBVSecureCodeModelUsed(
+                payload, response.authUrl, response.flwRef);
+          } else {
+            _handleError(RaveException(data: "Unknown Auth Model"));
+          }
         } else {
-          _handleError(RaveException(data: "Unknown Auth Model"));
+          _handleError(RaveException(data: "Unknown charge response code"));
         }
       } else {
-        _handleError(RaveException(data: "Unknown charge response code"));
+        _handleError(RaveException(data: "Invalid charge response code"));
       }
-    } else {
-      _handleError(RaveException(data: "Invalid charge response code"));
+    } on RaveException catch (e) {
+      _handleError(e);
     }
   }
 

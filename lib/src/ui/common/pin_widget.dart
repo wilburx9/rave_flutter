@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rave_flutter/src/ui/base_widget.dart';
 import 'package:rave_flutter/src/ui/fields/base_field.dart';
 
 class PinWidget extends StatefulWidget {
@@ -12,12 +11,11 @@ class PinWidget extends StatefulWidget {
   _PinWidgetState createState() => _PinWidgetState();
 }
 
-class _PinWidgetState extends BaseState<PinWidget> {
+class _PinWidgetState extends State<PinWidget> {
   TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
-    confirmationMessage = 'Do you want cancel PIN?';
     _controller.addListener(_onChange);
     super.initState();
   }
@@ -29,7 +27,7 @@ class _PinWidgetState extends BaseState<PinWidget> {
   }
 
   @override
-  Widget buildChild(BuildContext context) {
+  Widget build(BuildContext context) {
     var heightBox = SizedBox(height: 20);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -40,7 +38,7 @@ class _PinWidgetState extends BaseState<PinWidget> {
           // buildStar(),
           heightBox,
           Text(
-            "Please enter your card pin to continue your transaction",
+            "Please, enter your card pin to continue your transaction",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.w500,
@@ -58,7 +56,7 @@ class _PinWidgetState extends BaseState<PinWidget> {
               fontSize: 25.0,
               letterSpacing: 15.0,
             ),
-            autofocus: true,
+            autoFocus: true,
             inputFormatters: [
               WhitelistingTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(4),
@@ -67,15 +65,19 @@ class _PinWidgetState extends BaseState<PinWidget> {
             controller: _controller,
             hintText: "PIN",
           ),
+          SizedBox(height: 15)
         ],
       ),
     );
+
   }
 
   void _onChange() {
     var value = _controller.text;
     if (value.length == 4) {
+      FocusScope.of(context).unfocus();
       widget.onPinInputted(value);
+      _controller.removeListener(_onChange);
     }
   }
 }
