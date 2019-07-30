@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rave_flutter/src/ui/base_widget.dart';
+import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/ui/fields/base_field.dart';
 
 class OtpWidget extends StatefulWidget {
@@ -13,20 +13,14 @@ class OtpWidget extends StatefulWidget {
   _OtpWidgetState createState() => _OtpWidgetState();
 }
 
-class _OtpWidgetState extends BaseState<OtpWidget> {
+class _OtpWidgetState extends State<OtpWidget> {
   var _formKey = GlobalKey<FormState>();
   var _autoValidate = false;
   String _otp;
   var heightBox = SizedBox(height: 20.0);
 
   @override
-  void initState() {
-    confirmationMessage = 'Do you want cancel OTP?';
-    super.initState();
-  }
-
-  @override
-  Widget buildChild(BuildContext context) {
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Form(
@@ -67,13 +61,19 @@ class _OtpWidgetState extends BaseState<OtpWidget> {
                   ? "Field is required"
                   : null,
             ),
-            FlatButton(
-              color: Colors.grey[100],
-              child: Text("Continue"),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(0))),
-              padding: EdgeInsets.symmetric(vertical: 17, horizontal: 20),
-              onPressed: _validateInputs,
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(top: 20, bottom: 10),
+              child: FlatButton(
+                color: MyColors.buttercup,
+                child: Text(
+                  "Continue",
+                  style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+                onPressed: _validateInputs,
+              ),
             )
           ],
         ),

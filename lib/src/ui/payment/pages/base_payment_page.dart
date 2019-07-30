@@ -127,20 +127,15 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       child: FlatButton(
         onPressed: _validateInputs,
         color: MyColors.buttercup,
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         child: Row(
           children: <Widget>[
             Expanded(
               child: Align(
-                child: AnimatedSize(
-                  vsync: this,
-                  alignment: Alignment.centerLeft,
-                  duration: Duration(milliseconds: 300),
-                  child: Text(
-                    getPaymentText(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
+                child: Text(
+                  getPaymentText(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
                 ),
                 alignment: Alignment.center,
               ),

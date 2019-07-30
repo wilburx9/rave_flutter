@@ -12,7 +12,6 @@ class RaveUtils {
   }
 
   static String getEncryptedData(String str, String key) {
-    print("Encrypting: $str");
     var blockCipher = BlockCipher(TripleDESEngine(), key);
     return blockCipher.encodeB64(str);
   }

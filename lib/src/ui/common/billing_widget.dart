@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/ui/fields/base_field.dart';
 
 class BillingWidget extends StatefulWidget {
@@ -66,14 +67,19 @@ class _BillingWidgetState extends State<BillingWidget> {
             onSaved: (value) => country = value,
             hintText: "Country e.g. US",
           ),
-          SizedBox(height: 20),
-          FlatButton(
-            color: Colors.grey[100],
-            child: Text("Continue"),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(0))),
-            padding: EdgeInsets.symmetric(vertical: 17, horizontal: 20),
-            onPressed: _validateInputs,
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.only(top: 20, bottom: 10),
+            child: FlatButton(
+              color: MyColors.buttercup,
+              child: Text(
+                "Continue",
+                style:
+                TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+              onPressed: _validateInputs,
+            ),
           )
         ],
       ),

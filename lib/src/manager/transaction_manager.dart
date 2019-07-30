@@ -58,45 +58,42 @@ class TransactionManager {
     try {
       var response =
           await _service.charge(ChargeRequestBody.fromPayload(payload));
-      _setConnectionState(ConnectionState.done);
-      _handleChargeResult(response, payload);
-    } on RaveException catch (e) {
-      _handleError(e);
-    }
-  }
 
-  _handleChargeResult(ChargeResponseModel response, Payload payload) {
-    _setConnectionState(ConnectionState.done);
-    print("ChargerResponse = $response");
-    if (response.hasData) {
-      var suggestedAuth = response.suggestedAuth?.toUpperCase();
-      if (suggestedAuth != null) {
-        if (suggestedAuth == RaveConstants.PIN) {
-          _onPinRequested(payload);
-        } else if (suggestedAuth == RaveConstants.AVS_VBVSECURECODE) {
-          _onAVSSecureModelSuggested(payload);
-        } else if (suggestedAuth == RaveConstants.NO_AUTH_INTERNATIONAL) {
-          _onNoAuthInternationalSuggested(payload);
+      _setConnectionState(ConnectionState.done);
+
+      print("ChargerResponse = $response");
+      if (response.hasData) {
+        var suggestedAuth = response.suggestedAuth?.toUpperCase();
+        if (suggestedAuth != null) {
+          if (suggestedAuth == RaveConstants.PIN) {
+            _onPinRequested(payload);
+          } else if (suggestedAuth == RaveConstants.AVS_VBVSECURECODE) {
+            _onAVSSecureModelSuggested(payload);
+          } else if (suggestedAuth == RaveConstants.NO_AUTH_INTERNATIONAL) {
+            _onNoAuthInternationalSuggested(payload);
+          } else {
+            _handleError(RaveException(data: Strings.unknownAuthModel));
+          }
         } else {
-          _handleError(RaveException(data: Strings.unknownAuthModel));
-        }
-      } else {
-        String authModelUsed = response.authModelUsed?.toUpperCase();
-        if (authModelUsed != null) {
-          if (authModelUsed == RaveConstants.VBV) {
-            _onVBVAuthModelUsed(payload, response.authUrl, response.flwRef);
-          } else if (authModelUsed == RaveConstants.GTB_OTP ||
-              authModelUsed == RaveConstants.ACCESS_OTP ||
-              authModelUsed.contains("OTP")) {
-            _onOtpRequested(payload, response.flwRef,
-                response.chargeResponseMessage ?? Strings.enterOtp);
-          } else if (authModelUsed == RaveConstants.NO_AUTH) {
-            _onNoAuthUsed(payload, response.flwRef);
+          String authModelUsed = response.authModelUsed?.toUpperCase();
+          if (authModelUsed != null) {
+            if (authModelUsed == RaveConstants.VBV) {
+              _onVBVAuthModelUsed(payload, response.authUrl, response.flwRef);
+            } else if (authModelUsed == RaveConstants.GTB_OTP ||
+                authModelUsed == RaveConstants.ACCESS_OTP ||
+                authModelUsed.contains("OTP")) {
+              _onOtpRequested(payload, response.flwRef,
+                  response.chargeResponseMessage ?? Strings.enterOtp);
+            } else if (authModelUsed == RaveConstants.NO_AUTH) {
+              _onNoAuthUsed(payload, response.flwRef);
+            }
           }
         }
+      } else {
+        _handleError(RaveException(data: Strings.noResponseData));
       }
-    } else {
-      _handleError(RaveException(data: Strings.noResponseData));
+    } on RaveException catch (e) {
+      _handleError(e);
     }
   }
 
@@ -233,17 +230,21 @@ class TransactionManager {
 
     try {
       var response =
-      await _service.charge(ChargeRequestBody.fromPayload(payload));
+          await _service.charge(ChargeRequestBody.fromPayload(payload));
+      _setConnectionState(ConnectionState.done);
+
       print("Charge response (PIN) = $response");
 
       var responseCode = response.chargeResponseCode;
+
       if (response.hasData && responseCode != null) {
         if (responseCode == "00") {
           _reQueryTransaction(payload, response.flwRef);
         } else if (responseCode == "02") {
-          var authModel = response.authModelUsed?.toLowerCase();
+          var authModel = response.authModelUsed?.toUpperCase();
           if (authModel == RaveConstants.PIN) {
-            _onOtpRequested(payload, response.flwRef, response.message);
+            _onOtpRequested(
+                payload, response.flwRef, response.chargeResponseMessage);
           } else if (authModel == RaveConstants.AVS_VBVSECURECODE ||
               authModel == RaveConstants.VBV) {
             _onAVSVBVSecureCodeModelUsed(
@@ -273,8 +274,12 @@ class TransactionManager {
   }
 
   void _validateCharge(Payload payload, String flwRef, otp) async {
+    _setConnectionState(ConnectionState.waiting);
     var response = await _service.validateCardCharge(ValidateChargeRequestBody(
         transactionReference: flwRef, otp: otp, pBFPubKey: payload.pbfPubKey));
+    _setConnectionState(ConnectionState.done);
+
+    print("Validate charge = $response");
 
     var status = response.status;
     if (status == null) {
@@ -285,7 +290,10 @@ class TransactionManager {
     if (status.toLowerCase() == "success") {
       _reQueryTransaction(payload, flwRef);
     } else {
-      _onOtpRequested(payload, flwRef, "Wrong OTP entered");
+      _onTransactionComplete(RaveResult(
+        status: RaveStatus.error,
+        message: response.message,
+      ));
     }
   }
 }
