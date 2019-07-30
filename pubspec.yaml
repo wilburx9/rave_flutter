@@ -19,6 +19,7 @@ dependencies:
   get_it: ^1.0.3+2
   equatable: ^0.2.6
   tripledes: ^2.1.0
+  webview_flutter: ^0.3.10+3
 
 
 dev_dependencies:

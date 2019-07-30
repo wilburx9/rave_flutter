@@ -25,9 +25,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       return false;
     }
 
-    print("Gettingg value");
     var returnValue = getPopReturnValue();
-    print("Gettingg value 2 $returnValue");
+
     if (alwaysPop ||
         (returnValue != null &&
             (returnValue is RaveResult &&
@@ -97,5 +96,5 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     }
   }
 
-  getPopReturnValue();
+  getPopReturnValue() {}
 }

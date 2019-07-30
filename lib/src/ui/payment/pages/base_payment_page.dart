@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ConnectionState;
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
@@ -80,11 +80,11 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
                 BoxDecoration(color: MyColors.buttercup.withOpacity(.09)),
             child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                child: StreamBuilder<DataState>(
+                child: StreamBuilder<ConnectionState>(
                   stream: ConnectionBloc.instance.stream,
                   builder: (context, snapshot) {
                     return snapshot.hasData &&
-                            snapshot.data == DataState.waiting
+                            snapshot.data == ConnectionState.waiting
                         ? IgnorePointer(
                             child: child,
                           )
@@ -266,5 +266,5 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
   bool get autoValidate => _autoValidate;
 
-  setDataState(DataState state) => _connectionBloc.setState(state);
+  setDataState(ConnectionState state) => _connectionBloc.setState(state);
 }

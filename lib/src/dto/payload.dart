@@ -37,6 +37,11 @@ class Payload extends Equatable {
   String pin;
   String suggestedAuth;
   String narration;
+  String billingZip;
+  String billingCity;
+  String billingAddress;
+  String billingState;
+  String billingCountry;
 
   Payload.initFrmInitializer(RavePayInitializer i)
       : this.amount = i.amount.toString(),
@@ -77,7 +82,7 @@ class Payload extends Equatable {
       this.txRef,
       this.cardBIN});
 
-  Map<String, dynamic> toCardJson() {
+  Map<String, dynamic> toJson() {
     var json = <String, dynamic>{
       "narration": narration,
       "expirymonth": expiryMonth,
@@ -95,6 +100,14 @@ class Payload extends Equatable {
     };
 
     putIfNotNull(map: json, key: "payment_plan", value: paymentPlan);
+    putIfNotNull(map: json, key: "billingzip", value: billingZip);
+    putIfNotNull(map: json, key: "pin", value: pin);
+    putIfNotNull(map: json, key: "suggested_auth", value: suggestedAuth);
+    putIfNotNull(map: json, key: "billingcity", value: billingCity);
+    putIfNotNull(map: json, key: "billingaddress", value: billingAddress);
+    putIfNotNull(map: json, key: "billingstate", value: billingState);
+    putIfNotNull(map: json, key: "billingcountry", value: billingCountry);
+    putIfNotNull(map: json, key: "billingzip", value: billingZip);
 
     putIfNotNull(
         map: json, key: "charge_type", value: isPreAuth ? "preauth" : null);

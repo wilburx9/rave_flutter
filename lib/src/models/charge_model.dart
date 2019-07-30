@@ -69,5 +69,7 @@ class ChargeResponseModel extends Equatable {
         redirectUrl: data["redirectUrl"]);
   }
 
+  Map<String, dynamic> toJson() => {};
+
   bool hasValidData() => authModelUsed != null || suggestedAuth != null;
 }

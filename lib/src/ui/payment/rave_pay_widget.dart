@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide State, ConnectionState;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
+import 'package:rave_flutter/src/blocs/transaction_bloc.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
@@ -9,7 +10,10 @@ import 'package:rave_flutter/src/manager/transaction_manager.dart';
 import 'package:rave_flutter/src/rave_result.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/ui/base_widget.dart';
+import 'package:rave_flutter/src/ui/common/billing_widget.dart';
+import 'package:rave_flutter/src/ui/common/otp_widget.dart';
 import 'package:rave_flutter/src/ui/common/overlay_loader.dart';
+import 'package:rave_flutter/src/ui/common/pin_widget.dart';
 import 'package:rave_flutter/src/ui/custom_dialog.dart';
 import 'package:rave_flutter/src/ui/payment/pages/account_payment_widget.dart';
 import 'package:rave_flutter/src/ui/payment/pages/ach_payment_widget.dart';
@@ -60,6 +64,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
   @override
   void dispose() {
     ConnectionBloc.instance.dispose();
+    TransactionBloc.instance.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -68,55 +73,85 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
   Widget buildChild(BuildContext context) {
     // TODO: Handle empty pages ie when all payment methods are disabled
     // TODO: Check for phone state permission
+    Widget child = SingleChildScrollView(
+      child: Column(
+        children: _items.map((item) {
+          var index = _items.indexOf(item);
+          var initialWidget =
+              _selectedIndex == index ? item.content : buildItemHeader(index);
+          return AnimatedSize(
+            duration: Duration(milliseconds: 400),
+            curve: Curves.fastOutSlowIn,
+            alignment: Alignment.topCenter,
+            vsync: this,
+            child: StreamBuilder<TransactionState>(
+              stream: TransactionBloc.instance.stream,
+              builder: (_, snapshot) {
+                var transactionState = snapshot.data;
+                Widget w;
+                if (!snapshot.hasData) {
+                  w = initialWidget;
+                }
+                switch (transactionState.state) {
+                  case State.initial:
+                    w = initialWidget;
+                    break;
+                  case State.pin:
+                    w = PinWidget(
+                      onPinInputted: transactionState.callback,
+                    );
+                    break;
+                  case State.otp:
+                    w = OtpWidget(
+                      onPinInputted: transactionState.callback,
+                      message: transactionState.data,
+                    );
+                    break;
+                  case State.avsSecure:
+                    w = BillingWidget(onBillingInputted: transactionState.callback);
+                }
+                return w;
+              },
+            ),
+          );
+        }).toList(),
+      ),
+    );
+    var dataStreamBuilder = StreamBuilder<ConnectionState>(
+      stream: ConnectionBloc.instance.stream,
+      builder: (context, snapshot) {
+        return snapshot.hasData && snapshot.data == ConnectionState.waiting
+            ? OverlayLoaderWidget()
+            : SizedBox();
+      },
+    );
+    child = AnimatedSize(
+      vsync: this,
+      duration: Duration(milliseconds: 400),
+      curve: Curves.linear,
+      child: FadeTransition(
+        opacity: _animation,
+        child: SlideTransition(
+          position: _slideUpTween.animate(_animation),
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: <Widget>[
+              Positioned(
+                child: child,
+              ),
+              dataStreamBuilder
+            ],
+          ),
+        ),
+      ),
+    );
     return CustomAlertDialog(
       fullscreen: _initializer.fullScreen,
       titlePadding: EdgeInsets.all(0),
       contentPadding: EdgeInsets.all(0),
       title: _buildHeader(),
       expanded: true,
-      content: AnimatedSize(
-        vsync: this,
-        duration: Duration(milliseconds: 400),
-        curve: Curves.linear,
-        child: FadeTransition(
-          opacity: _animation,
-          child: SlideTransition(
-            position: _slideUpTween.animate(_animation),
-            child: Stack(
-              alignment: AlignmentDirectional.center,
-              children: <Widget>[
-                Positioned(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: _items.map((item) {
-                        var index = _items.indexOf(item);
-                        return AnimatedSize(
-                          duration: Duration(milliseconds: 400),
-                          curve: Curves.fastOutSlowIn,
-                          alignment: Alignment.topCenter,
-                          vsync: this,
-                          child: _selectedIndex == index
-                              ? item.content
-                              : buildItemHeader(index),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-                StreamBuilder<DataState>(
-                  stream: ConnectionBloc.instance.stream,
-                  builder: (context, snapshot) {
-                    return snapshot.hasData &&
-                            snapshot.data == DataState.waiting
-                        ? OverlayLoaderWidget()
-                        : SizedBox();
-                  },
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+      content: child,
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
+import 'package:rave_flutter/src/blocs/transaction_bloc.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/services/transaction_service.dart';
 import 'package:rave_flutter/src/services/http_service.dart';
@@ -24,6 +25,8 @@ class Repository {
     getIt.registerLazySingleton<TransactionService>(() => TransactionService());
 
     getIt.registerLazySingleton<ConnectionBloc>(() => ConnectionBloc());
+
+    getIt.registerLazySingleton<TransactionBloc>(() => TransactionBloc());
 
     return repository;
   }

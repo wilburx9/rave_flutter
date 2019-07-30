@@ -19,7 +19,7 @@ class ChargeRequestBody extends Equatable {
   ChargeRequestBody.fromPayload(Payload p)
       : this.pBFPubKey = p.pbfPubKey,
         this.alg = "3DES-24",
-        this.client = RaveUtils.getEncryptedData(json.encode(p.toCardJson()),
+        this.client = RaveUtils.getEncryptedData(json.encode(p.toJson()),
             Repository.instance.initializer.encryptionKey);
 
   Map<String, dynamic> toJson() => {
