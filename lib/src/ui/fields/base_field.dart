@@ -19,10 +19,10 @@ class BaseTextField extends TextFormField {
     FocusNode focusNode,
     TextInputAction textInputAction,
     ValueChanged<String> onFieldSubmitted,
-    TextAlign textAlign,
+    TextAlign textAlign = TextAlign.start,
     TextStyle style,
-    bool autofocus,
-    bool obscureText,
+    bool autofocus = false,
+    bool obscureText = false,
   }) : super(
             controller: controller,
             inputFormatters: inputFormatters,

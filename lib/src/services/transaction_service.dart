@@ -17,6 +17,7 @@ class TransactionService {
   final String _feeEndpoint = "$basePath/fee";
   final String _chargeEndpoint = "$basePath/charge";
   final String _validateChargeEndpoint = "$basePath/validatecharge";
+  final String _reQueryEndpoint = "$basePath/verify/mpesa";
 
   TransactionService._(this._httpService);
 
@@ -71,7 +72,7 @@ class TransactionService {
 
   Future<ReQueryResponseModel> reQuery(String pBFPubKey, flwRef) async {
     try {
-      final response = await this._httpService.dio.post(_validateChargeEndpoint,
+      final response = await this._httpService.dio.post(_reQueryEndpoint,
           data: {"PBFPubKey": pBFPubKey, "flw_ref": flwRef});
       return ReQueryResponseModel.fromJson(response.data);
     } on DioError catch (e, s) {

@@ -41,6 +41,8 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
 
   @override
   void initState() {
+    _transactionManager = TransactionManager(
+        context: context, onTransactionComplete: _onTransactionComplete);
     _items = _getItems();
     if (_items.length == 1) {
       _selectedIndex = 0;
@@ -52,13 +54,6 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
         curve: Curves.fastOutSlowIn);
     _animationController.forward();
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    _transactionManager = TransactionManager(
-        context: context, onTransactionComplete: _onTransactionComplete);
-    super.didChangeDependencies();
   }
 
   @override
@@ -91,24 +86,26 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
                 Widget w;
                 if (!snapshot.hasData) {
                   w = initialWidget;
-                }
-                switch (transactionState.state) {
-                  case State.initial:
-                    w = initialWidget;
-                    break;
-                  case State.pin:
-                    w = PinWidget(
-                      onPinInputted: transactionState.callback,
-                    );
-                    break;
-                  case State.otp:
-                    w = OtpWidget(
-                      onPinInputted: transactionState.callback,
-                      message: transactionState.data,
-                    );
-                    break;
-                  case State.avsSecure:
-                    w = BillingWidget(onBillingInputted: transactionState.callback);
+                } else {
+                  switch (transactionState.state) {
+                    case State.initial:
+                      w = initialWidget;
+                      break;
+                    case State.pin:
+                      w = PinWidget(
+                        onPinInputted: transactionState.callback,
+                      );
+                      break;
+                    case State.otp:
+                      w = OtpWidget(
+                        onPinInputted: transactionState.callback,
+                        message: transactionState.data,
+                      );
+                      break;
+                    case State.avsSecure:
+                      w = BillingWidget(
+                          onBillingInputted: transactionState.callback);
+                  }
                 }
                 return w;
               },

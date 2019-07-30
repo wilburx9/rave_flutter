@@ -42,8 +42,8 @@ class _HomeWidgetState extends State<HomeWidget> {
   List<SubAccount> subAccounts = [];
   String email;
   double amount;
-  String publicKey;
-  String encryptionKey;
+  String publicKey = "PASTE PUBLIC KEY HERE";
+  String encryptionKey = "PASTE ENCRYPTION KEY HERE";
   String txRef;
   String narration;
   String currency;
@@ -137,23 +137,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                               InputDecoration(hintText: 'Amount to charge'),
                           onSaved: (value) => amount = double.tryParse(value),
                           keyboardType: TextInputType.number,
-                        ),
-                        SizedBox(height: 20),
-                        TextFormField(
-                          // TODO: Set default value
-                          decoration: InputDecoration(hintText: 'Public key'),
-                          onSaved: (value) => publicKey = value,
-                          validator: (value) =>
-                              value.trim().isEmpty ? 'Field is required' : null,
-                        ),
-                        SizedBox(height: 20),
-                        TextFormField(
-                          // TODO: Set default value
-                          decoration:
-                              InputDecoration(hintText: 'Encryption key'),
-                          onSaved: (value) => encryptionKey = value,
-                          validator: (value) =>
-                              value.trim().isEmpty ? 'Field is required' : null,
                         ),
                         SizedBox(height: 20),
                         TextFormField(

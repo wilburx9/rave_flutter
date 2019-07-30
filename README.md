@@ -8,3 +8,7 @@ Gateway.
 ##  Information
 Though the UI is a somewhat ready, payment is not happening yet. Feel
 very free to poke around. Also, suggestions are welcome.
+
+// Add  <key>io.flutter.embedded_views_preview</key>
+//    <true/>
+// to Plist

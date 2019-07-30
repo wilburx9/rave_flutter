@@ -14,6 +14,7 @@ import 'package:rave_flutter/src/dto/validate_charge_request_body.dart';
 import 'package:rave_flutter/src/exception/exception.dart';
 import 'package:rave_flutter/src/models/charge_model.dart';
 import 'package:rave_flutter/src/models/fee_check_model.dart';
+import 'package:rave_flutter/src/models/requery_model.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/services/transaction_service.dart';
 import 'package:rave_flutter/src/ui/common/webview_widget.dart';
@@ -26,8 +27,9 @@ class TransactionManager {
   final _transactionBloc = TransactionBloc.instance;
   final _connectionBloc = ConnectionBloc.instance;
 
-  TransactionManager({@required BuildContext context,
-    @required TransactionComplete onTransactionComplete})
+  TransactionManager(
+      {@required BuildContext context,
+      @required TransactionComplete onTransactionComplete})
       : this._context = context,
         this._onTransactionComplete = onTransactionComplete;
 
@@ -43,7 +45,7 @@ class TransactionManager {
     _setConnectionState(ConnectionState.waiting);
     try {
       var response =
-      await _service.fetchFee(FeeCheckRequestBody.fromPayload(payload));
+          await _service.fetchFee(FeeCheckRequestBody.fromPayload(payload));
       _setConnectionState(ConnectionState.done);
       _displayFeeDialog(response, payload);
     } on RaveException catch (e) {
@@ -55,7 +57,7 @@ class TransactionManager {
     _setConnectionState(ConnectionState.waiting);
     try {
       var response =
-      await _service.charge(ChargeRequestBody.fromPayload(payload));
+          await _service.charge(ChargeRequestBody.fromPayload(payload));
       _setConnectionState(ConnectionState.done);
       _handleChargeResult(response, payload);
     } on RaveException catch (e) {
@@ -65,6 +67,7 @@ class TransactionManager {
 
   _handleChargeResult(ChargeResponseModel response, Payload payload) {
     _setConnectionState(ConnectionState.done);
+    print("ChargerResponse = $response");
     if (response.hasValidData()) {
       var suggestedAuth = response.suggestedAuth?.toUpperCase();
       if (suggestedAuth != null) {
@@ -109,8 +112,7 @@ class TransactionManager {
     }
 
     var content = Text(
-        "You will be charged a total of ${model.chargeAmount}${initializer
-            .currency}. Do you want to continue?");
+        "You will be charged a total of ${model.chargeAmount}${initializer.currency}. Do you want to continue?");
 
     Widget child;
     if (Platform.isIOS) {
@@ -148,10 +150,14 @@ class TransactionManager {
         RaveResult(status: RaveStatus.error, message: e.message));
   }
 
-  _onSuccess() {
-//    _setConnectionState(ConnectionState.done);
-//    _onTransactionComplete(
-//        RaveResult(status: RaveStatus.success, rawResponse:));
+  _onComplete(ReQueryResponseModel response) {
+    _setConnectionState(ConnectionState.done);
+    _onTransactionComplete(RaveResult(
+        status: response.dataStatus.toLowerCase() == "successful"
+            ? RaveStatus.success
+            : RaveStatus.error,
+        rawResponse: response.json,
+        message: response.message));
   }
 
   void _setConnectionState(ConnectionState state) =>
@@ -206,14 +212,18 @@ class TransactionManager {
         }));
   }
 
-  void _onNoAuthUsed(Payload payload, String flwRef) => _reQueryTransaction(payload, flwRef);
+  void _onNoAuthUsed(Payload payload, String flwRef) =>
+      _reQueryTransaction(payload, flwRef);
 
-  void _onAVSVBVSecureCodeModelUsed(Payload payload, String authUrl, String flwRef) async {
-    await Navigator.of(_context).push(MaterialPageRoute(
-      builder: (_) =>
-          WebViewWidget(
-            authUrl: authUrl,
-          ),),);
+  void _onAVSVBVSecureCodeModelUsed(
+      Payload payload, String authUrl, String flwRef) async {
+    await Navigator.of(_context).push(
+      MaterialPageRoute(
+        builder: (_) => WebViewWidget(
+          authUrl: authUrl,
+        ),
+      ),
+    );
     _reQueryTransaction(payload, flwRef);
   }
 
@@ -221,7 +231,7 @@ class TransactionManager {
     _setConnectionState(ConnectionState.waiting);
 
     var response =
-    await _service.charge(ChargeRequestBody.fromPayload(payload));
+        await _service.charge(ChargeRequestBody.fromPayload(payload));
 
     var responseCode = response.chargeResponseCode;
     if (response.hasValidData() && responseCode != null) {
@@ -233,7 +243,8 @@ class TransactionManager {
           _onOtpRequested(payload, response.flwRef, response.message);
         } else if (authModel == RaveConstants.AVS_VBVSECURECODE ||
             authModel == RaveConstants.VBV) {
-          _onAVSVBVSecureCodeModelUsed(payload, response.authUrl, response.flwRef);
+          _onAVSVBVSecureCodeModelUsed(
+              payload, response.authUrl, response.flwRef);
         } else {
           _handleError(RaveException(data: "Unknown Auth Model"));
         }
@@ -246,12 +257,12 @@ class TransactionManager {
   }
 
   void _reQueryTransaction(Payload payload, String flwRef) async {
+    _setConnectionState(ConnectionState.waiting);
     try {
       var response = await _service.reQuery(payload.pbfPubKey, flwRef);
-
-
+      _onComplete(response);
     } on RaveException catch (e) {
-
+      _handleError(e);
     }
   }
 

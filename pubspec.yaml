@@ -32,16 +32,4 @@ flutter:
     pluginClass: RaveFlutterPlugin
 
   assets:
-    - assets/images/amex.svg
-    - assets/images/bank.svg
-    - assets/images/card.svg
-    - assets/images/diners.svg
-    - assets/images/discover.svg
-    - assets/images/flutterwave_logo.svg
-    - assets/images/generic_card.svg
-    - assets/images/jcb.svg
-    - assets/images/mastercard.svg
-    - assets/images/note.svg
-    - assets/images/rave.svg
-    - assets/images/verve.svg
-    - assets/images/visa.svg
+    - assets/images/
