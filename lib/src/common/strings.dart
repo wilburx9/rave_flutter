@@ -28,7 +28,8 @@ class Strings {
 
   static cannotBeNull(String name) => '$name cannot be null';
 
-  static cannotBeNullOrNegative(String name) => '${cannotBeNull(name)} or negative';
+  static cannotBeNullOrNegative(String name) =>
+      '${cannotBeNull(name)} or negative';
 
   static cannotBeNullOrEmpty(String name) => '${cannotBeNull(name)} or empty';
 }

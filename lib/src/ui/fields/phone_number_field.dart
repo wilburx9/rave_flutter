@@ -25,6 +25,8 @@ class PhoneNumberField extends BaseTextField {
         );
 
   static String validatePhoneNum(String input) {
-    return ValidatorUtils.isPhoneValid(input) ? null : Strings.invalidPhoneNumber;
+    return ValidatorUtils.isPhoneValid(input)
+        ? null
+        : Strings.invalidPhoneNumber;
   }
 }

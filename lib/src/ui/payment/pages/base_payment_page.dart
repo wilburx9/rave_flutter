@@ -135,7 +135,9 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
                 child: Text(
                   getPaymentText(),
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 15),
                 ),
                 alignment: Alignment.center,
               ),

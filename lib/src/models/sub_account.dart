@@ -21,7 +21,6 @@ class SubAccount {
     }
     return map;
   }
-
 }
 
 const _idKey = 'id';

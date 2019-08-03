@@ -3,7 +3,6 @@ import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class UgMobileMoneyPaymentWidget extends BasePaymentPage {
-
   @override
   _UgMobileMoneyPaymentWidgetState createState() =>
       _UgMobileMoneyPaymentWidgetState();

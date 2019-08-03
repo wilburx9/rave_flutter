@@ -9,7 +9,8 @@ import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CardPaymentWidget extends BasePaymentPage {
-  CardPaymentWidget({@required TransactionManager t}) : super(transactionManager: t);
+  CardPaymentWidget({@required TransactionManager t})
+      : super(transactionManager: t);
 
   @override
   _CardPaymentWidgetState createState() => _CardPaymentWidgetState();
@@ -73,8 +74,7 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
             child: CVVField(
                 focusNode: _cvvFocusNode,
                 textInputAction: TextInputAction.done,
-                onFieldSubmitted: (value) =>
-                    swapFocus(
+                onFieldSubmitted: (value) => swapFocus(
                       _cvvFocusNode,
                     ),
                 onSaved: (value) => payload.cvv = value),
@@ -83,8 +83,6 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
       )
     ];
   }
-
-
 
   void _setCardTypeFrmNumber() {
     String input = CardUtils.getCleanedNumber(numberController.text);
@@ -95,5 +93,4 @@ class _CardPaymentWidgetState extends BasePaymentPageState<CardPaymentWidget> {
 
   @override
   FocusNode getNextFocusNode() => _numberFocusNode;
-
 }

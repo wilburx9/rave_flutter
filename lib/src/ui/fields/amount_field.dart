@@ -20,7 +20,8 @@ class AmountField extends BaseTextField {
           focusNode: focusNode,
           onFieldSubmitted: onFieldSubmitted,
           textInputAction: textInputAction,
-          prefixStyle: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.w600),
+          prefixStyle:
+              TextStyle(color: Colors.grey[800], fontWeight: FontWeight.w600),
           validator: (String value) => validateNum(value),
         );
 

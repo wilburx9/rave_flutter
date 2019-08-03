@@ -25,6 +25,8 @@ class BankService {
             .dio
             .post(_bankEndpoint, data: {'json': '1'});
 
-        return (response.data as List).map((m) => BankModel.fromJson(m)).toList();
+        return (response.data as List)
+            .map((m) => BankModel.fromJson(m))
+            .toList();
       });
 }

@@ -83,8 +83,8 @@ class CardUtils {
 }
 
 final startingPatternVisa = RegExp(r'[4]');
-final startingPatternMaster =
-    RegExp(r'((5[1-5])|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))');
+final startingPatternMaster = RegExp(
+    r'((5[1-5])|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))');
 final startingPatternAmex = RegExp(r'((34)|(37))');
 final startingPatternDiners = RegExp(r'((30[0-5])|(3[89])|(36)|(3095))');
 final startingPatternJCB = RegExp(r'(352[89]|35[3-8][0-9])');

@@ -14,12 +14,12 @@ import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class AccountPaymentWidget extends BasePaymentPage {
-
   @override
   _AccountPaymentWidgetState createState() => _AccountPaymentWidgetState();
 }
 
-class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidget> {
+class _AccountPaymentWidgetState
+    extends BasePaymentPageState<AccountPaymentWidget> {
   Future<List<BankModel>> _banks;
   var _phoneFocusNode = FocusNode();
   var _bvnFocusNode = FocusNode();
@@ -77,7 +77,8 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                 child: Text(
                   'Display banks',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
                 )),
           );
         }
@@ -106,8 +107,8 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
               textInputAction: _selectedBank.showBVNField()
                   ? TextInputAction.next
                   : TextInputAction.done,
-              onFieldSubmitted: (value) => swapFocus(
-                  _accountFocusNode, _selectedBank.showBVNField() ? _bvnFocusNode : null),
+              onFieldSubmitted: (value) => swapFocus(_accountFocusNode,
+                  _selectedBank.showBVNField() ? _bvnFocusNode : null),
               onSaved: (value) => payload.accountNumber)
           : SizedBox(),
       _selectedBank != null && _selectedBank.showBVNField()
@@ -123,13 +124,16 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
           border: OutlineInputBorder(),
           isDense: true,
           filled: true,
-          errorText: autoValidate && _selectedBank == null ? 'Select a bank' : null,
+          errorText:
+              autoValidate && _selectedBank == null ? 'Select a bank' : null,
           fillColor: Colors.grey[50],
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey[400].withOpacity(.7), width: .5),
+              borderSide: BorderSide(
+                  color: Colors.grey[400].withOpacity(.7), width: .5),
               borderRadius: BorderRadius.all(Radius.circular(1.5))),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey[400].withOpacity(.7), width: 1),
+              borderSide:
+                  BorderSide(color: Colors.grey[400].withOpacity(.7), width: 1),
               borderRadius: BorderRadius.all(Radius.circular(1.5))),
           hintText: 'Select bank',
         ),
@@ -158,10 +162,13 @@ class _AccountPaymentWidgetState extends BasePaymentPageState<AccountPaymentWidg
               onTap: _selectBirthday,
               child: IgnorePointer(
                 child: BaseTextField(
-                  labelText: _pickedDate == null ? 'DATE OF BIRTH' : geFormattedDate(),
-                  validator: (value) => _pickedDate == null ? Strings.invalidDOB : null,
+                  labelText:
+                      _pickedDate == null ? 'DATE OF BIRTH' : geFormattedDate(),
+                  validator: (value) =>
+                      _pickedDate == null ? Strings.invalidDOB : null,
                   labelStyle: TextStyle(
-                      color: _pickedDate == null ? Colors.grey : Colors.grey[800],
+                      color:
+                          _pickedDate == null ? Colors.grey : Colors.grey[800],
                       fontSize: 14),
                 ),
               ),

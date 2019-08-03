@@ -3,12 +3,12 @@ import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class MpesaPaymentWidget extends BasePaymentPage {
-
   @override
   _MpesaPaymentWidgetState createState() => _MpesaPaymentWidgetState();
 }
 
-class _MpesaPaymentWidgetState extends BasePaymentPageState<MpesaPaymentWidget> {
+class _MpesaPaymentWidgetState
+    extends BasePaymentPageState<MpesaPaymentWidget> {
   var _phoneFocusNode = FocusNode();
 
   @override

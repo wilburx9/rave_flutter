@@ -47,7 +47,8 @@ class ExpiryDateField extends BaseTextField {
       year = -1; // Lets use an invalid year intentionally
     }
 
-    if (!ValidatorUtils.validExpiryDate(month, year)) return Strings.invalidExpiry;
+    if (!ValidatorUtils.validExpiryDate(month, year))
+      return Strings.invalidExpiry;
 
     return null;
   }

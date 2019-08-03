@@ -5,9 +5,9 @@ import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class GhMobileMoneyPaymentWidget extends BasePaymentPage {
-
   @override
-  _GhMobileMoneyPaymentWidgetState createState() => _GhMobileMoneyPaymentWidgetState();
+  _GhMobileMoneyPaymentWidgetState createState() =>
+      _GhMobileMoneyPaymentWidgetState();
 }
 
 class _GhMobileMoneyPaymentWidgetState
@@ -33,13 +33,17 @@ class _GhMobileMoneyPaymentWidgetState
           border: OutlineInputBorder(),
           isDense: true,
           filled: true,
-          errorText: autoValidate && _selectedNetwork == null ? 'Select a network' : null,
+          errorText: autoValidate && _selectedNetwork == null
+              ? 'Select a network'
+              : null,
           fillColor: Colors.grey[50],
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey[400].withOpacity(.7), width: .5),
+              borderSide: BorderSide(
+                  color: Colors.grey[400].withOpacity(.7), width: .5),
               borderRadius: BorderRadius.all(Radius.circular(1.5))),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey[400].withOpacity(.7), width: 1),
+              borderSide:
+                  BorderSide(color: Colors.grey[400].withOpacity(.7), width: 1),
               borderRadius: BorderRadius.all(Radius.circular(1.5))),
           hintText: 'Select network',
         ),
@@ -61,11 +65,15 @@ class _GhMobileMoneyPaymentWidgetState
       )),
       PhoneNumberField(
           focusNode: _phoneFocusNode,
-          textInputAction:
-              isVodaFoneSelected() ? TextInputAction.next : TextInputAction.done,
+          textInputAction: isVodaFoneSelected()
+              ? TextInputAction.next
+              : TextInputAction.done,
           hintText: '233xxxxxxx',
-          onFieldSubmitted: (value) => swapFocus(_phoneFocusNode,
-              _networks.indexOf(_selectedNetwork) == 2 ? _voucherFocusNode : null),
+          onFieldSubmitted: (value) => swapFocus(
+              _phoneFocusNode,
+              _networks.indexOf(_selectedNetwork) == 2
+                  ? _voucherFocusNode
+                  : null),
           onSaved: (value) => payload.phoneNumber),
       isVodaFoneSelected()
           ? BaseTextField(
@@ -73,7 +81,8 @@ class _GhMobileMoneyPaymentWidgetState
               textInputAction: TextInputAction.done,
               hintText: 'VOUCHER',
               onFieldSubmitted: (value) => swapFocus(_voucherFocusNode),
-              validator: (value) => value.trim().isEmpty ? Strings.invalidVoucher : null,
+              validator: (value) =>
+                  value.trim().isEmpty ? Strings.invalidVoucher : null,
               onSaved: (value) => payload.voucher)
           : SizedBox(),
     ];
@@ -98,14 +107,16 @@ class _GhMobileMoneyPaymentWidgetState
     if (isVodaFoneSelected()) {
       // This instruction is for Vodafone. Apparently, other networks don't need
       // instructions
-      var textStyle = TextStyle(color: Colors.grey[900], fontWeight: FontWeight.normal);
+      var textStyle =
+          TextStyle(color: Colors.grey[900], fontWeight: FontWeight.normal);
       var boldStyle = textStyle.copyWith(fontWeight: FontWeight.bold);
       return Padding(
         padding: EdgeInsets.fromLTRB(5, 5, 5, 25),
         child: RichText(
           text: TextSpan(text: '', style: textStyle, children: <TextSpan>[
             TextSpan(
-              text: 'Please follow the instruction below to get your voucher code',
+              text:
+                  'Please follow the instruction below to get your voucher code',
               style: boldStyle,
             ),
             TextSpan(text: '\n\n\n1. Dial '),
@@ -116,7 +127,8 @@ class _GhMobileMoneyPaymentWidgetState
             TextSpan(text: ' to generate the voucher.'),
             TextSpan(text: '\n\n\3. Enter your PIN in next prompt.'),
             TextSpan(
-                text: '\n\n\4. Input the voucher generated in the voucher field below.'),
+                text:
+                    '\n\n\4. Input the voucher generated in the voucher field below.'),
           ]),
         ),
       );

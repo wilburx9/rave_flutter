@@ -74,8 +74,10 @@ class _BillingWidgetState extends State<BillingWidget> {
               color: MyColors.buttercup,
               child: Text(
                 "Continue",
-                style:
-                TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 15),
               ),
               padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
               onPressed: _validateInputs,

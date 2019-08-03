@@ -43,7 +43,9 @@ class BaseTextField extends TextFormField {
                 labelText: labelText,
                 labelStyle: labelStyle,
                 hintStyle: TextStyle(
-                    color: Colors.grey[400], fontSize: 14, fontWeight: FontWeight.w500),
+                    color: Colors.grey[400],
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
                 suffixIcon: suffixIcon == null
                     ? null
                     : Padding(
@@ -59,18 +61,19 @@ class BaseTextField extends TextFormField {
                 errorMaxLines: 3,
                 isDense: true,
                 focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: MyColors.buttercup, width: 1.5),
+                    borderSide:
+                        BorderSide(color: MyColors.buttercup, width: 1.5),
                     borderRadius: radius),
                 errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: MyColors.buttercup, width: 1),
                     borderRadius: radius),
                 enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Colors.grey[400].withOpacity(.7), width: .5),
+                    borderSide: BorderSide(
+                        color: Colors.grey[400].withOpacity(.7), width: .5),
                     borderRadius: radius),
                 focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Colors.grey[400].withOpacity(.7), width: 1),
+                    borderSide: BorderSide(
+                        color: Colors.grey[400].withOpacity(.7), width: 1),
                     borderRadius: radius),
                 hintText: hintText));
 }

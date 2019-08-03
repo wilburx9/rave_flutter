@@ -19,9 +19,7 @@ class HttpService {
       responseType: ResponseType.json,
       connectTimeout: 60000,
       receiveTimeout: 60000,
-      headers: {
-        HttpHeaders.contentTypeHeader: "application/json"
-      },
+      headers: {HttpHeaders.contentTypeHeader: "application/json"},
     );
     _dio = Dio(options);
     if (initializer.staging) {

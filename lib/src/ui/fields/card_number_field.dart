@@ -31,7 +31,9 @@ class CardNumberField extends BaseTextField {
         );
 
   static String validateCardNum(String input) {
-    return ValidatorUtils.isCardNumberValid(input) ? null : Strings.invalidCardNumber;
+    return ValidatorUtils.isCardNumberValid(input)
+        ? null
+        : Strings.invalidCardNumber;
   }
 
   @override
