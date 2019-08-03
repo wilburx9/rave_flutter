@@ -66,52 +66,49 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
 
   @override
   Widget buildChild(BuildContext context) {
-    // TODO: Handle empty pages ie when all payment methods are disabled
-    // TODO: Check for phone state permission
+    var column = Column(
+      children: _items.map((item) {
+        var index = _items.indexOf(item);
+        return _selectedIndex == index ? item.content : buildItemHeader(index);
+      }).toList(),
+    );
     Widget child = SingleChildScrollView(
-      child: Column(
-        children: _items.map((item) {
-          var index = _items.indexOf(item);
-          var initialWidget =
-              _selectedIndex == index ? item.content : buildItemHeader(index);
-          return AnimatedSize(
-            duration: Duration(milliseconds: 400),
-            curve: Curves.fastOutSlowIn,
-            alignment: Alignment.topCenter,
-            vsync: this,
-            child: StreamBuilder<TransactionState>(
-              stream: TransactionBloc.instance.stream,
-              builder: (_, snapshot) {
-                var transactionState = snapshot.data;
-                Widget w;
-                if (!snapshot.hasData) {
-                  w = initialWidget;
-                } else {
-                  switch (transactionState.state) {
-                    case State.initial:
-                      w = initialWidget;
-                      break;
-                    case State.pin:
-                      w = PinWidget(
-                        onPinInputted: transactionState.callback,
-                      );
-                      break;
-                    case State.otp:
-                      w = OtpWidget(
-                        onPinInputted: transactionState.callback,
-                        message: transactionState.data,
-                      );
-                      break;
-                    case State.avsSecure:
-                      w = BillingWidget(
-                          onBillingInputted: transactionState.callback);
-                  }
-                }
-                return w;
-              },
-            ),
-          );
-        }).toList(),
+      child: AnimatedSize(
+        duration: Duration(milliseconds: 400),
+        curve: Curves.fastOutSlowIn,
+        alignment: Alignment.topCenter,
+        vsync: this,
+        child: StreamBuilder<TransactionState>(
+          stream: TransactionBloc.instance.stream,
+          builder: (_, snapshot) {
+            var transactionState = snapshot.data;
+            Widget w;
+            if (!snapshot.hasData) {
+              w = column;
+            } else {
+              switch (transactionState.state) {
+                case State.initial:
+                  w = column;
+                  break;
+                case State.pin:
+                  w = PinWidget(
+                    onPinInputted: transactionState.callback,
+                  );
+                  break;
+                case State.otp:
+                  w = OtpWidget(
+                    onPinInputted: transactionState.callback,
+                    message: transactionState.data,
+                  );
+                  break;
+                case State.avsSecure:
+                  w = BillingWidget(
+                      onBillingInputted: transactionState.callback);
+              }
+            }
+            return w;
+          },
+        ),
       ),
     );
     var dataStreamBuilder = StreamBuilder<ConnectionState>(
