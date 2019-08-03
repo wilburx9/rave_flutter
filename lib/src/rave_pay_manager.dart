@@ -15,7 +15,16 @@ class RavePayManager {
     return _manager;
   }
 
-  // TODO: Write documentation for this
+  /// Initializes the SDK and prompts the customer to input payment details
+  /// if the correct parameters are passed.
+  ///
+  /// [context] Your immediate build context.
+  ///
+  /// [initializer] Container for the transaction parameters
+  ///
+  ///
+  /// Please, enable embedded_views_preview on iOS. See https://stackoverflow.com/a/55290868/6181476
+
   Future<RaveResult> initialize({
     @required BuildContext context,
     @required RavePayInitializer initializer,
@@ -27,7 +36,9 @@ class RavePayManager {
     var error = ValidatorUtils.validateInitializer(initializer);
     if (error != null) {
       return RaveResult(
-          status: RaveStatus.error, rawResponse: {'error': error});
+          status: RaveStatus.error,
+          rawResponse: {'error': error},
+          message: error);
     }
 
     Repository.bootStrap(initializer);
@@ -41,7 +52,7 @@ class RavePayManager {
       ),
     );
 
-    // Return a cancelled response is null
+    // Return a cancelled response if result is null
     return result == null ? RaveResult(status: RaveStatus.cancelled) : result;
   }
 
@@ -56,5 +67,4 @@ class RavePayManager {
           ),
     );
   }
-
 }

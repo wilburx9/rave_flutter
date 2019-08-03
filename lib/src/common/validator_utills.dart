@@ -81,7 +81,8 @@ class ValidatorUtils {
     // has passed
     // 2. Card's month (plus another month) is more than current month.
     return hasYearPassed(year) ||
-        CardUtils.convertYearTo4Digits(year) == now.year && (month < now.month + 1);
+        CardUtils.convertYearTo4Digits(year) == now.year &&
+            (month < now.month + 1);
   }
 
   static bool isValidMonth(int month) {
@@ -133,29 +134,41 @@ class ValidatorUtils {
   /// Validates that requireed values [RavePayInitializer] are not null, negative or
   /// empty
   static String validateInitializer(RavePayInitializer init) {
-    String message;
     if (RaveUtils.isEmpty(init.publicKey))
-      message = Strings.cannotBeNullOrEmpty('publicKey');
+      return Strings.cannotBeNullOrEmpty('publicKey');
     if (RaveUtils.isEmpty(init.encryptionKey) == null)
-      message = Strings.cannotBeNullOrEmpty('encryptionKey');
+      return Strings.cannotBeNullOrEmpty('encryptionKey');
+    if (RaveUtils.isEmpty(init.txRef)) {
+      return Strings.cannotBeNullOrEmpty("txRef");
+    }
     if (RaveUtils.isEmpty(init.currency) == null)
-      message = Strings.cannotBeNullOrEmpty('currency');
+      return Strings.cannotBeNullOrEmpty('currency');
     if (RaveUtils.isEmpty(init.country) == null)
-      message = Strings.cannotBeNullOrEmpty('country');
-    if (init.narration == null) message = Strings.cannotBeNull('narration');
-    if (init.fName == null) message = Strings.cannotBeNull('fName');
-    if (init.lName == null) message = Strings.cannotBeNull('lName');
-    if (init.subAccounts == null) message = Strings.cannotBeNull('subAccounts');
-    if (init.acceptAchPayments == null) message = Strings.cannotBeNull('withAch');
-    if (init.acceptMpesaPayments == null) message = Strings.cannotBeNull('withMpesa');
-    if (init.acceptAccountPayments == null) message = Strings.cannotBeNull('withAccount');
-    if (init.acceptCardPayments == null) message = Strings.cannotBeNull('withCard');
+      return Strings.cannotBeNullOrEmpty('country');
+    if (init.narration == null) return Strings.cannotBeNull('narration');
+    if (init.fName == null) return Strings.cannotBeNull('fName');
+    if (init.lName == null) return Strings.cannotBeNull('lName');
+    if (init.subAccounts == null) return Strings.cannotBeNull('subAccounts');
+    if (init.acceptAchPayments == null) return Strings.cannotBeNull('withAch');
+    if (init.acceptMpesaPayments == null)
+      return Strings.cannotBeNull('withMpesa');
+    if (init.acceptAccountPayments == null)
+      return Strings.cannotBeNull('withAccount');
+    if (init.acceptCardPayments == null)
+      return Strings.cannotBeNull('withCard');
     if (init.acceptGHMobileMoneyPayments == null)
-      message = Strings.cannotBeNull('withGHMobileMoney');
+      return Strings.cannotBeNull('withGHMobileMoney');
     if (init.acceptUgMobileMoneyPayments == null)
-      message = Strings.cannotBeNull('withUgMobileMoney');
-    if (init.isPreAuth == null) message = Strings.cannotBeNull('isPreAuth');
-    if (init.displayFee == null) message = Strings.cannotBeNull('displayFee');
-    return message;
+      return Strings.cannotBeNull('withUgMobileMoney');
+    if (init.isPreAuth == null) return Strings.cannotBeNull('isPreAuth');
+    if (init.displayFee == null) return Strings.cannotBeNull('displayFee');
+    if (!init.acceptCardPayments &&
+        !init.acceptAccountPayments &&
+        !init.acceptMpesaPayments &&
+        !init.acceptGHMobileMoneyPayments &&
+        !init.acceptUgMobileMoneyPayments) {
+      return "No payment mode";
+    }
+    return null;
   }
 }

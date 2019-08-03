@@ -18,7 +18,6 @@ class Payload extends Equatable {
   String email;
   String expiryYear;
   String cvv;
-  String deviceFingerprint;
   String cardNo;
   String paymentPlan;
   String network;
@@ -66,7 +65,6 @@ class Payload extends Equatable {
       @required this.email,
       @required this.expiryYear,
       @required this.cvv,
-      @required this.deviceFingerprint,
       @required this.cardNo,
       @required this.paymentPlan,
       @required this.network,

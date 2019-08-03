@@ -143,7 +143,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
       ),
     );
     return CustomAlertDialog(
-      fullscreen: _initializer.fullScreen,
+      fullscreen:false,
       titlePadding: EdgeInsets.all(0),
       contentPadding: EdgeInsets.all(0),
       title: _buildHeader(),

@@ -12,7 +12,6 @@ import 'package:rave_flutter/src/dto/fee_check_request_body.dart';
 import 'package:rave_flutter/src/dto/payload.dart';
 import 'package:rave_flutter/src/dto/validate_charge_request_body.dart';
 import 'package:rave_flutter/src/exception/exception.dart';
-import 'package:rave_flutter/src/models/charge_model.dart';
 import 'package:rave_flutter/src/models/fee_check_model.dart';
 import 'package:rave_flutter/src/models/requery_model.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
