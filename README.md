@@ -60,7 +60,7 @@ processTransaction() async {
   }
  ```
  
-## Documentation:
+## Documentation
 Documentation can be found [here](https://pub.dev/documentation/rave_flutter/latest/rave_flutter/rave_flutter-library.html).
  
 ## Contributing, Issues and Bug Reports
