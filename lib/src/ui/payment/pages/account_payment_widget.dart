@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/strings.dart';
+import 'package:rave_flutter/src/manager/account_transaction_manager.dart';
 import 'package:rave_flutter/src/models/bank_model.dart';
 import 'package:rave_flutter/src/services/bank_service.dart';
 import 'package:rave_flutter/src/ui/fields/account_number_field.dart';
@@ -14,6 +15,9 @@ import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class AccountPaymentWidget extends BasePaymentPage {
+  AccountPaymentWidget({@required AccountTransactionManager manager})
+      : super(transactionManager: manager);
+
   @override
   _AccountPaymentWidgetState createState() => _AccountPaymentWidgetState();
 }
@@ -65,8 +69,9 @@ class _AccountPaymentWidgetState
             children: <Widget>[buildHeader(), buildMainFields(snapshot.data)],
           );
         } else {
-          widget = SizedBox(
+          widget = Container(
             width: double.infinity,
+            margin: EdgeInsets.symmetric(vertical: 20),
             child: FlatButton(
                 onPressed: () {
                   setState(() {
@@ -74,7 +79,7 @@ class _AccountPaymentWidgetState
                   });
                 },
                 color: MyColors.buttercup,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
                 child: Text(
                   'Display banks',
                   style: TextStyle(

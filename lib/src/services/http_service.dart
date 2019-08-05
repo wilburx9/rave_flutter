@@ -14,8 +14,8 @@ class HttpService {
   HttpService._(RavePayInitializer initializer) {
     var options = BaseOptions(
       baseUrl: initializer.staging
-          ? "https://ravesandbox.azurewebsites.net"
-          : "https://raveapi.azurewebsites.net",
+          ? "https://ravesandboxapi.flutterwave.com"
+          : "https://api.ravepay.co",
       responseType: ResponseType.json,
       connectTimeout: 60000,
       receiveTimeout: 60000,

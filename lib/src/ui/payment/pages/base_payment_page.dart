@@ -5,13 +5,13 @@ import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/common/validator_utills.dart';
 import 'package:rave_flutter/src/dto/payload.dart';
-import 'package:rave_flutter/src/manager/transaction_manager.dart';
+import 'package:rave_flutter/src/manager/base_transaction_manager.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/ui/fields/amount_field.dart';
 import 'package:rave_flutter/src/ui/fields/email_field.dart';
 
 abstract class BasePaymentPage extends StatefulWidget {
-  final TransactionManager transactionManager;
+  final BaseTransactionManager transactionManager;
 
   BasePaymentPage({@required this.transactionManager});
 }
@@ -195,7 +195,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     );
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10, top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -241,7 +241,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     onFormValidated();
   }
 
-  onFormValidated() => widget.transactionManager.start(payload);
+  onFormValidated() => widget.transactionManager.processTransaction(payload);
 
   void _updateAmount() => setState(
       () => initializer.amount = double.tryParse(_amountController.text));
@@ -251,7 +251,6 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
   Widget buildWidget(BuildContext context) => Column(
         children: <Widget>[
-          SizedBox(height: 10),
           buildHeader(),
           buildMainFields(),
         ],

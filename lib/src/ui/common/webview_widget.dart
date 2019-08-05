@@ -13,6 +13,7 @@ class WebViewWidget extends StatelessWidget {
       body: WebView(
         initialUrl: authUrl,
         javascriptMode: JavascriptMode.unrestricted,
+
       ),
     );
   }

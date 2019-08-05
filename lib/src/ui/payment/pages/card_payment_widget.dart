@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rave_flutter/src/manager/transaction_manager.dart';
+import 'package:rave_flutter/src/manager/card_transaction_manager.dart';
 import 'package:rave_flutter/src/ui/common/card_utils.dart';
 import 'package:rave_flutter/src/ui/fields/cvc_field.dart';
 import 'package:rave_flutter/src/ui/fields/expiry_date_field.dart';
@@ -9,8 +9,8 @@ import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CardPaymentWidget extends BasePaymentPage {
-  CardPaymentWidget({@required TransactionManager t})
-      : super(transactionManager: t);
+  CardPaymentWidget({@required CardTransactionManager manager})
+      : super(transactionManager: manager);
 
   @override
   _CardPaymentWidgetState createState() => _CardPaymentWidgetState();

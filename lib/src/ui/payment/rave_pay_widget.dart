@@ -6,7 +6,8 @@ import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
-import 'package:rave_flutter/src/manager/transaction_manager.dart';
+import 'package:rave_flutter/src/manager/account_transaction_manager.dart';
+import 'package:rave_flutter/src/manager/card_transaction_manager.dart';
 import 'package:rave_flutter/src/rave_result.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/ui/base_widget.dart';
@@ -37,12 +38,9 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
       Tween<Offset>(begin: Offset(-0.4, 0), end: Offset.zero);
   int _selectedIndex;
   List<_Item> _items;
-  TransactionManager _transactionManager;
 
   @override
   void initState() {
-    _transactionManager = TransactionManager(
-        context: context, onTransactionComplete: _onTransactionComplete);
     _items = _getItems();
     if (_items.length == 1) {
       _selectedIndex = 0;
@@ -276,8 +274,18 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
   List<_Item> _getItems() {
     var items = <_Item>[];
     if (_initializer.acceptCardPayments) {
-      items.add(_Item(
-          Strings.card, 'card', CardPaymentWidget(t: _transactionManager)));
+      items.add(
+        _Item(
+          Strings.card,
+          'card',
+          CardPaymentWidget(
+            manager: CardTransactionManager(
+              context: context,
+              onTransactionComplete: _onTransactionComplete,
+            ),
+          ),
+        ),
+      );
     }
 
     if (_initializer.acceptAccountPayments) {
@@ -285,7 +293,17 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
           _initializer.currency.toLowerCase() == 'usd') {
         items.add(_Item(Strings.ach, 'note', AchPaymentWidget()));
       } else {
-        items.add(_Item(Strings.account, 'bank', AccountPaymentWidget()));
+        items.add(
+          _Item(
+            Strings.account,
+            'bank',
+            AccountPaymentWidget(
+              manager: AccountTransactionManager(
+                  context: context,
+                  onTransactionComplete: _onTransactionComplete),
+            ),
+          ),
+        );
       }
     }
 

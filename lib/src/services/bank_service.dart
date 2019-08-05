@@ -23,10 +23,11 @@ class BankService {
         final response = await this
             ._httpService
             .dio
-            .post(_bankEndpoint, data: {'json': '1'});
+            .get(_bankEndpoint, queryParameters: {'json': '1'});
 
-        return (response.data as List)
-            .map((m) => BankModel.fromJson(m))
-            .toList();
+        var banks =
+            (response.data as List).map((m) => BankModel.fromJson(m)).toList();
+        banks.sort((a, b) => a.name.compareTo(b.name)); // Sort alphabetically
+        return banks;
       });
 }
