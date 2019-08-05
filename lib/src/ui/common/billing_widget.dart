@@ -22,68 +22,71 @@ class _BillingWidgetState extends State<BillingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      autovalidate: _autoValidate,
-      child: Column(
-        children: <Widget>[
-          Text(
-            "Enter your billing address details",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 40),
-          BaseTextField(
-            keyboardType: TextInputType.text,
-            autoFocus: true,
-            validator: _validate,
-            onSaved: (value) => address = value,
-            hintText: "Address e.g 20 Saltlake Eldorado",
-          ),
-          SizedBox(height: 10),
-          BaseTextField(
-            keyboardType: TextInputType.text,
-            validator: _validate,
-            onSaved: (value) => city = value,
-            hintText: "City e.g. Livingstone",
-          ),
-          SizedBox(height: 10),
-          BaseTextField(
-            keyboardType: TextInputType.text,
-            validator: _validate,
-            onSaved: (value) => state = value,
-            hintText: "State e.g. CA",
-          ),
-          SizedBox(height: 10),
-          BaseTextField(
-            keyboardType: TextInputType.text,
-            validator: _validate,
-            onSaved: (value) => zip = value,
-            hintText: "Zip code e.g. 928302",
-          ),
-          SizedBox(height: 10),
-          BaseTextField(
-            keyboardType: TextInputType.text,
-            validator: _validate,
-            onSaved: (value) => country = value,
-            hintText: "Country e.g. US",
-          ),
-          Container(
-            width: double.infinity,
-            margin: EdgeInsets.only(top: 20, bottom: 10),
-            child: FlatButton(
-              color: MyColors.buttercup,
-              child: Text(
-                "Continue",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 15),
-              ),
-              padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
-              onPressed: _validateInputs,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: Form(
+        key: _formKey,
+        autovalidate: _autoValidate,
+        child: Column(
+          children: <Widget>[
+            Text(
+              "Enter your billing address details",
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-          )
-        ],
+            SizedBox(height: 40),
+            BaseTextField(
+              keyboardType: TextInputType.text,
+              autoFocus: true,
+              validator: _validate,
+              onSaved: (value) => address = value,
+              hintText: "Address e.g 20 Saltlake Eldorado",
+            ),
+            SizedBox(height: 10),
+            BaseTextField(
+              keyboardType: TextInputType.text,
+              validator: _validate,
+              onSaved: (value) => city = value,
+              hintText: "City e.g. Livingstone",
+            ),
+            SizedBox(height: 10),
+            BaseTextField(
+              keyboardType: TextInputType.text,
+              validator: _validate,
+              onSaved: (value) => state = value,
+              hintText: "State e.g. CA",
+            ),
+            SizedBox(height: 10),
+            BaseTextField(
+              keyboardType: TextInputType.text,
+              validator: _validate,
+              onSaved: (value) => zip = value,
+              hintText: "Zip code e.g. 928302",
+            ),
+            SizedBox(height: 10),
+            BaseTextField(
+              keyboardType: TextInputType.text,
+              validator: _validate,
+              onSaved: (value) => country = value,
+              hintText: "Country e.g. US",
+            ),
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(top: 20, bottom: 10),
+              child: FlatButton(
+                color: MyColors.buttercup,
+                child: Text(
+                  "Continue",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 15),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+                onPressed: _validateInputs,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

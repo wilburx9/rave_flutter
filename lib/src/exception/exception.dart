@@ -9,12 +9,17 @@ class RaveException {
     if (e is String) {
       return e;
     }
-    if (e is Map && e.containsKey("data")) {
-      var data = e["data"];
-      if (data is Map) {
-        return data["message"];
-      } else {
-        return data;
+    if (e is Map) {
+      if (e.containsKey("message")) {
+        return e["message"];
+      }
+      if (e.containsKey("data")) {
+        var data = e["data"];
+        if (data is Map) {
+          return data["message"];
+        } else {
+          return data;
+        }
       }
     }
 

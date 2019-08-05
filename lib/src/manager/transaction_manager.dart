@@ -183,13 +183,14 @@ class TransactionManager {
       TransactionState(
           state: State.avsSecure,
           callback: (map) {
-            _handlePinOrBillingInput(payload
+            var p = payload
               ..suggestedAuth = RaveConstants.NO_AUTH_INTERNATIONAL
               ..billingAddress = map["address"]
               ..billingCity = map["city"]
               ..billingZip = map["zip"]
               ..billingCountry = map["counntry"]
-              ..billingState = map["state"]);
+              ..billingState = map["state"];
+            _handlePinOrBillingInput(p);
           }),
     );
   }
