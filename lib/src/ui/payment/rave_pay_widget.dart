@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide State, ConnectionState;
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
 import 'package:rave_flutter/src/blocs/transaction_bloc.dart';
@@ -148,42 +149,48 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
   }
 
   Widget _buildHeader() {
-    var rightWidget = Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        _initializer.email != null
-            ? Text(
-                _initializer.email,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Colors.grey[700], fontSize: 12.0),
-              )
-            : SizedBox(),
-        _initializer.amount == null || _initializer.amount.isNegative
-            ? SizedBox()
-            : RichText(
-                text: TextSpan(
-                    text: '${_initializer.currency} '.toUpperCase(),
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey[800],
-                        fontWeight: FontWeight.w600),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: RaveUtils.formatAmount(
-                          _initializer.amount,
-                        ),
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
-                      )
-                    ]),
-              ),
-      ],
-    );
+    var displayEmail = _initializer.displayEmail && _initializer.email != null;
+    var displayAmount = _initializer.displayAmount &&
+        (_initializer.amount != null || !_initializer.amount.isNegative);
 
+    var rightWidget = displayEmail || displayAmount
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              if (displayEmail)
+                Text(
+                  _initializer.email,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Colors.grey[700], fontSize: 12.0),
+                ),
+              if (displayAmount)
+                RichText(
+                  text: TextSpan(
+                      text: '${_initializer.currency} '.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey[800],
+                          fontWeight: FontWeight.w600),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: RaveUtils.formatAmount(
+                            _initializer.amount,
+                          ),
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        )
+                      ]),
+                ),
+            ],
+          )
+        : null;
+
+    var rightStr =
+        _initializer.companyName ?? _initializer.staging ? Strings.demo : '';
     var rightText = Text(
-      _initializer.companyName ?? _initializer.staging ? Strings.demo : '',
+      rightStr,
       maxLines: 1,
       style: TextStyle(color: Colors.grey[800], fontSize: 16),
     );
@@ -205,10 +212,26 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
             width: 50.0,
           ),
           Flexible(
-              child: AnimatedSize(
-                  child: _selectedIndex == null ? rightWidget : rightText,
-                  vsync: this,
-                  duration: Duration(milliseconds: 2000))),
+            child: Column(
+              crossAxisAlignment: prefix0.CrossAxisAlignment.end,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.cancel),
+                  onPressed: onCancelPress,
+                  color: Colors.red,
+                ),
+                AnimatedSize(
+                    child: Padding(
+                      padding: prefix0.EdgeInsets.only(right: 15),
+                      child: _selectedIndex == null
+                          ? rightWidget ?? rightText
+                          : rightText,
+                    ),
+                    vsync: this,
+                    duration: Duration(milliseconds: 800)),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -250,23 +273,9 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
     }
     return FadeTransition(
       opacity: _animation,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.cancel),
-            onPressed: onCancelPress,
-            color: Colors.red,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-              bottom: 10,
-            ),
-            child: header,
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20, bottom: 10, top: 5),
+        child: header,
       ),
     );
   }

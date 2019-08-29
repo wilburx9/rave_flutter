@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rave_flutter/rave_flutter.dart';
 import 'package:rave_flutter_example/button_widget.dart';
@@ -279,6 +279,8 @@ class _HomeWidgetState extends State<HomeWidget> {
       ..acceptAchPayments = acceptAchPayments
       ..acceptGHMobileMoneyPayments = acceptGhMMPayments
       ..acceptUgMobileMoneyPayments = acceptUgMMPayments
+      ..displayEmail = false
+      ..displayAmount = false
       ..staging = !live
       ..isPreAuth = preAuthCharge
       ..displayFee = shouldDisplayFee;

@@ -148,7 +148,6 @@ class ValidatorUtils {
     if (init.narration == null) return Strings.cannotBeNull('narration');
     if (init.fName == null) return Strings.cannotBeNull('fName');
     if (init.lName == null) return Strings.cannotBeNull('lName');
-    if (init.subAccounts == null) return Strings.cannotBeNull('subAccounts');
     if (init.acceptAchPayments == null) return Strings.cannotBeNull('withAch');
     if (init.acceptMpesaPayments == null)
       return Strings.cannotBeNull('withMpesa');
@@ -162,6 +161,8 @@ class ValidatorUtils {
       return Strings.cannotBeNull('withUgMobileMoney');
     if (init.isPreAuth == null) return Strings.cannotBeNull('isPreAuth');
     if (init.displayFee == null) return Strings.cannotBeNull('displayFee');
+    if (init.displayEmail) return Strings.cannotBeNull("displayEmail");
+    if (init.displayAmount) return Strings.cannotBeNull("displayAmount");
     if (!init.acceptCardPayments &&
         !init.acceptAccountPayments &&
         !init.acceptMpesaPayments &&

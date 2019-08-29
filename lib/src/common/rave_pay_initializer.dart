@@ -83,11 +83,17 @@ class RavePayInitializer {
   /// Whether to display the transaction fee to customer before processing payment
   bool displayFee;
 
+  /// Whether to display the amount in the payment prompt
+  bool displayAmount;
+
+  /// Whether to display the email in the payment prompt
+  bool displayEmail;
+
   /// Your company's logo. Displayed on the top-left of the payment prompt.
-  /// Displays Flutterwave's logo is null
+  /// Displays Flutterwave's logo if null
   Widget companyLogo;
 
-  /// Company name. Diaplayed on the top right of the payment screen.
+  /// Company name. Displayed on the top right of the payment prompt.
   /// If null and [staging] is true, a "Demo" text is displayed.
   Widget companyName;
 
@@ -116,5 +122,7 @@ class RavePayInitializer {
     this.companyLogo,
     this.companyName,
     this.paymentPlan,
+    this.displayAmount = true,
+    this.displayEmail = true,
   }) : this.staging = staging ?? isInDebugMode;
 }

@@ -163,29 +163,6 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   }
 
   Widget buildHeader() {
-    var amountText = ValidatorUtils.isAmountValid(initializer.amount.toString())
-        ? Flexible(
-            child: RichText(
-            text: TextSpan(
-              text: '${initializer.currency} '.toUpperCase(),
-              style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[800],
-                  fontWeight: FontWeight.w600),
-              children: <TextSpan>[
-                TextSpan(
-                  text: RaveUtils.formatAmount(
-                    initializer.amount,
-                  ),
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ],
-            ),
-          ))
-        : SizedBox();
-
     var emailText = Text(
       initializer.email,
       maxLines: 1,
@@ -199,9 +176,32 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          amountText,
+          if (initializer.displayAmount &&
+              ValidatorUtils.isAmountValid(initializer.amount.toString()))
+            Flexible(
+                child: RichText(
+              text: TextSpan(
+                text: '${initializer.currency} '.toUpperCase(),
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.w600),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: RaveUtils.formatAmount(
+                      initializer.amount,
+                    ),
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            )),
           SizedBox(width: 20),
-          showEmailField() ? Flexible(child: emailText) : SizedBox()
+          initializer.displayEmail && showEmailField()
+              ? Flexible(child: emailText)
+              : SizedBox()
         ],
       ),
     );
