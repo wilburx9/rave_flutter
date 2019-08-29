@@ -10,16 +10,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^0.13.1
+  flutter_svg: ^0.14.0
   http: ^0.12.0+2
   intl: ^0.15.8
   meta: ^1.1.6
   async: ^2.1.0
-  dio: ^2.1.13
-  get_it: ^1.0.3+2
-  equatable: ^0.2.6
+  dio: ^2.1.16
+  get_it: ^2.0.3
+  equatable: ^0.5.1
   tripledes: ^2.1.0
-  webview_flutter: ^0.3.10+3
+  webview_flutter: ^0.3.13
 
 
 dev_dependencies:

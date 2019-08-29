@@ -3,10 +3,10 @@ import 'package:rave_flutter/src/blocs/connection_bloc.dart';
 import 'package:rave_flutter/src/blocs/transaction_bloc.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/services/bank_service.dart';
-import 'package:rave_flutter/src/services/transaction_service.dart';
 import 'package:rave_flutter/src/services/http_service.dart';
+import 'package:rave_flutter/src/services/transaction_service.dart';
 
-GetIt getIt = GetIt()..allowReassignment = true;
+GetIt getIt = GetIt.instance..allowReassignment = true;
 
 class Repository {
   static Repository get instance => getIt<Repository>();
