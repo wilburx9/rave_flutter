@@ -1,3 +1,6 @@
+## 0.0.3-alpha
+* Bumped version of dependencies
+
 ## 0.0.2-alpha
 * Implemented card payment.
 
