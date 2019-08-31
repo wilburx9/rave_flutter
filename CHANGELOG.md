@@ -1,3 +1,6 @@
+## 0.0.4-alpha
+* Implemented callback urls for 3DS authentication
+
 ## 0.0.3-alpha
 * Bumped version of dependencies
 
