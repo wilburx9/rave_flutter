@@ -9,7 +9,7 @@ class AccountTransactionManager extends BaseTransactionManager {
       : super(context: context, onTransactionComplete: onTransactionComplete);
 
   @override
-  charge(Payload payload) {
+  charge() {
     // TODO: implement charge
     return null;
   }

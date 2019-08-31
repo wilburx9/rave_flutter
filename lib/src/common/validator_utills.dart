@@ -146,6 +146,7 @@ class ValidatorUtils {
     if (RaveUtils.isEmpty(init.country) == null)
       return Strings.cannotBeNullOrEmpty('country');
     if (init.narration == null) return Strings.cannotBeNull('narration');
+    if (init.redirectUrl == null) return Strings.cannotBeNull('redirectUrl');
     if (init.fName == null) return Strings.cannotBeNull('fName');
     if (init.lName == null) return Strings.cannotBeNull('lName');
     if (init.acceptAchPayments == null) return Strings.cannotBeNull('withAch');

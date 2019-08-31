@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
@@ -6,7 +5,7 @@ import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/models/bank_model.dart';
 import 'package:rave_flutter/src/models/sub_account.dart';
 
-class Payload extends Equatable {
+class Payload {
   String expiryMonth;
   String pbfPubKey;
   String ip;
@@ -41,6 +40,7 @@ class Payload extends Equatable {
   String billingAddress;
   String billingState;
   String billingCountry;
+  String redirectUrl;
 
   Payload.initFrmInitializer(RavePayInitializer i)
       : this.amount = i.amount.toString(),
@@ -52,6 +52,7 @@ class Payload extends Equatable {
         this.txRef = i.txRef,
         this.meta = i.meta,
         this.subAccounts = i.subAccounts,
+        this.redirectUrl = i.redirectUrl,
         this.isPreAuth = i.isPreAuth,
         this.pbfPubKey = i.publicKey;
 
@@ -95,6 +96,7 @@ class Payload extends Equatable {
       "cvv": cvv,
       "cardno": cardNo,
       "txRef": txRef,
+      "redirect_url": redirectUrl
     };
 
     putIfNotNull(map: json, key: "payment_plan", value: paymentPlan);
@@ -115,6 +117,11 @@ class Payload extends Equatable {
     json["meta"] = [
       for (var e in meta.entries) {"metaname": e.key, "metavalue": e.value}
     ];
+    putIfNotNull(
+      map: json,
+      key: "redirect_url",
+      value: redirectUrl,
+    );
     putIfNotNull(
         map: json,
         key: "subaccounts",

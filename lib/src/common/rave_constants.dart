@@ -8,6 +8,4 @@ class RaveConstants {
   static const String NO_AUTH_INTERNATIONAL = "NOAUTH_INTERNATIONAL";
   static const String RAVE_PAY = "ravepay";
   static const String RAVE_PARAMS = "raveparams";
-  static const String RAVE_3DS_CALLBACK =
-      "https://rave-webhook.herokuapp.com/receivepayment";
 }

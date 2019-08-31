@@ -23,15 +23,16 @@ class CardTransactionManager extends BaseTransactionManager {
 
   @override
   processTransaction(Payload payload) async {
+    this.payload = payload;
     if (initializer.displayFee) {
-      fetchFee(payload);
+      fetchFee();
     } else {
-      charge(payload);
+      charge();
     }
   }
 
   @override
-  charge(Payload payload) async {
+  charge() async {
     setConnectionState(ConnectionState.waiting);
     try {
       var response =
@@ -39,16 +40,18 @@ class CardTransactionManager extends BaseTransactionManager {
 
       setConnectionState(ConnectionState.done);
 
+      flwRef = response.flwRef;
+
       print("ChargerResponse = $response");
       if (response.hasData) {
         var suggestedAuth = response.suggestedAuth?.toUpperCase();
         if (suggestedAuth != null) {
           if (suggestedAuth == RaveConstants.PIN) {
-            _onPinRequested(payload);
+            _onPinRequested();
           } else if (suggestedAuth == RaveConstants.AVS_VBVSECURECODE) {
-            _onAVSSecureModelSuggested(payload);
+            _onAVSSecureModelSuggested();
           } else if (suggestedAuth == RaveConstants.NO_AUTH_INTERNATIONAL) {
-            _onNoAuthInternationalSuggested(payload);
+            _onNoAuthInternationalSuggested();
           } else {
             handleError(RaveException(data: Strings.unknownAuthModel));
           }
@@ -56,14 +59,14 @@ class CardTransactionManager extends BaseTransactionManager {
           String authModelUsed = response.authModelUsed?.toUpperCase();
           if (authModelUsed != null) {
             if (authModelUsed == RaveConstants.VBV) {
-              _onVBVAuthModelUsed(payload, response.authUrl, response.flwRef);
+              _onVBVAuthModelUsed(response.authUrl);
             } else if (authModelUsed == RaveConstants.GTB_OTP ||
                 authModelUsed == RaveConstants.ACCESS_OTP ||
                 authModelUsed.contains("OTP")) {
-              _onOtpRequested(payload, response.flwRef,
+              _onOtpRequested(
                   response.chargeResponseMessage ?? Strings.enterOtp);
             } else if (authModelUsed == RaveConstants.NO_AUTH) {
-              _onNoAuthUsed(payload, response.flwRef);
+              _onNoAuthUsed();
             }
           }
         }
@@ -75,15 +78,13 @@ class CardTransactionManager extends BaseTransactionManager {
     }
   }
 
-
-  _onPinRequested(Payload payload) {
+  _onPinRequested() {
     var state = TransactionState(
       state: State.pin,
       callback: (pin) {
         if (pin != null && pin.length == 4) {
-          _handlePinOrBillingInput(payload
-            ..pin = pin
-            ..suggestedAuth = RaveConstants.PIN);
+          payload..pin = pin.suggestedAuth = RaveConstants.PIN;
+          _handlePinOrBillingInput();
         } else {
           handleError(RaveException(data: "PIN must be exactly 4 digits"));
         }
@@ -94,54 +95,50 @@ class CardTransactionManager extends BaseTransactionManager {
     );
   }
 
-  _onAVSSecureModelSuggested(Payload payload) {
+  _onAVSSecureModelSuggested() {
     transactionBloc.setState(
       TransactionState(
           state: State.avsSecure,
           callback: (map) {
-            var p = payload
+            payload
               ..suggestedAuth = RaveConstants.NO_AUTH_INTERNATIONAL
               ..billingAddress = map["address"]
               ..billingCity = map["city"]
               ..billingZip = map["zip"]
-              ..billingCountry = map["counntry"]
-              ..billingState = map["state"];
-            _handlePinOrBillingInput(p);
+              ..billingCountry = map["counntry"].billingState = map["state"];
+            _handlePinOrBillingInput();
           }),
     );
   }
 
-  _onNoAuthInternationalSuggested(Payload payload) =>
-      _onAVSSecureModelSuggested(payload);
+  _onNoAuthInternationalSuggested() => _onAVSSecureModelSuggested();
 
-  _onVBVAuthModelUsed(Payload payload, String authUrl, String flwRef) =>
-      _onAVSVBVSecureCodeModelUsed(payload, authUrl, flwRef);
+  _onVBVAuthModelUsed(String authUrl) => _onAVSVBVSecureCodeModelUsed(authUrl);
 
-  _onOtpRequested(Payload payload, String flwRef, String message) {
+  _onOtpRequested(String message) {
     transactionBloc.setState(TransactionState(
         state: State.otp,
         data: message,
         callback: (otp) {
-          _validateCharge(payload, flwRef, otp);
+          _validateCharge(otp);
         }));
   }
 
-  _onNoAuthUsed(Payload payload, String flwRef) =>
-      reQueryTransaction(payload, flwRef);
+  _onNoAuthUsed() => reQueryTransaction();
 
-  _onAVSVBVSecureCodeModelUsed(
-      Payload payload, String authUrl, String flwRef) async {
+  _onAVSVBVSecureCodeModelUsed(String authUrl) async {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => WebViewWidget(
           authUrl: authUrl,
+          callbackUrl: payload.redirectUrl,
         ),
       ),
     );
-    reQueryTransaction(payload, flwRef);
+    reQueryTransaction();
   }
 
-  _handlePinOrBillingInput(Payload payload) async {
+  _handlePinOrBillingInput() async {
     setConnectionState(ConnectionState.waiting);
 
     try {
@@ -151,20 +148,20 @@ class CardTransactionManager extends BaseTransactionManager {
 
       print("Charge response (PIN) = $response");
 
+      flwRef = response.flwRef;
+
       var responseCode = response.chargeResponseCode;
 
       if (response.hasData && responseCode != null) {
         if (responseCode == "00") {
-          reQueryTransaction(payload, response.flwRef);
+          reQueryTransaction();
         } else if (responseCode == "02") {
           var authModel = response.authModelUsed?.toUpperCase();
           if (authModel == RaveConstants.PIN) {
-            _onOtpRequested(
-                payload, response.flwRef, response.chargeResponseMessage);
+            _onOtpRequested(response.chargeResponseMessage);
           } else if (authModel == RaveConstants.AVS_VBVSECURECODE ||
               authModel == RaveConstants.VBV) {
-            _onAVSVBVSecureCodeModelUsed(
-                payload, response.authUrl, response.flwRef);
+            _onAVSVBVSecureCodeModelUsed(response.authUrl);
           } else {
             handleError(RaveException(data: "Unknown Auth Model"));
           }
@@ -179,7 +176,7 @@ class CardTransactionManager extends BaseTransactionManager {
     }
   }
 
-  _validateCharge(Payload payload, String flwRef, otp) async {
+  _validateCharge(otp) async {
     setConnectionState(ConnectionState.waiting);
     var response = await service.validateCardCharge(ValidateChargeRequestBody(
         transactionReference: flwRef, otp: otp, pBFPubKey: payload.pbfPubKey));
@@ -189,12 +186,12 @@ class CardTransactionManager extends BaseTransactionManager {
 
     var status = response.status;
     if (status == null) {
-      reQueryTransaction(payload, flwRef);
+      reQueryTransaction();
       return;
     }
 
     if (status.toLowerCase() == "success") {
-      reQueryTransaction(payload, flwRef);
+      reQueryTransaction();
     } else {
       onTransactionComplete(RaveResult(
         status: RaveStatus.error,
@@ -203,4 +200,3 @@ class CardTransactionManager extends BaseTransactionManager {
     }
   }
 }
-

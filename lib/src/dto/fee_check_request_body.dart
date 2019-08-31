@@ -7,7 +7,7 @@ class FeeCheckRequestBody extends Equatable {
   final String pBFPubKey;
   final String card6;
   final String currency;
-  String pType;
+  final String pType;
 
   FeeCheckRequestBody({
     this.amount,
@@ -21,6 +21,7 @@ class FeeCheckRequestBody extends Equatable {
       : this.amount = p.amount,
         this.pBFPubKey = p.pbfPubKey,
         this.currency = p.currency,
+        this.pType = null,
         this.card6 =
             RaveUtils.isEmpty(p.cardNo) ? p.cardBIN : p.cardNo.substring(0, 6);
 

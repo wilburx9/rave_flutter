@@ -39,7 +39,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   bool live = false;
   bool preAuthCharge = false;
   bool addSubAccounts = false;
-  List<SubAccount> subAccounts = [];
+  List<SubAccount> subAccounts;
   String email;
   double amount;
   String publicKey = "PASTE PUBLIC KEY HERE";
@@ -194,6 +194,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       var subAccount = await showDialog<SubAccount>(
           context: context, builder: (context) => AddVendorWidget());
       if (subAccount != null) {
+        if (subAccounts == null) subAccounts = [];
         setState(() => subAccounts.add(subAccount));
       }
     }
@@ -283,6 +284,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       ..displayAmount = false
       ..staging = !live
       ..isPreAuth = preAuthCharge
+      ..redirectUrl = "https://example.com"
       ..displayFee = shouldDisplayFee;
 
     var response = await RavePayManager()

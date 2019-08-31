@@ -21,27 +21,29 @@ abstract class BaseTransactionManager {
   final RavePayInitializer initializer = Repository.instance.initializer;
   final transactionBloc = TransactionBloc.instance;
   final connectionBloc = ConnectionBloc.instance;
+  Payload payload;
+  String flwRef;
 
   BaseTransactionManager(
       {@required this.context, @required this.onTransactionComplete});
 
   processTransaction(Payload payload);
-  
-  charge(Payload payload);
 
-  fetchFee(Payload payload) async {
+  charge();
+
+  fetchFee() async {
     setConnectionState(ConnectionState.waiting);
     try {
       var response =
           await service.fetchFee(FeeCheckRequestBody.fromPayload(payload));
       setConnectionState(ConnectionState.done);
-      displayFeeDialog(response, payload);
+      displayFeeDialog(response);
     } on RaveException catch (e) {
       handleError(e);
     }
   }
 
-  reQueryTransaction(Payload payload, String flwRef) async {
+  reQueryTransaction() async {
     setConnectionState(ConnectionState.waiting);
     try {
       var response = await service.reQuery(payload.pbfPubKey, flwRef);
@@ -51,7 +53,7 @@ abstract class BaseTransactionManager {
     }
   }
 
-  displayFeeDialog(FeeCheckResponseModel model, Payload payload) {
+  displayFeeDialog(FeeCheckResponseModel model) {
     closeDialog() {
       Navigator.of(context).pop();
       handleError(RaveException(data: "You cancelled"));
@@ -59,7 +61,7 @@ abstract class BaseTransactionManager {
 
     charge() async {
       Navigator.of(context).pop();
-      this.charge(payload);
+      this.charge();
     }
 
     var content = Text(
@@ -95,6 +97,7 @@ abstract class BaseTransactionManager {
     showDialog(context: context, builder: (_) => child);
   }
 
+  @mustCallSuper
   handleError(RaveException e) {
     print("Error called");
     setConnectionState(ConnectionState.done);
@@ -102,6 +105,7 @@ abstract class BaseTransactionManager {
         RaveResult(status: RaveStatus.error, message: e.message));
   }
 
+  @mustCallSuper
   onComplete(ReQueryResponseModel response) {
     setConnectionState(ConnectionState.done);
     onTransactionComplete(RaveResult(
@@ -112,9 +116,7 @@ abstract class BaseTransactionManager {
         message: response.message));
   }
 
-  setConnectionState(ConnectionState state) =>
-      connectionBloc.setState(state);
+  setConnectionState(ConnectionState state) => connectionBloc.setState(state);
 }
-
 
 typedef TransactionComplete(RaveResult result);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart' hide State, ConnectionState;
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
 import 'package:rave_flutter/src/blocs/transaction_bloc.dart';
@@ -213,7 +212,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
           ),
           Flexible(
             child: Column(
-              crossAxisAlignment: prefix0.CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.cancel),
@@ -222,7 +221,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
                 ),
                 AnimatedSize(
                     child: Padding(
-                      padding: prefix0.EdgeInsets.only(right: 15),
+                      padding: EdgeInsets.only(right: 15),
                       child: _selectedIndex == null
                           ? rightWidget ?? rightText
                           : rightText,
