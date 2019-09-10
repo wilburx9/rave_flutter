@@ -222,6 +222,10 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   List<Widget> buildLocalFields([data]);
 
   String getPaymentText() {
+    if (initializer.payButtonText != null &&
+        initializer.payButtonText.isNotEmpty) {
+      return initializer.payButtonText;
+    }
     if (initializer.amount == null || initializer.amount.isNegative) {
       return Strings.pay;
     }

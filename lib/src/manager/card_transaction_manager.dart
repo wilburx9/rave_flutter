@@ -42,7 +42,6 @@ class CardTransactionManager extends BaseTransactionManager {
 
       flwRef = response.flwRef;
 
-      print("ChargerResponse = $response");
       if (response.hasData) {
         var suggestedAuth = response.suggestedAuth?.toUpperCase();
         if (suggestedAuth != null) {
@@ -83,7 +82,9 @@ class CardTransactionManager extends BaseTransactionManager {
       state: State.pin,
       callback: (pin) {
         if (pin != null && pin.length == 4) {
-          payload..pin = pin.suggestedAuth = RaveConstants.PIN;
+          payload
+            ..pin = pin
+            ..suggestedAuth = RaveConstants.PIN;
           _handlePinOrBillingInput();
         } else {
           handleError(RaveException(data: "PIN must be exactly 4 digits"));
@@ -105,7 +106,8 @@ class CardTransactionManager extends BaseTransactionManager {
               ..billingAddress = map["address"]
               ..billingCity = map["city"]
               ..billingZip = map["zip"]
-              ..billingCountry = map["counntry"].billingState = map["state"];
+              ..billingCountry = map["counntry"]
+              ..billingState = map["state"];
             _handlePinOrBillingInput();
           }),
     );
@@ -146,8 +148,6 @@ class CardTransactionManager extends BaseTransactionManager {
           await service.charge(ChargeRequestBody.fromPayload(payload));
       setConnectionState(ConnectionState.done);
 
-      print("Charge response (PIN) = $response");
-
       flwRef = response.flwRef;
 
       var responseCode = response.chargeResponseCode;
@@ -177,26 +177,30 @@ class CardTransactionManager extends BaseTransactionManager {
   }
 
   _validateCharge(otp) async {
-    setConnectionState(ConnectionState.waiting);
-    var response = await service.validateCardCharge(ValidateChargeRequestBody(
-        transactionReference: flwRef, otp: otp, pBFPubKey: payload.pbfPubKey));
-    setConnectionState(ConnectionState.done);
+    try {
+      setConnectionState(ConnectionState.waiting);
+      var response = await service.validateCardCharge(ValidateChargeRequestBody(
+          transactionReference: flwRef,
+          otp: otp,
+          pBFPubKey: payload.pbfPubKey));
+      setConnectionState(ConnectionState.done);
 
-    print("Validate charge = $response");
+      var status = response.status;
+      if (status == null) {
+        reQueryTransaction();
+        return;
+      }
 
-    var status = response.status;
-    if (status == null) {
+      if (status.toLowerCase() == "success") {
+        reQueryTransaction();
+      } else {
+        onTransactionComplete(RaveResult(
+          status: RaveStatus.error,
+          message: response.message,
+        ));
+      }
+    } catch (e) {
       reQueryTransaction();
-      return;
-    }
-
-    if (status.toLowerCase() == "success") {
-      reQueryTransaction();
-    } else {
-      onTransactionComplete(RaveResult(
-        status: RaveStatus.error,
-        message: response.message,
-      ));
     }
   }
 }

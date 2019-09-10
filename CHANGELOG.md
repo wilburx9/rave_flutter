@@ -1,3 +1,7 @@
+## 0.0.5-alpha
+* Added a custom secured callback url
+* Fixed bugs with calling dot notations instead of cascade notation.
+
 ## 0.0.4-alpha
 * Implemented callback urls for 3DS authentication
 

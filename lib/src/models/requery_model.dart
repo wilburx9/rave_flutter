@@ -21,7 +21,7 @@ class ReQueryResponseModel extends Equatable {
         status: json["status"],
         chargeResponseCode: data["chargeResponseCode"],
         dataStatus: data["status"],
-        message: data["chargeResponseMessage"],
+        message: data["vbvrespmessage"],
         json: json);
   }
 }

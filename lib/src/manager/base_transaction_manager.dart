@@ -99,7 +99,6 @@ abstract class BaseTransactionManager {
 
   @mustCallSuper
   handleError(RaveException e) {
-    print("Error called");
     setConnectionState(ConnectionState.done);
     onTransactionComplete(
         RaveResult(status: RaveStatus.error, message: e.message));

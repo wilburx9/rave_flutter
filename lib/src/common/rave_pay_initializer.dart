@@ -100,6 +100,9 @@ class RavePayInitializer {
   /// URL to redirect to when a transaction is completed. This is useful for 3DSecure payments so we can redirect your customer back to a custom page you want to show them.
   String redirectUrl;
 
+  /// The text that is displayed on the pay button. Defaults to "Pay [currency][amount]"
+  String payButtonText;
+
   RavePayInitializer({
     @required this.amount,
     @required this.publicKey,
@@ -127,6 +130,7 @@ class RavePayInitializer {
     this.paymentPlan,
     this.displayAmount = true,
     this.displayEmail = true,
-    this.redirectUrl,
+    this.redirectUrl = "https://payment-status-page.firebaseapp.com/",
+    this.payButtonText,
   }) : this.staging = staging ?? isInDebugMode;
 }

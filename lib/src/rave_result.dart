@@ -19,6 +19,11 @@ class RaveResult extends Equatable {
 
   RaveResult({@required this.status, this.rawResponse, this.message})
       : super([status, rawResponse, message]);
+
+  @override
+  String toString() {
+    return 'RaveResult{status: $status, rawResponse: $rawResponse, message: $message}';
+  }
 }
 
 enum RaveStatus { success, error, cancelled }

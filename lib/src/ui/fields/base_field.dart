@@ -60,6 +60,8 @@ class BaseTextField extends TextFormField {
                 errorStyle: TextStyle(fontSize: 12),
                 errorMaxLines: 3,
                 isDense: true,
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 15, vertical: 16),
                 focusedErrorBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: MyColors.buttercup, width: 1.5),
