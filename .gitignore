@@ -8,3 +8,8 @@ build/
 /.idea/
 pubspec.lock
 *.arb
+/example/ios/.symlinks/
+/example/android/.idea/
+/example/android/app/src/debug/
+/example/android/app/src/profile/
+/android/.idea/

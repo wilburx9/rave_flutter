@@ -1,3 +1,6 @@
+## 0.0.6-alpha
+* Added loading indicator for 3D authentication web page
+
 ## 0.0.5-alpha
 * Added a custom secured callback url
 * Fixed bugs with calling dot notations instead of cascade notation.
