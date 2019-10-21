@@ -12,8 +12,7 @@ class ReQueryResponseModel extends Equatable {
       this.chargeResponseCode,
       this.dataStatus,
       this.json,
-      this.message})
-      : super([status, chargeResponseCode, dataStatus]);
+      this.message});
 
   factory ReQueryResponseModel.fromJson(Map<String, dynamic> json) {
     var data = json["data"];
@@ -24,4 +23,7 @@ class ReQueryResponseModel extends Equatable {
         message: data["vbvrespmessage"],
         json: json);
   }
+
+  @override
+  List<Object> get props => [status, chargeResponseCode, dataStatus];
 }

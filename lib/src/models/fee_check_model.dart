@@ -15,7 +15,7 @@ class FeeCheckResponseModel extends Equatable {
     this.chargeAmount,
     this.merchantFee,
     this.raveFee,
-  }) : super([message, status, fee, chargeAmount, merchantFee, raveFee]);
+  });
 
   factory FeeCheckResponseModel.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic> data = json["data"];
@@ -27,4 +27,14 @@ class FeeCheckResponseModel extends Equatable {
         merchantFee: data["merchantfee"],
         raveFee: data["ravefee"]);
   }
+
+  @override
+  List<Object> get props => [
+        message,
+        status,
+        fee,
+        chargeAmount,
+        merchantFee,
+        raveFee,
+      ];
 }

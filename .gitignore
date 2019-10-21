@@ -13,3 +13,4 @@ pubspec.lock
 /example/android/app/src/debug/
 /example/android/app/src/profile/
 /android/.idea/
+/example/ios/.symlinks/plugins/rave_flutter/pubspec.yaml

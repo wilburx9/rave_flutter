@@ -27,4 +27,7 @@ class ChargeRequestBody extends Equatable {
         "client": client,
         "alg": alg,
       };
+
+  @override
+  List<Object> get props => [pBFPubKey, client, alg];
 }
