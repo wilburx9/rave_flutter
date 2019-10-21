@@ -6,20 +6,20 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - Flutter (from `.symlinks/flutter/ios`)
+  - Flutter (from `.symlinks/flutter/ios-release`)
   - rave_flutter (from `.symlinks/plugins/rave_flutter/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
-    :path: ".symlinks/flutter/ios"
+    :path: ".symlinks/flutter/ios-release"
   rave_flutter:
     :path: ".symlinks/plugins/rave_flutter/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   rave_flutter: 5bdc226f3eef53fa1ebdc54f11b08ad6d4d81213
   webview_flutter: 1aa7604e6cdb451a9b7ed2c37d5454c0b440246b
 

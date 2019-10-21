@@ -1,3 +1,6 @@
+## 0.0.6-alpha+2
+* Fixed build issues
+
 ## 0.0.6-alpha+1
 * Updated dependencies to latest versions
 

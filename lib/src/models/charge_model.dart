@@ -34,22 +34,7 @@ class ChargeResponseModel extends Equatable {
     @required this.chargedAmount,
     @required this.redirectUrl,
     @required this.hasData,
-  }) : super([
-          status,
-          message,
-          validateInstructions,
-          suggestedAuth,
-          chargeResponseCode,
-          authModelUsed,
-          flwRef,
-          chargeResponseMessage,
-          authUrl,
-          appFee,
-          currency,
-          chargedAmount,
-          redirectUrl,
-          hasData,
-        ]);
+  });
 
   factory ChargeResponseModel.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic> data = json["data"];
@@ -74,4 +59,21 @@ class ChargeResponseModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {};
+  @override
+  List<Object> get props => [
+        status,
+        message,
+        validateInstructions,
+        suggestedAuth,
+        chargeResponseCode,
+        authModelUsed,
+        flwRef,
+        chargeResponseMessage,
+        authUrl,
+        appFee,
+        currency,
+        chargedAmount,
+        redirectUrl,
+        hasData,
+      ];
 }

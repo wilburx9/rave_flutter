@@ -17,13 +17,15 @@ class RaveResult extends Equatable {
   /// Human readable message
   final String message;
 
-  RaveResult({@required this.status, this.rawResponse, this.message})
-      : super([status, rawResponse, message]);
+  RaveResult({@required this.status, this.rawResponse, this.message});
 
   @override
   String toString() {
     return 'RaveResult{status: $status, rawResponse: $rawResponse, message: $message}';
   }
+
+  @override
+  List<Object> get props => [status, rawResponse, message];
 }
 
 enum RaveStatus { success, error, cancelled }

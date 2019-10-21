@@ -15,7 +15,7 @@ class FeeCheckRequestBody extends Equatable {
     this.pType,
     this.card6,
     this.currency,
-  }) : super([amount, pBFPubKey, pType, card6, currency]);
+  });
 
   FeeCheckRequestBody.fromPayload(Payload p)
       : this.amount = p.amount,
@@ -37,4 +37,13 @@ class FeeCheckRequestBody extends Equatable {
     }
     return json;
   }
+
+  @override
+  List<Object> get props => [
+        amount,
+        pBFPubKey,
+        pType,
+        card6,
+        currency,
+      ];
 }
