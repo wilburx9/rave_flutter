@@ -1,3 +1,6 @@
+## 0.0.6-alpha+1
+* Updated dependencies to latest versions
+
 ## 0.0.6-alpha
 * Added loading indicator for 3D authentication web page
 
