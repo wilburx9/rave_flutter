@@ -1,3 +1,6 @@
+## 0.0.7-alpha
+* Implemented direct account debit of Nigerian banks
+
 ## 0.0.6-alpha+3
 * Added an explicit instruction not to close 3DS auth page
 
