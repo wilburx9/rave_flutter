@@ -1,3 +1,6 @@
+## 0.0.6-alpha+3
+* Added an explicit instruction not to close 3DS auth page
+
 ## 0.0.6-alpha+2
 * Fixed build issues
 
@@ -5,7 +8,7 @@
 * Updated dependencies to latest versions
 
 ## 0.0.6-alpha
-* Added loading indicator for 3D authentication web page
+* Added loading indicator for 3DS authentication web page
 
 ## 0.0.5-alpha
 * Added a custom secured callback url
