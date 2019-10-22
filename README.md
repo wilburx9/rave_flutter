@@ -2,6 +2,13 @@
 
 [![pub package](https://img.shields.io/pub/v/rave_flutter.svg)](https://pub.dartlang.org/packages/rave_flutter)
 
+<p>
+    <img src="https://raw.githubusercontent.com/wilburt/rave_flutter/master/screenshots/payment_methods.png" width="200px" height="auto" hspace="20"/>
+    <img src="https://raw.githubusercontent.com/wilburt/rave_flutter/master/screenshots/card_payment.png" width="200px" height="auto" hspace="20"/>
+    <img src="https://raw.githubusercontent.com/wilburt/rave_flutter/master/screenshots/nigerian_bank_payment.png" width="200px" height="auto" hspace="20"/>
+</p>
+
+
 A robust Flutter plugin for accepting payment on Rave with
 - [x] Card
 - [ ] Bank Account
