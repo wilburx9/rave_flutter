@@ -93,12 +93,17 @@ class Payload {
       "amount": amount,
       "email": email,
       "expiryyear": expiryYear,
-      "cvv": cvv,
-      "cardno": cardNo,
       "txRef": txRef,
-      "redirect_url": redirectUrl
+      "redirect_url": redirectUrl,
     };
 
+    putIfNotNull(map: json, key: "cvv", value: cvv);
+    putIfNotNull(map: json, key: "cardno", value: cardNo);
+    putIfNotNull(map: json, key: "accountbank", value: bank.code);
+    putIfNotNull(map: json, key: "bvn", value: bvn);
+    putIfNotNull(map: json, key: "accountnumber", value: accountNumber);
+    putIfNotNull(map: json, key: "passcode", value: passCode);
+    putIfNotNull(map: json, key: "phonenumber", value: phoneNumber);
     putIfNotNull(map: json, key: "payment_plan", value: paymentPlan);
     putIfNotNull(map: json, key: "billingzip", value: billingZip);
     putIfNotNull(map: json, key: "pin", value: pin);

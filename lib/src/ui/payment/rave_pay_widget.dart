@@ -301,17 +301,15 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
           _initializer.currency.toLowerCase() == 'usd') {
         items.add(_Item(Strings.ach, 'note', AchPaymentWidget()));
       } else {
-        items.add(
-          _Item(
-            Strings.account,
-            'bank',
-            AccountPaymentWidget(
-              manager: AccountTransactionManager(
-                  context: context,
-                  onTransactionComplete: _onTransactionComplete),
-            ),
+        items.add(_Item(
+          Strings.account,
+          'bank',
+          AccountPaymentWidget(
+            manager: AccountTransactionManager(
+                context: context,
+                onTransactionComplete: _onTransactionComplete),
           ),
-        );
+        ));
       }
     }
 

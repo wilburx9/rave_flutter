@@ -6,7 +6,6 @@ import 'package:rave_flutter/src/blocs/transaction_bloc.dart';
 import 'package:rave_flutter/src/common/rave_constants.dart';
 import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/dto/charge_request_body.dart';
-import 'package:rave_flutter/src/dto/payload.dart';
 import 'package:rave_flutter/src/dto/validate_charge_request_body.dart';
 import 'package:rave_flutter/src/exception/exception.dart';
 import 'package:rave_flutter/src/manager/base_transaction_manager.dart';
@@ -20,16 +19,6 @@ class CardTransactionManager extends BaseTransactionManager {
           context: context,
           onTransactionComplete: onTransactionComplete,
         );
-
-  @override
-  processTransaction(Payload payload) async {
-    this.payload = payload;
-    if (initializer.displayFee) {
-      fetchFee();
-    } else {
-      charge();
-    }
-  }
 
   @override
   charge() async {

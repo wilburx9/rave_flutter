@@ -27,7 +27,14 @@ abstract class BaseTransactionManager {
   BaseTransactionManager(
       {@required this.context, @required this.onTransactionComplete});
 
-  processTransaction(Payload payload);
+  processTransaction(Payload payload) {
+    this.payload = payload;
+    if (initializer.displayFee) {
+      fetchFee();
+    } else {
+      charge();
+    }
+  }
 
   charge();
 

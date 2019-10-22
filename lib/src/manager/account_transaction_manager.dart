@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:rave_flutter/src/dto/payload.dart';
+import 'package:flutter/material.dart' hide ConnectionState;
+import 'package:rave_flutter/src/blocs/connection_bloc.dart';
+import 'package:rave_flutter/src/dto/charge_request_body.dart';
+import 'package:rave_flutter/src/exception/exception.dart';
 import 'package:rave_flutter/src/manager/base_transaction_manager.dart';
 
 class AccountTransactionManager extends BaseTransactionManager {
@@ -9,14 +11,15 @@ class AccountTransactionManager extends BaseTransactionManager {
       : super(context: context, onTransactionComplete: onTransactionComplete);
 
   @override
-  charge() {
-    // TODO: implement charge
-    return null;
-  }
+  charge() async {
+    setConnectionState(ConnectionState.waiting);
+    try {
+      var response =
+          await service.charge(ChargeRequestBody.fromPayload(payload));
 
-  @override
-  processTransaction(Payload payload) {
-    // TODO: implement processTransaction
-    return null;
+      setConnectionState(ConnectionState.done);
+    } on RaveException catch (e) {
+      handleError(e);
+    }
   }
 }

@@ -59,6 +59,7 @@ class ChargeResponseModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {};
+
   @override
   List<Object> get props => [
         status,

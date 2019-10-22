@@ -61,7 +61,7 @@ class BaseTextField extends TextFormField {
                 errorMaxLines: 3,
                 isDense: true,
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 15, vertical: 16),
+                    EdgeInsets.symmetric(horizontal: 15, vertical: 14),
                 focusedErrorBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: MyColors.buttercup, width: 1.5),

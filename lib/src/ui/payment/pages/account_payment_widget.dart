@@ -184,8 +184,12 @@ class _AccountPaymentWidgetState
 
   @override
   onFormValidated() {
-    // TODO: implement onFormValidated
-    return null;
+    payload
+      ..country = Strings.ng
+      ..currency = Strings.ngn
+      ..bank = _selectedBank
+      ..phoneNumber;
+    super.onFormValidated();
   }
 
   void _selectBirthday() async {

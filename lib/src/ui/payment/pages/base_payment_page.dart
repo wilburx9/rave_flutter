@@ -127,7 +127,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       child: FlatButton(
         onPressed: _validateInputs,
         color: MyColors.buttercup,
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -245,6 +245,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     onFormValidated();
   }
 
+  @mustCallSuper
   onFormValidated() => widget.transactionManager.processTransaction(payload);
 
   void _updateAmount() => setState(
