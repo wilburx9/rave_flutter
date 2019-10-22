@@ -105,7 +105,7 @@ class _AccountPaymentWidgetState
                   : _selectedBank.showAccountNumField()
                       ? _accountFocusNode
                       : _selectedBank.showBVNField() ? _bvnFocusNode : null),
-          onSaved: (value) => payload.phoneNumber),
+          onSaved: (value) => payload.phoneNumber = value),
       _selectedBank != null && _selectedBank.showAccountNumField()
           ? AccountNumberField(
               focusNode: _accountFocusNode,
@@ -114,54 +114,55 @@ class _AccountPaymentWidgetState
                   : TextInputAction.done,
               onFieldSubmitted: (value) => swapFocus(_accountFocusNode,
                   _selectedBank.showBVNField() ? _bvnFocusNode : null),
-              onSaved: (value) => payload.accountNumber)
+              onSaved: (value) => payload.accountNumber = value)
           : SizedBox(),
       _selectedBank != null && _selectedBank.showBVNField()
           ? BVNField(
               focusNode: _bvnFocusNode,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (value) => swapFocus(_bvnFocusNode),
-              onSaved: (value) => payload.bvn)
+              onSaved: (value) => payload.bvn = value)
           : SizedBox(),
       DropdownButtonHideUnderline(
-          child: InputDecorator(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          isDense: true,
-          filled: true,
-          errorText:
-              autoValidate && _selectedBank == null ? 'Select a bank' : null,
-          fillColor: Colors.grey[50],
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Colors.grey[400].withOpacity(.7), width: .5),
-              borderRadius: BorderRadius.all(Radius.circular(1.5))),
-          focusedBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: Colors.grey[400].withOpacity(.7), width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(1.5))),
-          hintText: 'Select bank',
+        child: InputDecorator(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            isDense: true,
+            filled: true,
+            errorText:
+                autoValidate && _selectedBank == null ? 'Select a bank' : null,
+            fillColor: Colors.grey[50],
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Colors.grey[400].withOpacity(.7), width: .5),
+                borderRadius: BorderRadius.all(Radius.circular(1.5))),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Colors.grey[400].withOpacity(.7), width: 1),
+                borderRadius: BorderRadius.all(Radius.circular(1.5))),
+            hintText: 'Select bank',
+          ),
+          isEmpty: _selectedBank == null,
+          child: new DropdownButton<BankModel>(
+            value: _selectedBank,
+            isDense: true,
+            onChanged: (BankModel newValue) {
+              setState(() => _selectedBank = newValue);
+              payload.bank = _selectedBank;
+            },
+            items: data
+                .cast<BankModel>()
+                .map((BankModel value) {
+                  return new DropdownMenuItem<BankModel>(
+                    value: value,
+                    child: new Text(value.name),
+                  );
+                })
+                .cast<DropdownMenuItem<BankModel>>()
+                .toList(),
+          ),
         ),
-        isEmpty: _selectedBank == null,
-        child: new DropdownButton<BankModel>(
-          value: _selectedBank,
-          isDense: true,
-          onChanged: (BankModel newValue) {
-            setState(() => _selectedBank = newValue);
-            payload.bank = _selectedBank;
-          },
-          items: data
-              .cast<BankModel>()
-              .map((BankModel value) {
-                return new DropdownMenuItem<BankModel>(
-                  value: value,
-                  child: new Text(value.name),
-                );
-              })
-              .cast<DropdownMenuItem<BankModel>>()
-              .toList(),
-        ),
-      )),
+      ),
       _selectedBank != null && _selectedBank.showDOBField()
           ? InkWell(
               onTap: _selectBirthday,
@@ -187,8 +188,7 @@ class _AccountPaymentWidgetState
     payload
       ..country = Strings.ng
       ..currency = Strings.ngn
-      ..bank = _selectedBank
-      ..phoneNumber;
+      ..bank = _selectedBank;
     super.onFormValidated();
   }
 

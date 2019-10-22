@@ -41,6 +41,7 @@ class Payload {
   String billingState;
   String billingCountry;
   String redirectUrl;
+  String paymentType;
 
   Payload.initFrmInitializer(RavePayInitializer i)
       : this.amount = i.amount.toString(),
@@ -81,10 +82,9 @@ class Payload {
       this.txRef,
       this.cardBIN});
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(String paymentType) {
     var json = <String, dynamic>{
       "narration": narration,
-      "expirymonth": expiryMonth,
       "PBFPubKey": pbfPubKey,
       "lastname": lastName,
       "firstname": firstName,
@@ -92,14 +92,16 @@ class Payload {
       "country": country,
       "amount": amount,
       "email": email,
-      "expiryyear": expiryYear,
       "txRef": txRef,
       "redirect_url": redirectUrl,
     };
 
+    putIfNotNull(map: json, key: "payment_type", value: paymentType);
+    putIfNotNull(map: json, key: "expirymonth", value: expiryMonth);
+    putIfNotNull(map: json, key: "expiryyear", value: expiryYear);
     putIfNotNull(map: json, key: "cvv", value: cvv);
     putIfNotNull(map: json, key: "cardno", value: cardNo);
-    putIfNotNull(map: json, key: "accountbank", value: bank.code);
+    putIfNotNull(map: json, key: "accountbank", value: bank?.code);
     putIfNotNull(map: json, key: "bvn", value: bvn);
     putIfNotNull(map: json, key: "accountnumber", value: accountNumber);
     putIfNotNull(map: json, key: "passcode", value: passCode);
@@ -133,6 +135,8 @@ class Payload {
         value: subAccounts == null || subAccounts.isEmpty
             ? null
             : subAccounts.map((a) => a.toJson()).toList());
+
+    print("Json = $json");
 
     return json;
   }

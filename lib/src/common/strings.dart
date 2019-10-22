@@ -10,21 +10,21 @@ class Strings {
   static const ugandaMobileMoney = 'Uganda Mobile Money';
   static const pay = 'Pay';
   static const invalidCVV = 'Enter a valid cvv';
-  static String invalidExpiry = 'Enter a valid expiry date';
-  static var invalidCardNumber = 'Enter a valid card number';
-  static var invalidPhoneNumber = 'Enter a valid phone number';
-  static var invalidAccountNumber = 'Enter a valid account number';
-  static var invalidAmount = 'Enter a valid amount';
-  static var invalidEmail = 'Enter a valid email';
-  static var invalidBVN = 'Enter a valid BVN';
-  static var invalidVoucher = 'Enter a valid voucher code';
-  static var invalidDOB = 'Enter a valid date of birth';
-  static var demo = 'Demo';
-  static var youCancelled = 'You cancelled';
-  static var sthWentWrong = 'Something went wrong';
-  static var noResponseData = 'No response data was returned';
-  static var unknownAuthModel = 'Unknown auth model';
-  static var enterOtp = 'Enter your one  time password (OTP)';
+  static const invalidExpiry = 'Enter a valid expiry date';
+  static const invalidCardNumber = 'Enter a valid card number';
+  static const invalidPhoneNumber = 'Enter a valid phone number';
+  static const invalidAccountNumber = 'Enter a valid account number';
+  static const invalidAmount = 'Enter a valid amount';
+  static const invalidEmail = 'Enter a valid email';
+  static const invalidBVN = 'Enter a valid BVN';
+  static const invalidVoucher = 'Enter a valid voucher code';
+  static const invalidDOB = 'Enter a valid date of birth';
+  static const demo = 'Demo';
+  static const youCancelled = 'You cancelled';
+  static const sthWentWrong = 'Something went wrong';
+  static const noResponseData = 'No response data was returned';
+  static const unknownAuthModel = 'Unknown auth model';
+  static const enterOtp = 'Enter your one  time password (OTP)';
 
   static cannotBeNull(String name) => '$name cannot be null';
 

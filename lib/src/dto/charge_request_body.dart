@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/dto/payload.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
@@ -16,10 +17,11 @@ class ChargeRequestBody extends Equatable {
     this.alg,
   });
 
-  ChargeRequestBody.fromPayload(Payload p)
-      : this.pBFPubKey = p.pbfPubKey,
+  ChargeRequestBody.fromPayload({@required Payload payload, String type})
+      : this.pBFPubKey = payload.pbfPubKey,
         this.alg = "3DES-24",
-        this.client = RaveUtils.getEncryptedData(json.encode(p.toJson()),
+        this.client = RaveUtils.getEncryptedData(
+            json.encode(payload.toJson(type)),
             Repository.instance.initializer.encryptionKey);
 
   Map<String, dynamic> toJson() => {

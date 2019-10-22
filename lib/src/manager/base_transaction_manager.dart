@@ -5,14 +5,17 @@ import 'package:flutter/material.dart' hide State, ConnectionState;
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
 import 'package:rave_flutter/src/blocs/transaction_bloc.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
+import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/dto/fee_check_request_body.dart';
 import 'package:rave_flutter/src/dto/payload.dart';
+import 'package:rave_flutter/src/dto/validate_charge_request_body.dart';
 import 'package:rave_flutter/src/exception/exception.dart';
 import 'package:rave_flutter/src/models/fee_check_model.dart';
 import 'package:rave_flutter/src/models/requery_model.dart';
 import 'package:rave_flutter/src/rave_result.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/services/transaction_service.dart';
+import 'package:rave_flutter/src/ui/common/webview_widget.dart';
 
 abstract class BaseTransactionManager {
   final TransactionService service = TransactionService.instance;
@@ -57,6 +60,55 @@ abstract class BaseTransactionManager {
       onComplete(response);
     } on RaveException catch (e) {
       handleError(e: e);
+    }
+  }
+
+  onOtpRequested([String message = Strings.enterOtp]) {
+    transactionBloc.setState(TransactionState(
+        state: State.otp,
+        data: message,
+        callback: (otp) {
+          _validateCharge(otp);
+        }));
+  }
+
+  showWebAuthorization(String authUrl) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => WebViewWidget(
+          authUrl: authUrl,
+          callbackUrl: payload.redirectUrl,
+        ),
+      ),
+    );
+    reQueryTransaction();
+  }
+
+  _validateCharge(otp) async {
+    try {
+      setConnectionState(ConnectionState.waiting);
+      var response = await service.validateCardCharge(ValidateChargeRequestBody(
+          transactionReference: flwRef,
+          otp: otp,
+          pBFPubKey: payload.pbfPubKey));
+      setConnectionState(ConnectionState.done);
+
+      var status = response.status;
+      if (status == null) {
+        reQueryTransaction();
+        return;
+      }
+
+      if (status.toLowerCase() == "success") {
+        reQueryTransaction();
+      } else {
+        onTransactionComplete(RaveResult(
+          status: RaveStatus.error,
+          message: response.message,
+        ));
+      }
+    } catch (e) {
+      reQueryTransaction();
     }
   }
 

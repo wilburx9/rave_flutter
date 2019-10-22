@@ -67,6 +67,12 @@ class ValidatorUtils {
     return true;
   }
 
+  static bool isUrlValid(String url) {
+    final source =
+        r'^(https?|ftp|file|http)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]';
+    return RegExp(source).hasMatch(url);
+  }
+
   /// Checks if the card has expired.
   /// Returns true if the card has expired; false otherwise
   static bool validExpiryDate(int expiryMonth, int expiryYear) {

@@ -5,6 +5,7 @@ class ChargeResponseModel extends Equatable {
   final String status;
   final String message;
   final String validateInstructions;
+  final String validateInstruction;
   final String suggestedAuth;
   final String chargeResponseCode;
   final String authModelUsed;
@@ -36,6 +37,7 @@ class ChargeResponseModel extends Equatable {
     @required this.redirectUrl,
     @required this.hasData,
     @required this.rawResponse,
+    @required this.validateInstruction,
   });
 
   factory ChargeResponseModel.fromJson(Map<String, dynamic> json) {
@@ -48,6 +50,7 @@ class ChargeResponseModel extends Equatable {
         chargeResponseCode: data["chargeResponseCode"],
         authModelUsed: data["authModelUsed"],
         flwRef: data["flwRef"],
+        validateInstruction: data["validateInstruction"],
         validateInstructions: data.containsKey("validateInstructions")
             ? data["validateInstructions"]["instruction"]
             : null,

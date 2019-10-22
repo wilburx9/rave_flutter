@@ -1,15 +1,12 @@
 import 'package:flutter/cupertino.dart' hide State, ConnectionState;
 import 'package:flutter/material.dart' hide State, ConnectionState;
-import 'package:rave_flutter/rave_flutter.dart';
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
 import 'package:rave_flutter/src/blocs/transaction_bloc.dart';
 import 'package:rave_flutter/src/common/rave_constants.dart';
 import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/dto/charge_request_body.dart';
-import 'package:rave_flutter/src/dto/validate_charge_request_body.dart';
 import 'package:rave_flutter/src/exception/exception.dart';
 import 'package:rave_flutter/src/manager/base_transaction_manager.dart';
-import 'package:rave_flutter/src/ui/common/webview_widget.dart';
 
 class CardTransactionManager extends BaseTransactionManager {
   CardTransactionManager(
@@ -25,7 +22,7 @@ class CardTransactionManager extends BaseTransactionManager {
     setConnectionState(ConnectionState.waiting);
     try {
       var response =
-          await service.charge(ChargeRequestBody.fromPayload(payload));
+          await service.charge(ChargeRequestBody.fromPayload(payload: payload));
 
       setConnectionState(ConnectionState.done);
 
@@ -54,8 +51,7 @@ class CardTransactionManager extends BaseTransactionManager {
             } else if (authModelUsed == RaveConstants.GTB_OTP ||
                 authModelUsed == RaveConstants.ACCESS_OTP ||
                 authModelUsed.contains("OTP")) {
-              _onOtpRequested(
-                  response.chargeResponseMessage ?? Strings.enterOtp);
+              onOtpRequested(response.chargeResponseMessage);
             } else if (authModelUsed == RaveConstants.NO_AUTH) {
               _onNoAuthUsed();
             }
@@ -112,35 +108,16 @@ class CardTransactionManager extends BaseTransactionManager {
 
   _onVBVAuthModelUsed(String authUrl) => _onAVSVBVSecureCodeModelUsed(authUrl);
 
-  _onOtpRequested(String message) {
-    transactionBloc.setState(TransactionState(
-        state: State.otp,
-        data: message,
-        callback: (otp) {
-          _validateCharge(otp);
-        }));
-  }
-
   _onNoAuthUsed() => reQueryTransaction();
 
-  _onAVSVBVSecureCodeModelUsed(String authUrl) async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => WebViewWidget(
-          authUrl: authUrl,
-          callbackUrl: payload.redirectUrl,
-        ),
-      ),
-    );
-    reQueryTransaction();
-  }
+  _onAVSVBVSecureCodeModelUsed(String authUrl) => showWebAuthorization(authUrl);
 
   _handlePinOrBillingInput() async {
     setConnectionState(ConnectionState.waiting);
 
     try {
       var response =
-          await service.charge(ChargeRequestBody.fromPayload(payload));
+          await service.charge(ChargeRequestBody.fromPayload(payload: payload));
       setConnectionState(ConnectionState.done);
 
       flwRef = response.flwRef;
@@ -153,7 +130,7 @@ class CardTransactionManager extends BaseTransactionManager {
         } else if (responseCode == "02") {
           var authModel = response.authModelUsed?.toUpperCase();
           if (authModel == RaveConstants.PIN) {
-            _onOtpRequested(response.chargeResponseMessage);
+            onOtpRequested(response.chargeResponseMessage);
           } else if (authModel == RaveConstants.AVS_VBVSECURECODE ||
               authModel == RaveConstants.VBV) {
             _onAVSVBVSecureCodeModelUsed(response.authUrl);
@@ -177,34 +154,6 @@ class CardTransactionManager extends BaseTransactionManager {
       }
     } on RaveException catch (e) {
       handleError(e: e);
-    }
-  }
-
-  _validateCharge(otp) async {
-    try {
-      setConnectionState(ConnectionState.waiting);
-      var response = await service.validateCardCharge(ValidateChargeRequestBody(
-          transactionReference: flwRef,
-          otp: otp,
-          pBFPubKey: payload.pbfPubKey));
-      setConnectionState(ConnectionState.done);
-
-      var status = response.status;
-      if (status == null) {
-        reQueryTransaction();
-        return;
-      }
-
-      if (status.toLowerCase() == "success") {
-        reQueryTransaction();
-      } else {
-        onTransactionComplete(RaveResult(
-          status: RaveStatus.error,
-          message: response.message,
-        ));
-      }
-    } catch (e) {
-      reQueryTransaction();
     }
   }
 }
