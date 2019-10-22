@@ -19,7 +19,7 @@ class AccountTransactionManager extends BaseTransactionManager {
 
       setConnectionState(ConnectionState.done);
     } on RaveException catch (e) {
-      handleError(e);
+      handleError(e: e);
     }
   }
 }

@@ -17,6 +17,7 @@ class ChargeResponseModel extends Equatable {
   final String chargedAmount;
   final String redirectUrl;
   final bool hasData;
+  final Map rawResponse;
 
   ChargeResponseModel({
     @required this.status,
@@ -34,6 +35,7 @@ class ChargeResponseModel extends Equatable {
     @required this.chargedAmount,
     @required this.redirectUrl,
     @required this.hasData,
+    @required this.rawResponse,
   });
 
   factory ChargeResponseModel.fromJson(Map<String, dynamic> json) {
@@ -55,7 +57,8 @@ class ChargeResponseModel extends Equatable {
         appFee: data["appFee"],
         currency: data["currency"],
         chargedAmount: data["charged_amount"].toString(),
-        redirectUrl: data["redirectUrl"]);
+        redirectUrl: data["redirectUrl"],
+        rawResponse: json);
   }
 
   Map<String, dynamic> toJson() => {};

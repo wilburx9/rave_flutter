@@ -93,6 +93,7 @@ class _GhMobileMoneyPaymentWidgetState
   @override
   onFormValidated() {
     // TODO: implement onFormValidated
+    super.onFormValidated();
     return null;
   }
 

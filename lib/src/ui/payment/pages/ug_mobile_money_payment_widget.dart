@@ -33,6 +33,7 @@ class _UgMobileMoneyPaymentWidgetState
   @override
   onFormValidated() {
     // TODO: implement onFormValidated
+    super.onFormValidated();
     return null;
   }
 

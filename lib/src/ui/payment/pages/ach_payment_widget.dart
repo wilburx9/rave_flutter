@@ -39,7 +39,7 @@ class _AchPaymentWidgetState extends BasePaymentPageState<AchPaymentWidget> {
   @override
   onFormValidated() {
     // TODO: implement onFormValidated
-    return null;
+    super.onFormValidated();
   }
 
   @override

@@ -32,6 +32,7 @@ class _MpesaPaymentWidgetState
   @override
   onFormValidated() {
     // TODO: implement onFormValidated
+    super.onFormValidated();
     return null;
   }
 

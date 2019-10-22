@@ -46,7 +46,7 @@ abstract class BaseTransactionManager {
       setConnectionState(ConnectionState.done);
       displayFeeDialog(response);
     } on RaveException catch (e) {
-      handleError(e);
+      handleError(e: e);
     }
   }
 
@@ -56,14 +56,14 @@ abstract class BaseTransactionManager {
       var response = await service.reQuery(payload.pbfPubKey, flwRef);
       onComplete(response);
     } on RaveException catch (e) {
-      handleError(e);
+      handleError(e: e);
     }
   }
 
   displayFeeDialog(FeeCheckResponseModel model) {
     closeDialog() {
       Navigator.of(context).pop();
-      handleError(RaveException(data: "You cancelled"));
+      handleError(e: RaveException(data: "You cancelled"));
     }
 
     charge() async {
@@ -105,10 +105,12 @@ abstract class BaseTransactionManager {
   }
 
   @mustCallSuper
-  handleError(RaveException e) {
+  handleError({RaveException e, Map rawResponse}) {
     setConnectionState(ConnectionState.done);
-    onTransactionComplete(
-        RaveResult(status: RaveStatus.error, message: e.message));
+    onTransactionComplete(RaveResult(
+        status: RaveStatus.error,
+        message: e.message,
+        rawResponse: rawResponse));
   }
 
   @mustCallSuper

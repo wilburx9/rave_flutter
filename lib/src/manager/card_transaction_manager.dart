@@ -41,7 +41,10 @@ class CardTransactionManager extends BaseTransactionManager {
           } else if (suggestedAuth == RaveConstants.NO_AUTH_INTERNATIONAL) {
             _onNoAuthInternationalSuggested();
           } else {
-            handleError(RaveException(data: Strings.unknownAuthModel));
+            handleError(
+              e: RaveException(data: Strings.unknownAuthModel),
+              rawResponse: response.rawResponse,
+            );
           }
         } else {
           String authModelUsed = response.authModelUsed?.toUpperCase();
@@ -59,10 +62,13 @@ class CardTransactionManager extends BaseTransactionManager {
           }
         }
       } else {
-        handleError(RaveException(data: Strings.noResponseData));
+        handleError(
+          e: RaveException(data: Strings.noResponseData),
+          rawResponse: response.rawResponse,
+        );
       }
     } on RaveException catch (e) {
-      handleError(e);
+      handleError(e: e);
     }
   }
 
@@ -76,7 +82,7 @@ class CardTransactionManager extends BaseTransactionManager {
             ..suggestedAuth = RaveConstants.PIN;
           _handlePinOrBillingInput();
         } else {
-          handleError(RaveException(data: "PIN must be exactly 4 digits"));
+          handleError(e: RaveException(data: "PIN must be exactly 4 digits"));
         }
       },
     );
@@ -152,16 +158,25 @@ class CardTransactionManager extends BaseTransactionManager {
               authModel == RaveConstants.VBV) {
             _onAVSVBVSecureCodeModelUsed(response.authUrl);
           } else {
-            handleError(RaveException(data: "Unknown Auth Model"));
+            handleError(
+              e: RaveException(data: "Unknown Auth Model"),
+              rawResponse: response.rawResponse,
+            );
           }
         } else {
-          handleError(RaveException(data: "Unknown charge response code"));
+          handleError(
+            e: RaveException(data: "Unknown charge response code"),
+            rawResponse: response.rawResponse,
+          );
         }
       } else {
-        handleError(RaveException(data: "Invalid charge response code"));
+        handleError(
+          e: RaveException(data: "Invalid charge response code"),
+          rawResponse: response.rawResponse,
+        );
       }
     } on RaveException catch (e) {
-      handleError(e);
+      handleError(e: e);
     }
   }
 
