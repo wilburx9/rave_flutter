@@ -4,9 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rave_flutter/rave_flutter.dart';
-import 'package:rave_flutter_example/button_widget.dart';
-import 'package:rave_flutter_example/switch_widget.dart';
-import 'package:rave_flutter_example/vendor_widget.dart';
+
+import 'button_widget.dart';
+import 'switch_widget.dart';
+import 'vendor_widget.dart';
 
 void main() => runApp(MyApp());
 

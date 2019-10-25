@@ -41,11 +41,11 @@ class ChargeResponseModel extends Equatable {
   });
 
   factory ChargeResponseModel.fromJson(Map<String, dynamic> json) {
-    Map<String, dynamic> data = json["data"];
+    Map<String, dynamic> data = json["data"] ?? {};
     return ChargeResponseModel(
         status: json["status"],
         message: json["message"],
-        hasData: data != null,
+        hasData: data.isNotEmpty,
         suggestedAuth: data["suggested_auth"],
         chargeResponseCode: data["chargeResponseCode"],
         authModelUsed: data["authModelUsed"],

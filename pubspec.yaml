@@ -1,6 +1,6 @@
 name: rave_flutter
 description: A new Flutter plugin for making payment with Flutterwave's rave.
-version: 0.0.7-alpha
+version: 0.0.8-alpha
 author: Wilberforce Uwadiegwu <faradaywilly@gmail.com>
 homepage: https://github.com/wilburt/rave_flutter
 

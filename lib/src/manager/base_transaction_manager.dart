@@ -75,11 +75,11 @@ abstract class BaseTransactionManager {
   showWebAuthorization(String authUrl) async {
     await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => WebViewWidget(
-          authUrl: authUrl,
-          callbackUrl: payload.redirectUrl,
-        ),
-      ),
+          builder: (_) => WebViewWidget(
+                authUrl: authUrl,
+                callbackUrl: payload.redirectUrl,
+              ),
+          fullscreenDialog: true),
     );
     reQueryTransaction();
   }

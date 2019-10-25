@@ -3,7 +3,6 @@ import 'package:flutter/material.dart' hide State, ConnectionState;
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
 import 'package:rave_flutter/src/blocs/transaction_bloc.dart';
 import 'package:rave_flutter/src/common/rave_constants.dart';
-import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/dto/charge_request_body.dart';
 import 'package:rave_flutter/src/exception/exception.dart';
 import 'package:rave_flutter/src/manager/base_transaction_manager.dart';
@@ -28,41 +27,57 @@ class CardTransactionManager extends BaseTransactionManager {
 
       flwRef = response.flwRef;
 
-      if (response.hasData) {
-        var suggestedAuth = response.suggestedAuth?.toUpperCase();
-        if (suggestedAuth != null) {
-          if (suggestedAuth == RaveConstants.PIN) {
-            _onPinRequested();
-          } else if (suggestedAuth == RaveConstants.AVS_VBVSECURECODE) {
-            _onAVSSecureModelSuggested();
-          } else if (suggestedAuth == RaveConstants.NO_AUTH_INTERNATIONAL) {
-            _onNoAuthInternationalSuggested();
-          } else {
-            handleError(
-              e: RaveException(data: Strings.unknownAuthModel),
-              rawResponse: response.rawResponse,
-            );
+      var suggestedAuth = response.suggestedAuth?.toUpperCase();
+      var authModelUsed = response.authModelUsed?.toUpperCase();
+      var message = response.message.toUpperCase();
+      var chargeResponseCode = response.chargeResponseCode;
+
+      if (message == RaveConstants.AUTH_SUGGESTION) {
+        if (suggestedAuth == RaveConstants.PIN) {
+          _onPinRequested();
+          return;
+        }
+
+        if (suggestedAuth == RaveConstants.AVS_VBVSECURECODE ||
+            suggestedAuth == RaveConstants.NO_AUTH_INTERNATIONAL) {
+          _onBillingRequest();
+          return;
+        }
+      }
+
+      if (message == RaveConstants.V_COMP) {
+        if (chargeResponseCode == "02") {
+          print("Suggested Auth = $suggestedAuth");
+          if (authModelUsed == RaveConstants.ACCESS_OTP) {
+            onOtpRequested(response.chargeResponseMessage);
+            return;
           }
-        } else {
-          String authModelUsed = response.authModelUsed?.toUpperCase();
-          if (authModelUsed != null) {
-            if (authModelUsed == RaveConstants.VBV) {
-              _onVBVAuthModelUsed(response.authUrl);
-            } else if (authModelUsed == RaveConstants.GTB_OTP ||
-                authModelUsed == RaveConstants.ACCESS_OTP ||
-                authModelUsed.contains("OTP")) {
-              onOtpRequested(response.chargeResponseMessage);
-            } else if (authModelUsed == RaveConstants.NO_AUTH) {
-              _onNoAuthUsed();
-            }
+
+          if (authModelUsed == RaveConstants.PIN) {
+            _onPinRequested();
+            return;
+          }
+
+          if (authModelUsed == RaveConstants.VBV) {
+            showWebAuthorization(response.authUrl);
+            return;
           }
         }
-      } else {
-        handleError(
-          e: RaveException(data: Strings.noResponseData),
-          rawResponse: response.rawResponse,
-        );
+
+        if (chargeResponseCode == "00") {
+          _onNoAuthUsed();
+          return;
+        }
       }
+
+      if (authModelUsed == RaveConstants.GTB_OTP ||
+          authModelUsed == RaveConstants.ACCESS_OTP ||
+          authModelUsed.contains("OTP")) {
+        onOtpRequested(response.chargeResponseMessage);
+        return;
+      }
+
+      _onNoAuthUsed();
     } on RaveException catch (e) {
       handleError(e: e);
     }
@@ -87,7 +102,7 @@ class CardTransactionManager extends BaseTransactionManager {
     );
   }
 
-  _onAVSSecureModelSuggested() {
+  _onBillingRequest() {
     transactionBloc.setState(
       TransactionState(
           state: State.avsSecure,
@@ -103,10 +118,6 @@ class CardTransactionManager extends BaseTransactionManager {
           }),
     );
   }
-
-  _onNoAuthInternationalSuggested() => _onAVSSecureModelSuggested();
-
-  _onVBVAuthModelUsed(String authUrl) => _onAVSVBVSecureCodeModelUsed(authUrl);
 
   _onNoAuthUsed() => reQueryTransaction();
 
@@ -135,22 +146,13 @@ class CardTransactionManager extends BaseTransactionManager {
               authModel == RaveConstants.VBV) {
             _onAVSVBVSecureCodeModelUsed(response.authUrl);
           } else {
-            handleError(
-              e: RaveException(data: "Unknown Auth Model"),
-              rawResponse: response.rawResponse,
-            );
+            reQueryTransaction();
           }
         } else {
-          handleError(
-            e: RaveException(data: "Unknown charge response code"),
-            rawResponse: response.rawResponse,
-          );
+          reQueryTransaction();
         }
       } else {
-        handleError(
-          e: RaveException(data: "Invalid charge response code"),
-          rawResponse: response.rawResponse,
-        );
+        reQueryTransaction();
       }
     } on RaveException catch (e) {
       handleError(e: e);

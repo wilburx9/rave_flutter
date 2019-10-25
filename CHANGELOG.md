@@ -1,3 +1,6 @@
+## 0.0.8-alpha
+* Implemented a more robust card payment handling
+
 ## 0.0.7-alpha
 * Implemented direct account debit of Nigerian banks
 
