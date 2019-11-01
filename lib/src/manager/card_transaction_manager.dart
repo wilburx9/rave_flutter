@@ -47,7 +47,6 @@ class CardTransactionManager extends BaseTransactionManager {
 
       if (message == RaveConstants.V_COMP) {
         if (chargeResponseCode == "02") {
-          print("Suggested Auth = $suggestedAuth");
           if (authModelUsed == RaveConstants.ACCESS_OTP) {
             onOtpRequested(response.chargeResponseMessage);
             return;

@@ -36,7 +36,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
   @override
   void initState() {
-    payload = Payload.initFrmInitializer(initializer);
+    payload = Payload.fromInitializer(initializer);
     if (!ValidatorUtils.isAmountValid(initializer.amount.toString())) {
       _cameWithValidAmount = false;
       _amountController = TextEditingController();

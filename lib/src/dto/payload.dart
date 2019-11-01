@@ -43,7 +43,7 @@ class Payload {
   String redirectUrl;
   String paymentType;
 
-  Payload.initFrmInitializer(RavePayInitializer i)
+  Payload.fromInitializer(RavePayInitializer i)
       : this.amount = i.amount.toString(),
         this.currency = i.currency,
         this.country = i.country,
@@ -55,7 +55,8 @@ class Payload {
         this.subAccounts = i.subAccounts,
         this.redirectUrl = i.redirectUrl,
         this.isPreAuth = i.isPreAuth,
-        this.pbfPubKey = i.publicKey;
+        this.pbfPubKey = i.publicKey,
+        this.paymentPlan = i.paymentPlan;
 
   Payload(
       {@required this.expiryMonth,
@@ -135,9 +136,6 @@ class Payload {
         value: subAccounts == null || subAccounts.isEmpty
             ? null
             : subAccounts.map((a) => a.toJson()).toList());
-
-    print("Json = $json");
-
     return json;
   }
 }
