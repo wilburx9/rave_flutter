@@ -1,3 +1,7 @@
+## 0.0.8-alpha+1
+* Fixed issue with initializing payload with payment plan
+* Added error messages for payment methods that's under development
+
 ## 0.0.8-alpha
 * Implemented a more robust card payment handling
 
