@@ -73,7 +73,10 @@ class _OtpWidgetState extends State<OtpWidget> {
                       color: Colors.white,
                       fontSize: 15),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+                padding: EdgeInsets.symmetric(
+                  vertical: 13,
+                  horizontal: 20,
+                ),
                 onPressed: _validateInputs,
               ),
             )

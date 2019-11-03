@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:rave_flutter/src/manager/ach_transaction_manager.dart';
 import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class AchPaymentWidget extends BasePaymentPage {
+  AchPaymentWidget({@required AchTransactionManager manager})
+      : super(transactionManager: manager);
+
   @override
   _AchPaymentWidgetState createState() => _AchPaymentWidgetState();
 }
@@ -47,4 +51,7 @@ class _AchPaymentWidgetState extends BasePaymentPageState<AchPaymentWidget> {
 
   @override
   bool showEmailField() => false;
+
+  @override
+  bool get supported => false;
 }

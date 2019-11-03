@@ -7,7 +7,11 @@ import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/manager/account_transaction_manager.dart';
+import 'package:rave_flutter/src/manager/ach_transaction_manager.dart';
 import 'package:rave_flutter/src/manager/card_transaction_manager.dart';
+import 'package:rave_flutter/src/manager/gh_mm_transaction_manager.dart';
+import 'package:rave_flutter/src/manager/mpesa_transaction_manager.dart';
+import 'package:rave_flutter/src/manager/ug_mm_transaction_manager.dart';
 import 'package:rave_flutter/src/rave_result.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/ui/base_widget.dart';
@@ -299,32 +303,69 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
     if (_initializer.acceptAccountPayments) {
       if (_initializer.country.toLowerCase() == 'us' &&
           _initializer.currency.toLowerCase() == 'usd') {
-        items.add(_Item(Strings.ach, 'note', AchPaymentWidget()));
-      } else {
         items.add(_Item(
-          Strings.account,
-          'bank',
-          AccountPaymentWidget(
-            manager: AccountTransactionManager(
-                context: context,
-                onTransactionComplete: _onTransactionComplete),
+            Strings.ach,
+            'note',
+            AchPaymentWidget(
+              manager: AchTransactionManager(
+                  context: context,
+                  onTransactionComplete: _onTransactionComplete),
+            )));
+      } else {
+        items.add(
+          _Item(
+            Strings.account,
+            'bank',
+            AccountPaymentWidget(
+              manager: AccountTransactionManager(
+                  context: context,
+                  onTransactionComplete: _onTransactionComplete),
+            ),
           ),
-        ));
+        );
       }
     }
 
     if (_initializer.acceptMpesaPayments) {
-      items.add(_Item(Strings.mpesa, 'note', MpesaPaymentWidget()));
+      items.add(
+        _Item(
+          Strings.mpesa,
+          'note',
+          MpesaPaymentWidget(
+            manager: MpesaTransactionManager(
+                context: context,
+                onTransactionComplete: _onTransactionComplete),
+          ),
+        ),
+      );
     }
 
     if (_initializer.acceptGHMobileMoneyPayments) {
-      items.add(_Item(
-          Strings.ghanaMobileMoney, 'note', GhMobileMoneyPaymentWidget()));
+      items.add(
+        _Item(
+          Strings.ghanaMobileMoney,
+          'note',
+          GhMobileMoneyPaymentWidget(
+            manager: GhMMTransactionManager(
+                context: context,
+                onTransactionComplete: _onTransactionComplete),
+          ),
+        ),
+      );
     }
 
     if (_initializer.acceptUgMobileMoneyPayments) {
-      items.add(_Item(
-          Strings.ugandaMobileMoney, 'note', UgMobileMoneyPaymentWidget()));
+      items.add(
+        _Item(
+          Strings.ugandaMobileMoney,
+          'note',
+          UgMobileMoneyPaymentWidget(
+            manager: UgMMTransactionManager(
+                context: context,
+                onTransactionComplete: _onTransactionComplete),
+          ),
+        ),
+      );
     }
     return items;
   }

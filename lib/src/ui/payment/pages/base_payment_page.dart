@@ -24,6 +24,8 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   TextEditingController _amountController;
   TextEditingController _emailController;
   AnimationController _animationController;
+  AnimationController _infoAnimationController;
+  Animation _infoAnimation;
   var _emailFocusNode = FocusNode();
   var _amountFocusNode = FocusNode();
   Animation _animation;
@@ -33,6 +35,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
   bool _cameWithValidAmount = true;
   bool _cameWithValidEmail = true;
+  int _infoAnimationRepetition = 0;
 
   @override
   void initState() {
@@ -54,6 +57,14 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
         parent: Tween<double>(begin: 0, end: 1).animate(_animationController),
         curve: Curves.fastOutSlowIn);
     _animationController.forward();
+
+    if (!supported) {
+      _infoAnimationController = AnimationController(
+          vsync: this, duration: Duration(milliseconds: 400));
+      _infoAnimation =
+          Tween<double>(begin: 1.0, end: 1.2).animate(_infoAnimationController);
+      _infoAnimationController.addStatusListener(_onInfoAnimationChange);
+    }
     super.initState();
   }
 
@@ -64,6 +75,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     _animationController.dispose();
     _emailFocusNode.dispose();
     _amountFocusNode.dispose();
+    _infoAnimationController?.dispose();
     super.dispose();
   }
 
@@ -127,7 +139,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       child: FlatButton(
         onPressed: _validateInputs,
         color: MyColors.buttercup,
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -150,6 +162,22 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
     Widget topWidget = buildTopWidget();
 
+    Widget info = supported
+        ? SizedBox()
+        : Padding(
+            padding: EdgeInsets.only(top: 15),
+            child: ScaleTransition(
+              scale: _infoAnimation,
+              child: Text(
+                "This payment mode is currently under development",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.redAccent,
+                ),
+              ),
+            ),
+          );
+
     return Form(
       key: formKey,
       autovalidate: _autoValidate,
@@ -157,6 +185,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
         children: amountAndEmailFields
           ..insert(0, topWidget)
           ..addAll(buildLocalFields(data))
+          ..add(info)
           ..add(payButton),
       ),
     );
@@ -230,7 +259,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       return Strings.pay;
     }
 
-    return '${Strings.pay} ${initializer.currency.toUpperCase()}${RaveUtils.formatAmount(initializer.amount)}';
+    return '${Strings.pay} ${initializer.currency.toUpperCase()} ${RaveUtils.formatAmount(initializer.amount)}';
   }
 
   _validateInputs() {
@@ -246,7 +275,13 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   }
 
   @mustCallSuper
-  onFormValidated() => widget.transactionManager.processTransaction(payload);
+  onFormValidated() {
+    if (!supported) {
+      _blinkInfoWidget();
+      return;
+    }
+    widget.transactionManager.processTransaction(payload);
+  }
 
   void _updateAmount() => setState(
       () => initializer.amount = double.tryParse(_amountController.text));
@@ -267,5 +302,25 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
   bool get autoValidate => _autoValidate;
 
+  bool get supported => true;
+
   setDataState(ConnectionState state) => _connectionBloc.setState(state);
+
+  _blinkInfoWidget() {
+    if (_infoAnimationController.isAnimating) return;
+    _infoAnimationController.forward();
+  }
+
+  _onInfoAnimationChange(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      _infoAnimationController.reverse();
+    } else if (status == AnimationStatus.dismissed) {
+      if (_infoAnimationRepetition >= 1) {
+        _infoAnimationRepetition = 0;
+      } else {
+        _infoAnimationController.forward();
+        _infoAnimationRepetition++;
+      }
+    }
+  }
 }

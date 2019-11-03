@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:rave_flutter/src/manager/mpesa_transaction_manager.dart';
 import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class MpesaPaymentWidget extends BasePaymentPage {
+  MpesaPaymentWidget({@required MpesaTransactionManager manager})
+      : super(transactionManager: manager);
+
   @override
   _MpesaPaymentWidgetState createState() => _MpesaPaymentWidgetState();
 }
@@ -41,4 +45,7 @@ class _MpesaPaymentWidgetState
 
   @override
   bool showEmailField() => false;
+
+  @override
+  bool get supported => false;
 }

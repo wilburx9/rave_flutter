@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rave_flutter/src/common/strings.dart';
+import 'package:rave_flutter/src/manager/gh_mm_transaction_manager.dart';
 import 'package:rave_flutter/src/ui/fields/base_field.dart';
 import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class GhMobileMoneyPaymentWidget extends BasePaymentPage {
+  GhMobileMoneyPaymentWidget({@required GhMMTransactionManager manager})
+      : super(transactionManager: manager);
+
   @override
   _GhMobileMoneyPaymentWidgetState createState() =>
       _GhMobileMoneyPaymentWidgetState();
@@ -28,41 +32,42 @@ class _GhMobileMoneyPaymentWidgetState
   List<Widget> buildLocalFields([data]) {
     return [
       DropdownButtonHideUnderline(
-          child: InputDecorator(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          isDense: true,
-          filled: true,
-          errorText: autoValidate && _selectedNetwork == null
-              ? 'Select a network'
-              : null,
-          fillColor: Colors.grey[50],
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Colors.grey[400].withOpacity(.7), width: .5),
-              borderRadius: BorderRadius.all(Radius.circular(1.5))),
-          focusedBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: Colors.grey[400].withOpacity(.7), width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(1.5))),
-          hintText: 'Select network',
+        child: InputDecorator(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            isDense: true,
+            filled: true,
+            errorText: autoValidate && _selectedNetwork == null
+                ? 'Select a network'
+                : null,
+            fillColor: Colors.grey[50],
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Colors.grey[400].withOpacity(.7), width: .5),
+                borderRadius: BorderRadius.all(Radius.circular(1.5))),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Colors.grey[400].withOpacity(.7), width: 1),
+                borderRadius: BorderRadius.all(Radius.circular(1.5))),
+            hintText: 'Select network',
+          ),
+          isEmpty: _selectedNetwork == null,
+          child: new DropdownButton<String>(
+            value: _selectedNetwork,
+            isDense: true,
+            onChanged: (String newValue) {
+              setState(() => _selectedNetwork = newValue);
+              payload.network = _selectedNetwork;
+            },
+            items: _networks.map((String value) {
+              return new DropdownMenuItem<String>(
+                value: value,
+                child: new Text(value),
+              );
+            }).toList(),
+          ),
         ),
-        isEmpty: _selectedNetwork == null,
-        child: new DropdownButton<String>(
-          value: _selectedNetwork,
-          isDense: true,
-          onChanged: (String newValue) {
-            setState(() => _selectedNetwork = newValue);
-            payload.network = _selectedNetwork;
-          },
-          items: _networks.map((String value) {
-            return new DropdownMenuItem<String>(
-              value: value,
-              child: new Text(value),
-            );
-          }).toList(),
-        ),
-      )),
+      ),
       PhoneNumberField(
           focusNode: _phoneFocusNode,
           textInputAction: isVodaFoneSelected()
@@ -102,6 +107,9 @@ class _GhMobileMoneyPaymentWidgetState
 
   @override
   bool showEmailField() => false;
+
+  @override
+  bool get supported => false;
 
   @override
   Widget buildTopWidget() {
