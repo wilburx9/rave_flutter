@@ -4,7 +4,7 @@ class Strings {
   static const card = 'Card';
   static const account = 'Account';
   static const amount = 'Amount';
-  static const ach = 'Ach';
+  static const ach = 'ACH';
   static const mpesa = 'Mpesa';
   static const ghanaMobileMoney = 'Ghana Mobile Money';
   static const ugandaMobileMoney = 'Uganda Mobile Money';
@@ -25,6 +25,7 @@ class Strings {
   static const noResponseData = 'No response data was returned';
   static const unknownAuthModel = 'Unknown auth model';
   static const enterOtp = 'Enter your one  time password (OTP)';
+  static const noAuthUrl = 'No authUrl was returned';
 
   static cannotBeNull(String name) => '$name cannot be null';
 

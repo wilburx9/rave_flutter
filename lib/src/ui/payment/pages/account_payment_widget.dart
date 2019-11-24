@@ -185,10 +185,7 @@ class _AccountPaymentWidgetState
 
   @override
   onFormValidated() {
-    payload
-      ..country = Strings.ng
-      ..currency = Strings.ngn
-      ..bank = _selectedBank;
+    payload..bank = _selectedBank;
     super.onFormValidated();
   }
 

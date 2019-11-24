@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide ConnectionState;
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
+import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/common/validator_utills.dart';
 import 'package:rave_flutter/src/dto/charge_request_body.dart';
 import 'package:rave_flutter/src/exception/exception.dart';
@@ -36,6 +37,8 @@ class AccountTransactionManager extends BaseTransactionManager {
             onOtpRequested();
           }
         }
+      } else {
+        handleError(e: RaveException(data: Strings.noResponseData));
       }
     } on RaveException catch (e) {
       handleError(e: e);

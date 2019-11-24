@@ -52,7 +52,7 @@ class RavePayInitializer {
   /// https://developer.flutterwave.com/docs/recurring-billing
   String paymentPlan;
 
-  /// Whether to accept US ACH payments.
+  /// Whether to accept US and South African ACH payments.
   /// `US` and `USD` needs to be set as [country] and [currency] respectively
   bool acceptAchPayments;
 

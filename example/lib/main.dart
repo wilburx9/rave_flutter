@@ -143,6 +143,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                         TextFormField(
                           decoration: InputDecoration(hintText: 'txRef'),
                           onSaved: (value) => txRef = value,
+                          initialValue:
+                              "rave_flutter-${DateTime.now().toString()}",
                           validator: (value) =>
                               value.trim().isEmpty ? 'Field is required' : null,
                         ),
@@ -288,7 +290,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       ..displayFee = shouldDisplayFee;
 
     var response = await RavePayManager()
-        .initialize(context: context, initializer: initializer);
+        .prompt(context: context, initializer: initializer);
     print(response);
     scaffoldKey.currentState
         .showSnackBar(SnackBar(content: Text(response?.message)));

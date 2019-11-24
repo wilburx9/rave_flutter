@@ -6,6 +6,8 @@ class RaveException {
   RaveException({data}) : message = _getMessage(data);
 
   static String _getMessage(e) {
+    if (e == null) return Strings.sthWentWrong;
+
     if (e is String) {
       return e;
     }
