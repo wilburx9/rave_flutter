@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' hide State, ConnectionState;
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
 import 'package:rave_flutter/src/blocs/transaction_bloc.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
+import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/dto/fee_check_request_body.dart';
 import 'package:rave_flutter/src/dto/payload.dart';
@@ -76,8 +77,8 @@ abstract class BaseTransactionManager {
     await Navigator.of(context).push(
       MaterialPageRoute(
           builder: (_) => WebViewWidget(
-                authUrl: authUrl,
-                callbackUrl: payload.redirectUrl,
+                authUrl: RaveUtils.cleanUrl(authUrl),
+                callbackUrl: RaveUtils.cleanUrl(payload.redirectUrl),
               ),
           fullscreenDialog: true),
     );

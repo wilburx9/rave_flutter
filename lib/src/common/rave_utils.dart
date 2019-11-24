@@ -15,6 +15,11 @@ class RaveUtils {
     var blockCipher = BlockCipher(TripleDESEngine(), key);
     return blockCipher.encodeB64(str);
   }
+
+  /// Remove all line feed, carriage return and whitespace characters
+  static String cleanUrl(String url) {
+    return url.replaceAll(RegExp(r"[\n\r\s]+"), "");
+  }
 }
 
 bool get isInDebugMode {
