@@ -24,7 +24,6 @@ class ValidatorUtils {
   static bool isAmountValid(String value) {
     if (value == null || value.trim().isEmpty) return false;
     double number = double.tryParse(value.trim());
-    //check if formattedNumber is empty or card isn't a whole positive number or isn't Luhn-valid
     return number != null && !number.isNegative && number > 0;
   }
 
@@ -83,8 +82,7 @@ class ValidatorUtils {
   static bool hasMonthPassed(int year, int month) {
     var now = DateTime.now();
     // The month has passed if:
-    // 1. The year is in the past. In that case, we just assume that the month
-    // has passed
+    // 1. The year is in the past. In that case, we just assume that the month has passed
     // 2. Card's month (plus another month) is more than current month.
     return hasYearPassed(year) ||
         CardUtils.convertYearTo4Digits(year) == now.year &&
@@ -98,8 +96,7 @@ class ValidatorUtils {
   static bool hasYearPassed(int year) {
     int fourDigitsYear = CardUtils.convertYearTo4Digits(year);
     var now = DateTime.now();
-    // The year has passed if the year we are currently is more than card's
-    // year
+    // The year has passed if the current year is more than card's year
     return fourDigitsYear < now.year;
   }
 
@@ -111,7 +108,8 @@ class ValidatorUtils {
     return !hasYearPassed(year) && !hasMonthPassed(year, month);
   }
 
-  /// Validates the number against Luhn algorithm https://de.wikipedia.org/wiki/Luhn-Algorithmus#Java
+  /// Validates the number against Luhn algorithm (https://en.wikipedia.org/wiki/Luhn_algorithm)
+  ///
   /// [number]  - number to validate
   /// Returns true if the number is passes the verification.
   static bool _isValidLuhnNumber(String number) {
@@ -137,8 +135,8 @@ class ValidatorUtils {
     return sum % 10 == 0;
   }
 
-  /// Validates that requireed values [RavePayInitializer] are not null, negative or
-  /// empty
+  /// Validates that required the variables of [RavePayInitializer]
+  /// are not null, negative or  empty
   static String validateInitializer(RavePayInitializer init) {
     if (RaveUtils.isEmpty(init.publicKey))
       return Strings.cannotBeNullOrEmpty('publicKey');
@@ -168,8 +166,9 @@ class ValidatorUtils {
       return Strings.cannotBeNull('withUgMobileMoney');
     if (init.isPreAuth == null) return Strings.cannotBeNull('isPreAuth');
     if (init.displayFee == null) return Strings.cannotBeNull('displayFee');
-    if (init.displayEmail) return Strings.cannotBeNull("displayEmail");
-    if (init.displayAmount) return Strings.cannotBeNull("displayAmount");
+    if (init.displayEmail == null) return Strings.cannotBeNull("displayEmail");
+    if (init.displayAmount == null)
+      return Strings.cannotBeNull("displayAmount");
     if (!init.acceptCardPayments &&
         !init.acceptAccountPayments &&
         !init.acceptMpesaPayments &&
