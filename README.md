@@ -11,7 +11,8 @@
 
 A robust Flutter plugin for accepting payment on Rave with
 - [x] Card
-- [ ] Bank Account
+- [x] Nigerian Bank Account
+- [x] ACH Payments
 - [ ] Mpesa
 - [ ] Ghana Mobile Money
 - [ ] Uganda Mobile Money
@@ -34,7 +35,7 @@ Webview is required so enable `PlatformView` on iOS by adding:
 to Info.plist file
 
 ## Making Payment
-Instantiate `RavePayInitializer` and pass it to `RavePayManager.initialize` along
+Instantiate `RavePayInitializer` and pass it to `RavePayManager.prompt` along
 with the `BuildContext`. The result of the transaction is the `Future` 
 returned by `RavePayManager.initialize`
 
@@ -63,7 +64,7 @@ processTransaction() async {
 
     // Initialize and get the transaction result
     RaveResult response = await RavePayManager()
-        .initialize(context: context, initializer: initializer);
+        .prompt(context: context, initializer: initializer);
   }
  ```
  

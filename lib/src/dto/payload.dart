@@ -56,7 +56,8 @@ class Payload {
         this.redirectUrl = i.redirectUrl,
         this.isPreAuth = i.isPreAuth,
         this.pbfPubKey = i.publicKey,
-        this.paymentPlan = i.paymentPlan;
+        this.paymentPlan = i.paymentPlan,
+        this.isUsBankCharge = i.acceptAchPayments;
 
   Payload(
       {@required this.expiryMonth,
@@ -116,6 +117,7 @@ class Payload {
     putIfNotNull(map: json, key: "billingstate", value: billingState);
     putIfNotNull(map: json, key: "billingcountry", value: billingCountry);
     putIfNotNull(map: json, key: "billingzip", value: billingZip);
+    putIfNotNull(map: json, key: "is_us_bank_charge", value: isUsBankCharge);
 
     putIfNotNull(
         map: json, key: "charge_type", value: isPreAuth ? "preauth" : null);

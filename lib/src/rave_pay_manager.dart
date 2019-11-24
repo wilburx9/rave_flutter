@@ -15,7 +15,18 @@ class RavePayManager {
     return _manager;
   }
 
-  /// Initializes the SDK and prompts the customer to input payment details
+  /// {@macro rave_flutter.rave_pay_manager.prompt}
+  @Deprecated(
+      "'initilize' doesn't properly communicate the purpose of this function. Use the `prompt` function. Will be removed in version 1.0.0")
+  Future<RaveResult> initialize({
+    @required BuildContext context,
+    @required RavePayInitializer initializer,
+  }) async {
+    return prompt(context: context, initializer: initializer);
+  }
+
+  /// {@template rave_flutter.rave_pay_manager.prompt}
+  /// Prompts the customer to input payment details
   /// if the correct parameters are passed.
   ///
   /// [context] Your immediate build context.
@@ -24,8 +35,8 @@ class RavePayManager {
   ///
   ///
   /// Please, enable embedded_views_preview on iOS. See https://stackoverflow.com/a/55290868/6181476
-
-  Future<RaveResult> initialize({
+  ///  {@endtemplate}
+  Future<RaveResult> prompt({
     @required BuildContext context,
     @required RavePayInitializer initializer,
   }) async {

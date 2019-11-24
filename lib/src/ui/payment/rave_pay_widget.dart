@@ -312,7 +312,8 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
                   context: context,
                   onTransactionComplete: _onTransactionComplete),
             )));
-      } else {
+      } else if (_initializer.country.toLowerCase() == Strings.ng &&
+          _initializer.currency.toLowerCase() == Strings.ngn) {
         items.add(
           _Item(
             Strings.account,

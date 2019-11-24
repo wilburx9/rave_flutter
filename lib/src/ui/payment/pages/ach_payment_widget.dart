@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rave_flutter/src/manager/ach_transaction_manager.dart';
-import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class AchPaymentWidget extends BasePaymentPage {
@@ -12,23 +11,9 @@ class AchPaymentWidget extends BasePaymentPage {
 }
 
 class _AchPaymentWidgetState extends BasePaymentPageState<AchPaymentWidget> {
-  var _phoneFocusNode = FocusNode();
-
-  @override
-  void dispose() {
-    _phoneFocusNode.dispose();
-    super.dispose();
-  }
-
   @override
   List<Widget> buildLocalFields([data]) {
     return [
-      PhoneNumberField(
-          focusNode: _phoneFocusNode,
-          textInputAction: TextInputAction.done,
-          hintText: '123456789',
-          onFieldSubmitted: (value) => swapFocus(_phoneFocusNode),
-          onSaved: (value) => payload.phoneNumber),
       Padding(
         padding: EdgeInsets.symmetric(vertical: 20),
         child: Text(
@@ -41,17 +26,8 @@ class _AchPaymentWidgetState extends BasePaymentPageState<AchPaymentWidget> {
   }
 
   @override
-  onFormValidated() {
-    // TODO: implement onFormValidated
-    super.onFormValidated();
-  }
-
-  @override
-  FocusNode getNextFocusNode() => _phoneFocusNode;
-
-  @override
   bool showEmailField() => false;
 
   @override
-  bool get supported => false;
+  FocusNode getNextFocusNode() => null;
 }

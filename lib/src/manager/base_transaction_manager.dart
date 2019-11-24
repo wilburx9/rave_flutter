@@ -158,7 +158,7 @@ abstract class BaseTransactionManager {
   }
 
   @mustCallSuper
-  handleError({RaveException e, Map rawResponse}) {
+  handleError({@required RaveException e, Map rawResponse}) {
     setConnectionState(ConnectionState.done);
     onTransactionComplete(RaveResult(
         status: RaveStatus.error,
