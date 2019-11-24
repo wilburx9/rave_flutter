@@ -190,13 +190,12 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
           )
         : null;
 
-    var rightStr =
-        _initializer.companyName ?? _initializer.staging ? Strings.demo : '';
-    var rightText = Text(
-      rightStr,
-      maxLines: 1,
-      style: TextStyle(color: Colors.grey[800], fontSize: 16),
-    );
+    var rightText = _initializer.companyName ??
+        Text(
+          _initializer.staging ? Strings.demo : '',
+          maxLines: 1,
+          style: TextStyle(color: Colors.grey[800], fontSize: 16),
+        );
 
     Widget header = AnimatedPadding(
       padding: EdgeInsets.only(bottom: _selectedIndex == null ? 20 : 10),
@@ -208,8 +207,10 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
           ConstrainedBox(
             constraints: BoxConstraints.tightFor(width: 40, height: 40),
             child: _initializer.companyLogo ??
-                SvgPicture.asset('assets/images/flutterwave_logo.svg',
-                    package: 'rave_flutter'),
+                SvgPicture.asset(
+                  'assets/images/flutterwave_logo.svg',
+                  package: 'rave_flutter',
+                ),
           ),
           SizedBox(
             width: 50.0,

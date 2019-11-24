@@ -4,7 +4,7 @@ import 'package:tripledes/tripledes.dart';
 
 class RaveUtils {
   static bool isEmpty(String string) {
-    return string == null || string.isEmpty;
+    return string == null || string.trim().isEmpty;
   }
 
   static String formatAmount(num amount) {
