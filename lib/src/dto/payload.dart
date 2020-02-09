@@ -25,6 +25,8 @@ class Payload {
   bool isPreAuth;
   bool isUsBankCharge;
   bool isMobileMoneyFranco;
+  bool isMpesa;
+  bool isMpesaLipa;
   String phoneNumber;
   String accountNumber;
   BankModel bank;
@@ -61,7 +63,9 @@ class Payload {
         this.pbfPubKey = i.publicKey,
         this.paymentPlan = i.paymentPlan,
         this.isUsBankCharge = i.acceptAchPayments,
-        this.isMobileMoneyFranco = i.acceptMobileMoneyFrancophoneAfricaPayments;
+        this.isMobileMoneyFranco = i.acceptMobileMoneyFrancophoneAfricaPayments,
+        this.isMpesa = i.acceptMpesaPayments,
+        this.isMpesaLipa = i.acceptMpesaPayments;
 
   Payload(
       {@required this.expiryMonth,
@@ -86,6 +90,8 @@ class Payload {
       this.isPreAuth = false,
       this.isUsBankCharge = false,
       this.isMobileMoneyFranco = false,
+      this.isMpesa = false,
+      this.isMpesaLipa = false,
       this.txRef,
       this.orderRef,
       this.cardBIN});
@@ -125,7 +131,10 @@ class Payload {
     putIfNotNull(map: json, key: "billingcountry", value: billingCountry);
     putIfNotNull(map: json, key: "billingzip", value: billingZip);
     putIfNotNull(map: json, key: "is_us_bank_charge", value: isUsBankCharge);
-    putIfNotNull(map: json, key: "is_mobile_money_franco", value: isMobileMoneyFranco);
+    putIfNotNull(
+        map: json, key: "is_mobile_money_franco", value: isMobileMoneyFranco);
+    putIfNotNull(map: json, key: "is_mpesa", value: isMpesa);
+    putIfNotNull(map: json, key: "is_mpesa_lipa", value: isMpesaLipa);
 
     putIfNotNull(
         map: json, key: "charge_type", value: isPreAuth ? "preauth" : null);

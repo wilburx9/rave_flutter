@@ -64,13 +64,14 @@ class ChargeResponseModel extends Equatable {
         rawResponse: json);
   }
 
-  Map<String, dynamic> toJson() => {};
+  Map<String, dynamic> toJson() => rawResponse;
 
   @override
   List<Object> get props => [
         status,
         message,
         validateInstructions,
+        validateInstruction,
         suggestedAuth,
         chargeResponseCode,
         authModelUsed,
