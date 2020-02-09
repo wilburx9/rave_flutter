@@ -12,11 +12,11 @@ class SubAccount {
 
   Map<String, String> toJson() {
     var map = {_idKey: id, _ratioKey: transactionSplitRatio};
-    if (!RaveUtils.isEmpty(transactionChargeType)) {
+    if (!isEmpty(transactionChargeType)) {
       map[_chargeTypeKey] = transactionChargeType;
     }
 
-    if (!RaveUtils.isEmpty(transactionCharge)) {
+    if (!isEmpty(transactionCharge)) {
       map[_chargeKey] = transactionCharge;
     }
     return map;

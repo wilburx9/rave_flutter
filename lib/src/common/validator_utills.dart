@@ -138,16 +138,16 @@ class ValidatorUtils {
   /// Validates that required the variables of [RavePayInitializer]
   /// are not null, negative or  empty
   static String validateInitializer(RavePayInitializer init) {
-    if (RaveUtils.isEmpty(init.publicKey))
+    if (isEmpty(init.publicKey))
       return Strings.cannotBeNullOrEmpty('publicKey');
-    if (RaveUtils.isEmpty(init.encryptionKey) == null)
+    if (isEmpty(init.encryptionKey) == null)
       return Strings.cannotBeNullOrEmpty('encryptionKey');
-    if (RaveUtils.isEmpty(init.txRef)) {
+    if (isEmpty(init.txRef)) {
       return Strings.cannotBeNullOrEmpty("txRef");
     }
-    if (RaveUtils.isEmpty(init.currency) == null)
+    if (isEmpty(init.currency) == null)
       return Strings.cannotBeNullOrEmpty('currency');
-    if (RaveUtils.isEmpty(init.country) == null)
+    if (isEmpty(init.country) == null)
       return Strings.cannotBeNullOrEmpty('country');
     if (init.narration == null) return Strings.cannotBeNull('narration');
     if (init.redirectUrl == null) return Strings.cannotBeNull('redirectUrl');

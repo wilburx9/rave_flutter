@@ -77,8 +77,8 @@ abstract class BaseTransactionManager {
     await Navigator.of(context).push(
       MaterialPageRoute(
           builder: (_) => WebViewWidget(
-                authUrl: RaveUtils.cleanUrl(authUrl),
-                callbackUrl: RaveUtils.cleanUrl(payload.redirectUrl),
+                authUrl: cleanUrl(authUrl),
+                callbackUrl: cleanUrl(payload.redirectUrl),
               ),
           fullscreenDialog: true),
     );
@@ -125,7 +125,7 @@ abstract class BaseTransactionManager {
     }
 
     var content = Text(
-        "You will be charged a total of ${model.chargeAmount}${initializer.currency}. Do you want to continue?");
+        "You will be charged a total of ${model.chargeAmount} ${initializer.currency}. Do you want to continue?");
 
     Widget child;
     if (Platform.isIOS) {

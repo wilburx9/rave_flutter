@@ -1,5 +1,7 @@
 # Rave Flutter
 
+[![build status](https://img.shields.io/github/workflow/status/wilburt/rave_flutter/Build%20and%20Test)](https://github.com/wilburt/rave_flutter/actions?query=Build+and+test)
+[![Coverage Status](https://coveralls.io/repos/github/wilburt/rave_flutter/badge.svg?branch=master)](https://coveralls.io/github/wilburt/rave_flutter?branch=master)
 [![pub package](https://img.shields.io/pub/v/rave_flutter.svg)](https://pub.dartlang.org/packages/rave_flutter)
 
 <p>
@@ -13,6 +15,7 @@ A robust Flutter plugin for accepting payment on Rave with
 - [x] Card
 - [x] Nigerian Bank Account
 - [x] ACH Payments
+- [x] Mobile money Francophone Africa
 - [ ] Mpesa
 - [ ] Ghana Mobile Money
 - [ ] Uganda Mobile Money

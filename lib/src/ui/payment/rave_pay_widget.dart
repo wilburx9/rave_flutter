@@ -10,6 +10,7 @@ import 'package:rave_flutter/src/manager/account_transaction_manager.dart';
 import 'package:rave_flutter/src/manager/ach_transaction_manager.dart';
 import 'package:rave_flutter/src/manager/card_transaction_manager.dart';
 import 'package:rave_flutter/src/manager/gh_mm_transaction_manager.dart';
+import 'package:rave_flutter/src/manager/mm_francoophone_transaction_manager.dart';
 import 'package:rave_flutter/src/manager/mpesa_transaction_manager.dart';
 import 'package:rave_flutter/src/manager/ug_mm_transaction_manager.dart';
 import 'package:rave_flutter/src/rave_result.dart';
@@ -24,6 +25,7 @@ import 'package:rave_flutter/src/ui/payment/pages/account_payment_widget.dart';
 import 'package:rave_flutter/src/ui/payment/pages/ach_payment_widget.dart';
 import 'package:rave_flutter/src/ui/payment/pages/card_payment_widget.dart';
 import 'package:rave_flutter/src/ui/payment/pages/gh_mobile_money_payment_widget.dart';
+import 'package:rave_flutter/src/ui/payment/pages/mm_francophone_payment_widget.dart';
 import 'package:rave_flutter/src/ui/payment/pages/mpesa_payment_widget.dart';
 import 'package:rave_flutter/src/ui/payment/pages/ug_mobile_money_payment_widget.dart';
 
@@ -177,7 +179,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
                           fontWeight: FontWeight.w600),
                       children: <TextSpan>[
                         TextSpan(
-                          text: RaveUtils.formatAmount(
+                          text: formatAmount(
                             _initializer.amount,
                           ),
                           style: TextStyle(
@@ -363,6 +365,20 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
           'note',
           UgMobileMoneyPaymentWidget(
             manager: UgMMTransactionManager(
+                context: context,
+                onTransactionComplete: _onTransactionComplete),
+          ),
+        ),
+      );
+    }
+
+    if (_initializer.acceptMobileMoneyFrancophoneAfricaPayments) {
+      items.add(
+        _Item(
+          Strings.mobileMoneyFrancophoneAfrica,
+          'note',
+          MobileMoneyFrancophonePaymentWidget(
+            manager: MMFrancophoneTransactionManager(
                 context: context,
                 onTransactionComplete: _onTransactionComplete),
           ),

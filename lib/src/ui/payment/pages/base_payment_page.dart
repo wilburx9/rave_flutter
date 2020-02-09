@@ -217,7 +217,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
                     fontWeight: FontWeight.w600),
                 children: <TextSpan>[
                   TextSpan(
-                    text: RaveUtils.formatAmount(
+                    text: formatAmount(
                       initializer.amount,
                     ),
                     style: TextStyle(
@@ -259,7 +259,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
       return Strings.pay;
     }
 
-    return '${Strings.pay} ${initializer.currency.toUpperCase()} ${RaveUtils.formatAmount(initializer.amount)}';
+    return '${Strings.pay} ${initializer.currency.toUpperCase()} ${formatAmount(initializer.amount)}';
   }
 
   _validateInputs() {
