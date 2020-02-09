@@ -23,6 +23,7 @@ class SwitchWidget extends StatelessWidget {
               activeColor: Theme.of(context).accentColor,
             ),
           )
-        : SwitchListTile(value: value, title: tileWidget, onChanged: onChanged);
+        : SwitchListTile.adaptive(
+            value: value, title: tileWidget, onChanged: onChanged);
   }
 }
