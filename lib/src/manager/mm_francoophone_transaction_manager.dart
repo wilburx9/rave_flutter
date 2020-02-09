@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart' hide State, ConnectionState;
 import 'package:flutter/material.dart' hide State, ConnectionState;
+import 'package:rave_flutter/rave_flutter.dart';
 import 'package:rave_flutter/src/blocs/connection_bloc.dart';
 import 'package:rave_flutter/src/common/strings.dart';
 import 'package:rave_flutter/src/dto/charge_request_body.dart';
@@ -34,10 +35,12 @@ class MMFrancophoneTransactionManager extends BaseTransactionManager {
         return;
       }
 
-      if (response.status != "success") {
-        handleError(e: RaveException(data: Strings.sthWentWrong));
-        return;
-      }
+      onTransactionComplete(RaveResult(
+          status: response.status.toLowerCase() == "success"
+              ? RaveStatus.success
+              : RaveStatus.error,
+          rawResponse: response.rawResponse,
+          message: response.message));
 
     } on RaveException catch (e) {
       handleError(e: e);
