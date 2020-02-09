@@ -79,7 +79,7 @@ class RavePayInitializer {
   bool acceptUgMobileMoneyPayments;
 
   /// Whether to request Mobile Money Francophone Africa payment details.
-  /// `NG` and `XOF` needs to be set as [country] and [currency] respectively
+  /// `NG` and `XOF` or `XAF` needs to be set as [country] and [currency] respectively
   bool acceptMobileMoneyFrancophoneAfricaPayments;
 
   /// Whether to route the payment to Sandbox APIs.
