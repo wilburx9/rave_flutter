@@ -37,6 +37,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   bool acceptAchPayments = false;
   bool acceptGhMMPayments = false;
   bool acceptUgMMPayments = false;
+  bool acceptMMFrancophonePayments = false;
   bool live = false;
   bool preAuthCharge = false;
   bool addSubAccounts = false;
@@ -46,6 +47,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   String publicKey = "PASTE PUBLIC KEY HERE";
   String encryptionKey = "PASTE ENCRYPTION KEY HERE";
   String txRef;
+  String orderRef;
   String narration;
   String currency;
   String country;
@@ -106,6 +108,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                       setState(() => acceptUgMMPayments = value),
                 ),
                 SwitchWidget(
+                  value: acceptMMFrancophonePayments,
+                  title: 'Accept Mobile money Francophone Africa payments',
+                  onChanged: (value) =>
+                      setState(() => acceptMMFrancophonePayments = value),
+                ),
+                SwitchWidget(
                   value: live,
                   title: 'Live',
                   onChanged: (value) => setState(() => live = value),
@@ -147,6 +155,15 @@ class _HomeWidgetState extends State<HomeWidget> {
                               "rave_flutter-${DateTime.now().toString()}",
                           validator: (value) =>
                               value.trim().isEmpty ? 'Field is required' : null,
+                        ),
+                        SizedBox(height: 20),
+                        TextFormField(
+                          decoration: InputDecoration(hintText: 'orderRef'),
+                          onSaved: (value) => orderRef = value,
+                          initialValue:
+                          "rave_flutter-${DateTime.now().toString()}",
+                          validator: (value) =>
+                          value.trim().isEmpty ? 'Field is required' : null,
                         ),
                         SizedBox(height: 20),
                         TextFormField(
@@ -277,12 +294,14 @@ class _HomeWidgetState extends State<HomeWidget> {
       ..lName = lastName
       ..narration = narration ?? ''
       ..txRef = txRef
+      ..orderRef = orderRef
       ..acceptMpesaPayments = acceptMpesaPayment
       ..acceptAccountPayments = acceptAccountPayment
       ..acceptCardPayments = acceptCardPayment
       ..acceptAchPayments = acceptAchPayments
       ..acceptGHMobileMoneyPayments = acceptGhMMPayments
       ..acceptUgMobileMoneyPayments = acceptUgMMPayments
+      ..acceptMobileMoneyFrancophoneAfricaPayments = acceptMMFrancophonePayments
       ..displayEmail = false
       ..displayAmount = false
       ..staging = !live

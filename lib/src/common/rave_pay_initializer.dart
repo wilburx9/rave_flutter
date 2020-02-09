@@ -21,6 +21,10 @@ class RavePayInitializer {
   /// Transaction reference. It cannot be null or empty
   String txRef;
 
+  /// Order reference. Unique ref for the mobile money transaction to be provided by the merchant.
+  /// Required for mobile money francophone africa payments
+  String orderRef;
+
   /// Custom description added by the merchant.
   String narration;
 
@@ -74,6 +78,10 @@ class RavePayInitializer {
   /// `UG` and `UGX` needs to be set as [country] and [currency] respectively
   bool acceptUgMobileMoneyPayments;
 
+  /// Whether to request Mobile Money Francophone Africa payment details.
+  /// `NG` and `XOF` needs to be set as [country] and [currency] respectively
+  bool acceptMobileMoneyFrancophoneAfricaPayments;
+
   /// Whether to route the payment to Sandbox APIs.
   bool staging;
 
@@ -125,6 +133,7 @@ class RavePayInitializer {
     bool staging,
     this.email,
     this.txRef,
+    this.orderRef,
     this.companyLogo,
     this.companyName,
     this.paymentPlan,
