@@ -161,9 +161,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                           decoration: InputDecoration(hintText: 'orderRef'),
                           onSaved: (value) => orderRef = value,
                           initialValue:
-                          "rave_flutter-${DateTime.now().toString()}",
+                              "rave_flutter-${DateTime.now().toString()}",
                           validator: (value) =>
-                          value.trim().isEmpty ? 'Field is required' : null,
+                              value.trim().isEmpty ? 'Field is required' : null,
                         ),
                         SizedBox(height: 20),
                         TextFormField(

@@ -29,9 +29,11 @@ class FeeCheckRequestBody extends Equatable {
     var json = {
       "amount": amount,
       "PBFPubKey": pBFPubKey,
-      "card6": card6,
-      "currency": currency
+      "currency": currency,
     };
+    if (!RaveUtils.isEmpty(card6)) {
+      json["card6"] = card6;
+    }
     if (!RaveUtils.isEmpty(pType)) {
       json["ptype"] = pType;
     }

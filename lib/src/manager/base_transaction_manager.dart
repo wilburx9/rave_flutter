@@ -125,7 +125,7 @@ abstract class BaseTransactionManager {
     }
 
     var content = Text(
-        "You will be charged a total of ${model.chargeAmount}${initializer.currency}. Do you want to continue?");
+        "You will be charged a total of ${model.chargeAmount} ${initializer.currency}. Do you want to continue?");
 
     Widget child;
     if (Platform.isIOS) {
