@@ -54,7 +54,8 @@ abstract class BaseTransactionManager {
     }
   }
 
-  reQueryTransaction() async {
+  reQueryTransaction({ValueChanged<ReQueryResponseModel> onComplete}) async {
+    onComplete ??= this.onComplete;
     setConnectionState(ConnectionState.waiting);
     try {
       var response = await service.reQuery(payload.pbfPubKey, flwRef);
@@ -173,7 +174,7 @@ abstract class BaseTransactionManager {
         status: response.dataStatus.toLowerCase() == "successful"
             ? RaveStatus.success
             : RaveStatus.error,
-        rawResponse: response.json,
+        rawResponse: response.rawResponse,
         message: response.message));
   }
 

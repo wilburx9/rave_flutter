@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
-import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:dio/dio.dart';
+import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
+import 'package:rave_flutter/src/common/rave_utils.dart';
+import 'package:rave_flutter/src/repository/repository.dart';
 
 class HttpService {
   static HttpService get instance => getIt<HttpService>();
@@ -23,8 +24,13 @@ class HttpService {
     );
     _dio = Dio(options);
     if (initializer.staging) {
-      _dio.interceptors
-          .add(LogInterceptor(responseBody: true, requestBody: true));
+      _dio.interceptors.add(
+        LogInterceptor(
+          responseBody: true,
+          requestBody: true,
+          logPrint: printWrapped,
+        ),
+      );
     }
   }
 
