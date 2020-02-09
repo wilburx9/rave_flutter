@@ -8,6 +8,7 @@ class Strings {
   static const mpesa = 'Mpesa';
   static const ghanaMobileMoney = 'Ghana Mobile Money';
   static const ugandaMobileMoney = 'Uganda Mobile Money';
+  static const mobileMoneyFrancophoneAfrica = 'Mobile Money Francophone Africa';
   static const pay = 'Pay';
   static const invalidCVV = 'Enter a valid cvv';
   static const invalidExpiry = 'Enter a valid expiry date';

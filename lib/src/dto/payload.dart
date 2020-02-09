@@ -24,11 +24,13 @@ class Payload {
   String voucher;
   bool isPreAuth;
   bool isUsBankCharge;
+  bool isMobileMoneyFranco;
   String phoneNumber;
   String accountNumber;
   BankModel bank;
   String passCode;
   String txRef;
+  String orderRef;
   Map<String, String> meta;
   List<SubAccount> subAccounts;
   String cardBIN;
@@ -51,13 +53,15 @@ class Payload {
         this.firstName = i.fName,
         this.lastName = i.lName,
         this.txRef = i.txRef,
+        this.orderRef = i.orderRef,
         this.meta = i.meta,
         this.subAccounts = i.subAccounts,
         this.redirectUrl = i.redirectUrl,
         this.isPreAuth = i.isPreAuth,
         this.pbfPubKey = i.publicKey,
         this.paymentPlan = i.paymentPlan,
-        this.isUsBankCharge = i.acceptAchPayments;
+        this.isUsBankCharge = i.acceptAchPayments,
+        this.isMobileMoneyFranco = i.acceptMobileMoneyFrancophoneAfricaPayments;
 
   Payload(
       {@required this.expiryMonth,
@@ -81,7 +85,9 @@ class Payload {
       this.country = Strings.ng,
       this.isPreAuth = false,
       this.isUsBankCharge = false,
+      this.isMobileMoneyFranco = false,
       this.txRef,
+      this.orderRef,
       this.cardBIN});
 
   Map<String, dynamic> toJson(String paymentType) {
@@ -95,6 +101,7 @@ class Payload {
       "amount": amount,
       "email": email,
       "txRef": txRef,
+      "orderRef": orderRef,
       "redirect_url": redirectUrl,
     };
 
@@ -118,6 +125,7 @@ class Payload {
     putIfNotNull(map: json, key: "billingcountry", value: billingCountry);
     putIfNotNull(map: json, key: "billingzip", value: billingZip);
     putIfNotNull(map: json, key: "is_us_bank_charge", value: isUsBankCharge);
+    putIfNotNull(map: json, key: "is_mobile_money_franco", value: isMobileMoneyFranco);
 
     putIfNotNull(
         map: json, key: "charge_type", value: isPreAuth ? "preauth" : null);
