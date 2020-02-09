@@ -77,8 +77,8 @@ abstract class BaseTransactionManager {
     await Navigator.of(context).push(
       MaterialPageRoute(
           builder: (_) => WebViewWidget(
-                authUrl: RaveUtils.cleanUrl(authUrl),
-                callbackUrl: RaveUtils.cleanUrl(payload.redirectUrl),
+                authUrl: cleanUrl(authUrl),
+                callbackUrl: cleanUrl(payload.redirectUrl),
               ),
           fullscreenDialog: true),
     );

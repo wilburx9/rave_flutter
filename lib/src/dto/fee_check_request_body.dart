@@ -22,8 +22,7 @@ class FeeCheckRequestBody extends Equatable {
         this.pBFPubKey = p.pbfPubKey,
         this.currency = p.currency,
         this.pType = null,
-        this.card6 =
-            RaveUtils.isEmpty(p.cardNo) ? p.cardBIN : p.cardNo.substring(0, 6);
+        this.card6 = isEmpty(p.cardNo) ? p.cardBIN : p.cardNo.substring(0, 6);
 
   Map<String, dynamic> toJson() {
     var json = {
@@ -31,10 +30,10 @@ class FeeCheckRequestBody extends Equatable {
       "PBFPubKey": pBFPubKey,
       "currency": currency,
     };
-    if (!RaveUtils.isEmpty(card6)) {
+    if (!isEmpty(card6)) {
       json["card6"] = card6;
     }
-    if (!RaveUtils.isEmpty(pType)) {
+    if (!isEmpty(pType)) {
       json["ptype"] = pType;
     }
     return json;

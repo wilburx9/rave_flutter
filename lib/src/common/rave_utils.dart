@@ -2,24 +2,22 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:tripledes/tripledes.dart';
 
-class RaveUtils {
-  static bool isEmpty(String string) {
-    return string == null || string.trim().isEmpty;
-  }
+bool isEmpty(String string) {
+  return string == null || string.trim().isEmpty;
+}
 
-  static String formatAmount(num amount) {
-    return new NumberFormat.currency(name: '').format(amount);
-  }
+String formatAmount(num amount) {
+  return new NumberFormat.currency(name: '').format(amount);
+}
 
-  static String getEncryptedData(String str, String key) {
-    var blockCipher = BlockCipher(TripleDESEngine(), key);
-    return blockCipher.encodeB64(str);
-  }
+String getEncryptedData(String str, String key) {
+  var blockCipher = BlockCipher(TripleDESEngine(), key);
+  return blockCipher.encodeB64(str);
+}
 
-  /// Remove all line feed, carriage return and whitespace characters
-  static String cleanUrl(String url) {
-    return url.replaceAll(RegExp(r"[\n\r\s]+"), "");
-  }
+/// Remove all line feed, carriage return and whitespace characters
+String cleanUrl(String url) {
+  return url.replaceAll(RegExp(r"[\n\r\s]+"), "");
 }
 
 bool get isInDebugMode {

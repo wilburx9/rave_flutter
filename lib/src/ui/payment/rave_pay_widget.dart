@@ -179,7 +179,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
                           fontWeight: FontWeight.w600),
                       children: <TextSpan>[
                         TextSpan(
-                          text: RaveUtils.formatAmount(
+                          text: formatAmount(
                             _initializer.amount,
                           ),
                           style: TextStyle(
@@ -371,13 +371,16 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
         ),
       );
     }
-    
+
     if (_initializer.acceptMobileMoneyFrancophoneAfricaPayments) {
       items.add(
-        _Item(Strings.mobileMoneyFrancophoneAfrica, 'note', MobileMoneyFrancophonePaymentWidget(
-          manager: MMFrancophoneTransactionManager(
-            context: context,
-            onTransactionComplete: _onTransactionComplete),
+        _Item(
+          Strings.mobileMoneyFrancophoneAfrica,
+          'note',
+          MobileMoneyFrancophonePaymentWidget(
+            manager: MMFrancophoneTransactionManager(
+                context: context,
+                onTransactionComplete: _onTransactionComplete),
           ),
         ),
       );
