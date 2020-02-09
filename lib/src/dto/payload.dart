@@ -107,7 +107,6 @@ class Payload {
       "amount": amount,
       "email": email,
       "txRef": txRef,
-      "orderRef": orderRef,
       "redirect_url": redirectUrl,
     };
 
@@ -130,14 +129,18 @@ class Payload {
     putIfNotNull(map: json, key: "billingstate", value: billingState);
     putIfNotNull(map: json, key: "billingcountry", value: billingCountry);
     putIfNotNull(map: json, key: "billingzip", value: billingZip);
-    putIfNotNull(map: json, key: "is_us_bank_charge", value: isUsBankCharge);
-    putIfNotNull(
+    putIfTrue(map: json, key: "is_us_bank_charge", value: isUsBankCharge);
+    putIfTrue(
         map: json, key: "is_mobile_money_franco", value: isMobileMoneyFranco);
-    putIfNotNull(map: json, key: "is_mpesa", value: isMpesa);
-    putIfNotNull(map: json, key: "is_mpesa_lipa", value: isMpesaLipa);
+    putIfTrue(map: json, key: "is_mpesa", value: isMpesa);
+    putIfTrue(map: json, key: "is_mpesa_lipa", value: isMpesaLipa);
 
     putIfNotNull(
         map: json, key: "charge_type", value: isPreAuth ? "preauth" : null);
+
+    if (isMobileMoneyFranco) {
+      meta["orderRef"] = orderRef;
+    }
 
     if (meta == null) meta = {};
     meta["sdk"] = "flutter";

@@ -28,10 +28,12 @@ bool get isInDebugMode {
 }
 
 putIfNotNull({@required Map map, @required key, @required value}) {
-  if (value == null || (value is String && value.isEmpty)) {
-    return;
-  }
+  if (value == null || (value is String && value.isEmpty)) return;
+  map[key] = value;
+}
 
+putIfTrue({@required Map map, @required key, @required bool value}) {
+  if (value == null || !value) return;
   map[key] = value;
 }
 

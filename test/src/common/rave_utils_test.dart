@@ -44,4 +44,36 @@ void main() {
       });
     });
   });
+
+  group("#putIfNotNull", () {
+    final map = {};
+    final cases = [
+      Case(inp: ["key1", "value1"], out: true),
+      Case(inp: ["key2", ""], out: false),
+      Case(inp: ["key3", "  value3"], out: true),
+      Case(inp: ["key4 ", "value4"], out: true),
+      Case(inp: ["key5 ", null], out: false),
+    ];
+    cases.forEach((c) {
+      test("${c.inp} returns ${c.out}", () {
+        raveUtils.putIfNotNull(map: map, key: c.inp[0], value: c.inp[1]);
+        expect(c.out, map.containsKey(c.inp[0]));
+      });
+    });
+  });
+
+  group("#putIfTrue", () {
+    final map = {};
+    final cases = [
+      Case(inp: ["key1", true], out: true),
+      Case(inp: ["key2", false], out: false),
+      Case(inp: ["key3", null], out: false),
+    ];
+    cases.forEach((c) {
+      test("${c.inp} returns ${c.out}", () {
+        raveUtils.putIfTrue(map: map, key: c.inp[0], value: c.inp[1]);
+        expect(c.out, map.containsKey(c.inp[0]));
+      });
+    });
+  });
 }

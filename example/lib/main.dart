@@ -32,7 +32,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   var autoValidate = false;
   bool acceptCardPayment = true;
   bool acceptAccountPayment = true;
-  bool acceptMpesaPayment = true;
+  bool acceptMpesaPayment = false;
   bool shouldDisplayFee = true;
   bool acceptAchPayments = false;
   bool acceptGhMMPayments = false;

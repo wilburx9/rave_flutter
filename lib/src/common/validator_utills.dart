@@ -156,6 +156,14 @@ class ValidatorUtils {
     if (init.acceptAchPayments == null) return Strings.cannotBeNull('withAch');
     if (init.acceptMpesaPayments == null)
       return Strings.cannotBeNull('withMpesa');
+    if (init.acceptMpesaPayments) {
+      if (init.currency.toUpperCase() != "KES") {
+        return "currency should be \"KES\" for Mpesa payments but \"${init.currency}\" was passed";
+      }
+      if (init.country.toUpperCase() != "KE") {
+        return "country should be \"KE\" for Mpesa payments but \"${init.country}\" was passed";
+      }
+    }
     if (init.acceptAccountPayments == null)
       return Strings.cannotBeNull('withAccount');
     if (init.acceptCardPayments == null)
