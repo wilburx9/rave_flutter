@@ -29,23 +29,19 @@ class _MpesaPaymentWidgetState
           textInputAction: TextInputAction.done,
           hintText: '234xxxxxxxxx',
           onFieldSubmitted: (value) => swapFocus(_phoneFocusNode),
-          onSaved: (value) => payload.phoneNumber),
+          onSaved: (value) => payload.phoneNumber = value),
     ];
   }
 
   @override
-  onFormValidated() {
-    // TODO: implement onFormValidated
-    super.onFormValidated();
-    return null;
-  }
+  onFormValidated() => super.onFormValidated();
 
   @override
   FocusNode getNextFocusNode() => _phoneFocusNode;
 
   @override
-  bool showEmailField() => false;
+  bool showEmailField() => true;
 
   @override
-  bool get supported => false;
+  bool get supported => true;
 }

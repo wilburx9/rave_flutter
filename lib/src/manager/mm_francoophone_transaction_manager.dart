@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart' hide State, ConnectionState;
 import 'package:flutter/material.dart' hide State, ConnectionState;
 import 'package:rave_flutter/rave_flutter.dart';
@@ -23,8 +22,8 @@ class MMFrancophoneTransactionManager extends BaseTransactionManager {
     try {
       var response = await service.charge(
         ChargeRequestBody.fromPayload(
-            payload: payload..isMobileMoneyFranco = true
-            , type: "mobilemoneyfranco"),
+            payload: payload..isMobileMoneyFranco = true,
+            type: "mobilemoneyfranco"),
       );
       setConnectionState(ConnectionState.done);
 
@@ -41,7 +40,6 @@ class MMFrancophoneTransactionManager extends BaseTransactionManager {
               : RaveStatus.error,
           rawResponse: response.rawResponse,
           message: response.message));
-
     } on RaveException catch (e) {
       handleError(e: e);
     }

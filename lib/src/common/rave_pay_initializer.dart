@@ -111,6 +111,7 @@ class RavePayInitializer {
   /// The text that is displayed on the pay button. Defaults to "Pay [currency][amount]"
   String payButtonText;
 
+  // TODO: Validate payment method required params
   RavePayInitializer({
     @required this.amount,
     @required this.publicKey,

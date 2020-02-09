@@ -76,7 +76,6 @@ unlinked_spec.ds
 **/ios/**/Pods/
 **/ios/**/.symlinks/
 **/ios/**/profile
-**/ios/**/xcuserdata
 **/ios/.generated/
 **/ios/Flutter/App.framework
 **/ios/Flutter/Flutter.framework
@@ -99,3 +98,4 @@ coverage/
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 /example/.flutter-plugins-dependencies
+/coverage/

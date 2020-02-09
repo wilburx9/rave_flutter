@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:tripledes/tripledes.dart';
@@ -34,4 +35,11 @@ putIfNotNull({@required Map map, @required key, @required value}) {
 putIfTrue({@required Map map, @required key, @required bool value}) {
   if (value == null || !value) return;
   map[key] = value;
+}
+
+printWrapped(Object text) {
+  final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
+  pattern
+      .allMatches(text?.toString())
+      .forEach((match) => debugPrint(match.group(0)));
 }
