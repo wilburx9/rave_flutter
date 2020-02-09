@@ -4,7 +4,8 @@ import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class MobileMoneyFrancophonePaymentWidget extends BasePaymentPage {
-  MobileMoneyFrancophonePaymentWidget({@required MMFrancophoneTransactionManager manager})
+  MobileMoneyFrancophonePaymentWidget(
+      {@required MMFrancophoneTransactionManager manager})
       : super(transactionManager: manager);
 
   @override
@@ -35,9 +36,7 @@ class _MobileMoneyFrancophonePaymentWidgetState
   }
 
   @override
-  onFormValidated() {
-    super.onFormValidated();
-  }
+  onFormValidated() => super.onFormValidated();
 
   @override
   FocusNode getNextFocusNode() => _phoneFocusNode;
