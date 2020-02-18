@@ -1,11 +1,12 @@
 name: rave_flutter
 description: A new Flutter plugin for making payment with Flutterwave's rave.
-version: 0.0.8-alpha+1
+version: 0.0.9-alpha
 author: Wilberforce Uwadiegwu <faradaywilly@gmail.com>
 homepage: https://github.com/wilburt/rave_flutter
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
+  flutter: ">=1.10.0 <2.0.0"
 
 dependencies:
   flutter:
@@ -28,8 +29,12 @@ dev_dependencies:
 
 flutter:
   plugin:
-    androidPackage: com.flutterwave.rave_flutter
-    pluginClass: RaveFlutterPlugin
+    platforms:
+      android:
+        package: com.flutterwave.rave_flutter
+        pluginClass:  RaveFlutterPlugin
+      ios:
+        pluginClass:  RaveFlutterPlugin
 
   assets:
     - assets/images/

@@ -1,3 +1,13 @@
+## 0.0.9-alpha
+* Fixed bugs with validating initializer fields(#3)
+* Fixed issue with rendering company name (#4)
+* Cleaned up 3ds URLs (#5)
+* Implemented ACH payment
+* Implemented Mobile money Francophone Africa payment method (thanks to @ybanezmi).
+* Upgraded Flutter and Android dependencies
+* Implement Mpesa payment
+* Setup CI pipeline
+
 ## 0.0.8-alpha+1
 * Fixed issue with initializing payload with payment plan
 * Added error messages for payment methods that's under development
