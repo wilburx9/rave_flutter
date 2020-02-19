@@ -153,9 +153,10 @@ class ValidatorUtils {
     if (init.redirectUrl == null) return Strings.cannotBeNull('redirectUrl');
     if (init.fName == null) return Strings.cannotBeNull('fName');
     if (init.lName == null) return Strings.cannotBeNull('lName');
-    if (init.acceptAchPayments == null) return Strings.cannotBeNull('withAch');
+    if (init.acceptAchPayments == null)
+      return Strings.cannotBeNull('acceptAchPayments');
     if (init.acceptMpesaPayments == null)
-      return Strings.cannotBeNull('withMpesa');
+      return Strings.cannotBeNull('acceptMpesaPayments');
     if (init.acceptMpesaPayments) {
       if (init.currency.toUpperCase() != "KES") {
         return "currency should be \"KES\" for Mpesa payments but \"${init.currency}\" was passed";
@@ -165,13 +166,15 @@ class ValidatorUtils {
       }
     }
     if (init.acceptAccountPayments == null)
-      return Strings.cannotBeNull('withAccount');
+      return Strings.cannotBeNull('acceptAccountPayments');
     if (init.acceptCardPayments == null)
-      return Strings.cannotBeNull('withCard');
+      return Strings.cannotBeNull('acceptCardPayments');
     if (init.acceptGHMobileMoneyPayments == null)
-      return Strings.cannotBeNull('withGHMobileMoney');
+      return Strings.cannotBeNull('acceptGHMobileMoneyPayments');
     if (init.acceptUgMobileMoneyPayments == null)
-      return Strings.cannotBeNull('withUgMobileMoney');
+      return Strings.cannotBeNull('acceptUgMobileMoneyPayments');
+    if (init.acceptMobileMoneyFrancophoneAfricaPayments == null)
+      return Strings.cannotBeNull('acceptMobileMoneyFrancophoneAfricaPayments');
     if (init.isPreAuth == null) return Strings.cannotBeNull('isPreAuth');
     if (init.displayFee == null) return Strings.cannotBeNull('displayFee');
     if (init.displayEmail == null) return Strings.cannotBeNull("displayEmail");
@@ -179,9 +182,11 @@ class ValidatorUtils {
       return Strings.cannotBeNull("displayAmount");
     if (!init.acceptCardPayments &&
         !init.acceptAccountPayments &&
+        !init.acceptAchPayments &&
         !init.acceptMpesaPayments &&
         !init.acceptGHMobileMoneyPayments &&
-        !init.acceptUgMobileMoneyPayments) {
+        !init.acceptUgMobileMoneyPayments &&
+        !init.acceptMobileMoneyFrancophoneAfricaPayments) {
       return "No payment mode";
     }
     return null;

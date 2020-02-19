@@ -1,3 +1,7 @@
+## 0.0.9-alpha+1
+* Fixed issue with null initializer field(#18)
+* Improve validation of initializer fields
+
 ## 0.0.9-alpha
 * Fixed bugs with validating initializer fields(#3)
 * Fixed issue with rendering company name (#4)
