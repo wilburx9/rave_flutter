@@ -304,8 +304,8 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
     }
 
     if (_initializer.acceptAccountPayments) {
-      if (_initializer.country.toLowerCase() == 'us' &&
-          _initializer.currency.toLowerCase() == 'usd') {
+      if (_initializer.country.toUpperCase() == Strings.us &&
+          _initializer.currency.toUpperCase() == Strings.usd) {
         items.add(_Item(
             Strings.ach,
             'note',
@@ -314,8 +314,8 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
                   context: context,
                   onTransactionComplete: _onTransactionComplete),
             )));
-      } else if (_initializer.country.toLowerCase() == Strings.ng &&
-          _initializer.currency.toLowerCase() == Strings.ngn) {
+      } else if (_initializer.country.toUpperCase() == Strings.ng &&
+          _initializer.currency.toUpperCase() == Strings.ngn) {
         items.add(
           _Item(
             Strings.account,
