@@ -14,7 +14,7 @@ dependencies:
   flutter_svg: ^0.18.0
   http: ^0.12.2
   intl: ^0.16.1
-  meta: ^1.2.2
+  meta: ^1.1.8
   async: ^2.4.2
   dio: ^3.0.9
   get_it: ^4.0.2
