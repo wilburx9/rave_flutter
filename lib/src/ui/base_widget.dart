@@ -39,48 +39,48 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
     var dialog = Platform.isIOS
         ? CupertinoAlertDialog(
-            title: text,
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text('Yes'),
-                isDestructiveAction: true,
-                onPressed: () {
-                  Navigator.pop(context, true); // Returning true to
-                  // _onWillPop will pop again.
-                },
-              ),
-              CupertinoDialogAction(
-                child: Text('No'),
-                isDefaultAction: true,
-                onPressed: () {
-                  Navigator.pop(context,
-                      false); // Pops the confirmation dialog but not the page.
-                },
-              ),
-            ],
-          )
+      title: text,
+      actions: <Widget>[
+        CupertinoDialogAction(
+          child: Text('Yes'),
+          isDestructiveAction: true,
+          onPressed: () {
+            Navigator.pop(context, true); // Returning true to
+            // _onWillPop will pop again.
+          },
+        ),
+        CupertinoDialogAction(
+          child: Text('No'),
+          isDefaultAction: true,
+          onPressed: () {
+            Navigator.pop(context,
+                false); // Pops the confirmation dialog but not the page.
+          },
+        ),
+      ],
+    )
         : AlertDialog(
-            content: text,
-            actions: <Widget>[
-              FlatButton(
-                  child: Text('NO'),
-                  onPressed: () {
-                    Navigator.of(context).pop(
-                        false); // Pops the confirmation dialog but not the page.
-                  }),
-              FlatButton(
-                  child: Text('YES'),
-                  onPressed: () {
-                    Navigator.of(context).pop(
-                        true); // Returning true to _onWillPop will pop again.
-                  })
-            ],
-          );
+      content: text,
+      actions: <Widget>[
+        FlatButton(
+            child: Text('NO'),
+            onPressed: () {
+              Navigator.of(context).pop(
+                  false); // Pops the confirmation dialog but not the page.
+            }),
+        FlatButton(
+            child: Text('YES'),
+            onPressed: () {
+              Navigator.of(context).pop(
+                  true); // Returning true to _onWillPop will pop again.
+            })
+      ],
+    );
 
     bool exit = await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) => dialog,
-        ) ??
+      context: context,
+      builder: (BuildContext context) => dialog,
+    ) ??
         false;
 
     if (exit) {

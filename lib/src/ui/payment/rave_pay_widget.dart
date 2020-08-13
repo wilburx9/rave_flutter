@@ -17,6 +17,7 @@ import 'package:rave_flutter/src/rave_result.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/ui/base_widget.dart';
 import 'package:rave_flutter/src/ui/common/billing_widget.dart';
+import 'package:rave_flutter/src/ui/common/flutterwave_badge.dart';
 import 'package:rave_flutter/src/ui/common/otp_widget.dart';
 import 'package:rave_flutter/src/ui/common/overlay_loader.dart';
 import 'package:rave_flutter/src/ui/common/pin_widget.dart';
@@ -41,7 +42,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
   Animation _animation;
   var _slideUpTween = Tween<Offset>(begin: Offset(0, 0.4), end: Offset.zero);
   var _slideRightTween =
-      Tween<Offset>(begin: Offset(-0.4, 0), end: Offset.zero);
+  Tween<Offset>(begin: Offset(-0.4, 0), end: Offset.zero);
   int _selectedIndex;
   List<_Item> _items;
 
@@ -74,7 +75,9 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
       children: _items.map((item) {
         var index = _items.indexOf(item);
         return _selectedIndex == index ? item.content : buildItemHeader(index);
-      }).toList(),
+      }).toList() + [
+        FlutterwaveBadge()
+      ],
     );
     Widget child = SingleChildScrollView(
       child: AnimatedSize(
@@ -160,36 +163,36 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
 
     var rightWidget = displayEmail || displayAmount
         ? Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              if (displayEmail)
-                Text(
-                  _initializer.email,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Colors.grey[700], fontSize: 12.0),
-                ),
-              if (displayAmount)
-                RichText(
-                  text: TextSpan(
-                      text: '${_initializer.currency} '.toUpperCase(),
-                      style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey[800],
-                          fontWeight: FontWeight.w600),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: formatAmount(
-                            _initializer.amount,
-                          ),
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        )
-                      ]),
-                ),
-            ],
-          )
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        if (displayEmail)
+          Text(
+            _initializer.email,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.grey[700], fontSize: 12.0),
+          ),
+        if (displayAmount)
+          RichText(
+            text: TextSpan(
+                text: '${_initializer.currency} '.toUpperCase(),
+                style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.w600),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: formatAmount(
+                      _initializer.amount,
+                    ),
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  )
+                ]),
+          ),
+      ],
+    )
         : null;
 
     var rightText = _initializer.companyName ??
@@ -304,8 +307,8 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
     }
 
     if (_initializer.acceptAccountPayments) {
-      if (_initializer.country.toLowerCase() == 'us' &&
-          _initializer.currency.toLowerCase() == 'usd') {
+      if (_initializer.country.toUpperCase() == Strings.us &&
+          _initializer.currency.toUpperCase() == Strings.usd) {
         items.add(_Item(
             Strings.ach,
             'note',
@@ -314,8 +317,8 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
                   context: context,
                   onTransactionComplete: _onTransactionComplete),
             )));
-      } else if (_initializer.country.toLowerCase() == Strings.ng &&
-          _initializer.currency.toLowerCase() == Strings.ngn) {
+      } else if (_initializer.country.toUpperCase() == Strings.ng &&
+          _initializer.currency.toUpperCase() == Strings.ngn) {
         items.add(
           _Item(
             Strings.account,
