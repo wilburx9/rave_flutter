@@ -1,6 +1,8 @@
 class Strings {
   static const ngn = 'NGN';
   static const ng = 'NG';
+  static const usd = 'USD';
+  static const us = 'US';
   static const card = 'Card';
   static const account = 'Account';
   static const amount = 'Amount';

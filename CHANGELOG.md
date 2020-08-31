@@ -1,3 +1,10 @@
+## 0.0.9-alpha+2
+* Upgraded dependencies
+* Added "Secured by Flutterwave" badge (@Emmarex)
+* Removed deprecated Flutter APIs (@Emmarex)
+* Fixed error with Nigerian bank account payment (@Emmarex)
+* Bumped minimum Flutter version to 1.20.2
+
 ## 0.0.9-alpha+1
 * Fixed issue with null initializer field(#18)
 * Improve validation of initializer fields
