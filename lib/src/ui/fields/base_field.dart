@@ -52,7 +52,7 @@ class BaseTextField extends TextFormField {
                         padding: EdgeInsetsDirectional.only(end: 12),
                         child: suffixIcon,
                       ),
-                hasFloatingPlaceholder: false,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
                 prefix: prefix,
                 fillColor: Colors.grey[50],
                 filled: true,

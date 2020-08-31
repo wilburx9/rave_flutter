@@ -17,6 +17,7 @@ import 'package:rave_flutter/src/rave_result.dart';
 import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/ui/base_widget.dart';
 import 'package:rave_flutter/src/ui/common/billing_widget.dart';
+import 'package:rave_flutter/src/ui/common/flutterwave_badge.dart';
 import 'package:rave_flutter/src/ui/common/otp_widget.dart';
 import 'package:rave_flutter/src/ui/common/overlay_loader.dart';
 import 'package:rave_flutter/src/ui/common/pin_widget.dart';
@@ -74,7 +75,9 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
       children: _items.map((item) {
         var index = _items.indexOf(item);
         return _selectedIndex == index ? item.content : buildItemHeader(index);
-      }).toList(),
+      }).toList() + [
+        FlutterwaveBadge()
+      ],
     );
     Widget child = SingleChildScrollView(
       child: AnimatedSize(
@@ -304,8 +307,8 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
     }
 
     if (_initializer.acceptAccountPayments) {
-      if (_initializer.country.toLowerCase() == 'us' &&
-          _initializer.currency.toLowerCase() == 'usd') {
+      if (_initializer.country.toUpperCase() == Strings.us &&
+          _initializer.currency.toUpperCase() == Strings.usd) {
         items.add(_Item(
             Strings.ach,
             'note',
@@ -314,8 +317,8 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
                   context: context,
                   onTransactionComplete: _onTransactionComplete),
             )));
-      } else if (_initializer.country.toLowerCase() == Strings.ng &&
-          _initializer.currency.toLowerCase() == Strings.ngn) {
+      } else if (_initializer.country.toUpperCase() == Strings.ng &&
+          _initializer.currency.toUpperCase() == Strings.ngn) {
         items.add(
           _Item(
             Strings.account,
