@@ -74,16 +74,19 @@ abstract class BaseTransactionManager {
         }));
   }
 
-  showWebAuthorization(String authUrl) async {
+  // Requery for UG Mobile Money throwing error
+  showWebAuthorization(String authUrl,
+      {bool reQuery = true, Function(Map) onAuthComplete}) async {
     await Navigator.of(context).push(
       MaterialPageRoute(
           builder: (_) => WebViewWidget(
                 authUrl: cleanUrl(authUrl),
                 callbackUrl: cleanUrl(payload.redirectUrl),
+                onAuthComplete: onAuthComplete,
               ),
           fullscreenDialog: true),
     );
-    reQueryTransaction();
+    if (reQuery) reQueryTransaction();
   }
 
   _validateCharge(otp) async {
