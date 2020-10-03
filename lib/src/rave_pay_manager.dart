@@ -36,10 +36,10 @@ class RavePayManager {
   ///
   /// Please, enable embedded_views_preview on iOS. See https://stackoverflow.com/a/55290868/6181476
   ///  {@endtemplate}
-  Future<RaveResult> prompt({
-    @required BuildContext context,
-    @required RavePayInitializer initializer,
-  }) async {
+  Future<RaveResult> prompt(
+      {@required BuildContext context,
+      @required RavePayInitializer initializer,
+      @required Function(RaveResult raveResult) onTransactionComplete}) async {
     assert(context != null);
     assert(initializer != null);
 
@@ -59,7 +59,10 @@ class RavePayManager {
       barrierDismissible: false,
       builder: (_) => Theme(
         data: _getDefaultTheme(context),
-        child: RavePayWidget(),
+        child: RavePayWidget(onTransactionComplete: (RaveResult raveResult) {
+          onTransactionComplete(raveResult);
+          Navigator.of(context).pop();
+        }),
       ),
     );
 

@@ -31,6 +31,10 @@ import 'package:rave_flutter/src/ui/payment/pages/mpesa_payment_widget.dart';
 import 'package:rave_flutter/src/ui/payment/pages/ug_mobile_money_payment_widget.dart';
 
 class RavePayWidget extends StatefulWidget {
+  final Function(RaveResult) onTransactionComplete;
+
+  const RavePayWidget({Key key, this.onTransactionComplete}) : super(key: key);
+
   @override
   _RavePayWidgetState createState() => _RavePayWidgetState();
 }
@@ -431,7 +435,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
   }
 
   _onTransactionComplete(RaveResult result) =>
-      Navigator.of(context).pop(result);
+      widget.onTransactionComplete(result);
 }
 
 class _Item {
