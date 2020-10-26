@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:rave_flutter/src/common/payment_methods.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
 import 'package:rave_flutter/src/common/strings.dart';
@@ -99,7 +100,8 @@ class Payload {
       this.orderRef,
       this.cardBIN});
 
-  Map<String, dynamic> toJson(String paymentType) {
+  Map<String, dynamic> toJson(
+      String paymentType, {PAYMENT_METHOD paymentMethod}) {
     var json = <String, dynamic>{
       "narration": narration,
       "PBFPubKey": pbfPubKey,
@@ -113,38 +115,52 @@ class Payload {
       "redirect_url": redirectUrl,
     };
 
-    putIfNotNull(map: json, key: "payment_type", value: paymentType);
-    putIfNotNull(map: json, key: "expirymonth", value: expiryMonth);
-    putIfNotNull(map: json, key: "expiryyear", value: expiryYear);
-    putIfNotNull(map: json, key: "cvv", value: cvv);
-    putIfNotNull(map: json, key: "cardno", value: cardNo);
-    putIfNotNull(map: json, key: "accountbank", value: bank?.code);
-    putIfNotNull(map: json, key: "bvn", value: bvn);
-    putIfNotNull(map: json, key: "accountnumber", value: accountNumber);
-    putIfNotNull(map: json, key: "passcode", value: passCode);
-    putIfNotNull(map: json, key: "phonenumber", value: phoneNumber);
-    putIfNotNull(map: json, key: "payment_plan", value: paymentPlan);
-    putIfNotNull(map: json, key: "billingzip", value: billingZip);
-    putIfNotNull(map: json, key: "pin", value: pin);
-    putIfNotNull(map: json, key: "suggested_auth", value: suggestedAuth);
-    putIfNotNull(map: json, key: "billingcity", value: billingCity);
-    putIfNotNull(map: json, key: "billingaddress", value: billingAddress);
-    putIfNotNull(map: json, key: "billingstate", value: billingState);
-    putIfNotNull(map: json, key: "billingcountry", value: billingCountry);
-    putIfNotNull(map: json, key: "billingzip", value: billingZip);
-    putIfTrue(map: json, key: "is_us_bank_charge", value: isUsBankCharge);
-    putIfTrue(
-        map: json, key: "is_mobile_money_franco", value: isMobileMoneyFranco);
-    putIfTrue(map: json, key: "is_mpesa", value: isMpesa);
-    putIfTrue(map: json, key: "is_mpesa_lipa", value: isMpesaLipa);
-    putIfTrue(map: json, key: "is_mobile_money_ug", value: isMobileMoneyUg);
+    if (paymentMethod != null) {
+      switch (paymentMethod) {
+        case PAYMENT_METHOD.UG_MOBILE_MONEY:
+          // Manual build of UG payload
+          json['country'] = 'NG';
+          json['currency'] = 'UGX';
+          json["is_mobile_money_ug"] = "1";
+          json["network"] = "UGX";
+          json["payment_type"] = "mobilemoneyuganda";
+          json['phonenumber'] = phoneNumber;
+          // TODO: Get device finger print
+          break;
+      }
+    } else {
+      putIfNotNull(map: json, key: "payment_type", value: paymentType);
+      putIfNotNull(map: json, key: "expirymonth", value: expiryMonth);
+      putIfNotNull(map: json, key: "expiryyear", value: expiryYear);
+      putIfNotNull(map: json, key: "cvv", value: cvv);
+      putIfNotNull(map: json, key: "cardno", value: cardNo);
+      putIfNotNull(map: json, key: "accountbank", value: bank?.code);
+      putIfNotNull(map: json, key: "bvn", value: bvn);
+      putIfNotNull(map: json, key: "accountnumber", value: accountNumber);
+      putIfNotNull(map: json, key: "passcode", value: passCode);
+      putIfNotNull(map: json, key: "phonenumber", value: phoneNumber);
+      putIfNotNull(map: json, key: "payment_plan", value: paymentPlan);
+      putIfNotNull(map: json, key: "billingzip", value: billingZip);
+      putIfNotNull(map: json, key: "pin", value: pin);
+      putIfNotNull(map: json, key: "suggested_auth", value: suggestedAuth);
+      putIfNotNull(map: json, key: "billingcity", value: billingCity);
+      putIfNotNull(map: json, key: "billingaddress", value: billingAddress);
+      putIfNotNull(map: json, key: "billingstate", value: billingState);
+      putIfNotNull(map: json, key: "billingcountry", value: billingCountry);
+      putIfNotNull(map: json, key: "billingzip", value: billingZip);
+      putIfTrue(map: json, key: "is_us_bank_charge", value: isUsBankCharge);
+      putIfTrue(
+          map: json, key: "is_mobile_money_franco", value: isMobileMoneyFranco);
+      putIfTrue(map: json, key: "is_mpesa", value: isMpesa);
+      putIfTrue(map: json, key: "is_mpesa_lipa", value: isMpesaLipa);
+
+      if (isMobileMoneyFranco) {
+        meta["orderRef"] = orderRef;
+      }
+    }
 
     putIfNotNull(
         map: json, key: "charge_type", value: isPreAuth ? "preauth" : null);
-
-    if (isMobileMoneyFranco) {
-      meta["orderRef"] = orderRef;
-    }
 
     if (meta == null) meta = {};
     meta["sdk"] = "flutter";
@@ -162,6 +178,7 @@ class Payload {
         value: subAccounts == null || subAccounts.isEmpty
             ? null
             : subAccounts.map((a) => a.toJson()).toList());
+  print(json);
     return json;
   }
 }
