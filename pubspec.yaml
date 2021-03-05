@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^0.18.1
+  flutter_svg: ^0.19.3
   http: ^0.12.2
   intl: ^0.16.1
   meta: ^1.1.8
