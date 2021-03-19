@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:meta/meta.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
 import 'package:rave_flutter/src/common/rave_utils.dart';
@@ -65,7 +67,8 @@ class Payload {
         this.isUsBankCharge = i.acceptAchPayments,
         this.isMobileMoneyFranco = i.acceptMobileMoneyFrancophoneAfricaPayments,
         this.isMpesa = i.acceptMpesaPayments,
-        this.isMpesaLipa = i.acceptMpesaPayments;
+        this.isMpesaLipa = i.acceptMpesaPayments,
+        this.narration = i.narration ?? "";
 
   Payload(
       {@required this.expiryMonth,
