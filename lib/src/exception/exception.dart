@@ -1,11 +1,11 @@
 import 'package:rave_flutter/src/common/strings.dart';
 
 class RaveException {
-  final String message;
+  final String? message;
 
   RaveException({data}) : message = _getMessage(data);
 
-  static String _getMessage(e) {
+  static String? _getMessage(e) {
     if (e == null) return Strings.sthWentWrong;
 
     if (e is String) {

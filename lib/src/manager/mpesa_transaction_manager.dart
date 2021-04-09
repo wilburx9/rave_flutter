@@ -10,8 +10,8 @@ import 'package:rave_flutter/src/models/requery_model.dart';
 
 class MpesaTransactionManager extends BaseTransactionManager {
   MpesaTransactionManager(
-      {@required BuildContext context,
-      @required TransactionComplete onTransactionComplete})
+      {required BuildContext context,
+      required TransactionComplete onTransactionComplete})
       : super(
           context: context,
           onTransactionComplete: onTransactionComplete,
@@ -21,9 +21,9 @@ class MpesaTransactionManager extends BaseTransactionManager {
   charge() async {
     setConnectionState(ConnectionState.waiting);
     try {
-      final response = await service.charge(
+      final response = await service!.charge(
         ChargeRequestBody.fromPayload(
-          payload: payload
+          payload: payload!
             ..isMpesa = true
             ..isMpesaLipa = true,
           type: "mpesa",
@@ -48,7 +48,7 @@ class MpesaTransactionManager extends BaseTransactionManager {
   }
 
   _handleReQuery(ReQueryResponseModel response) {
-    if (!response.hasData) {
+    if (!response.hasData!) {
       handleError(e: RaveException(data: Strings.noResponseData));
       return;
     }

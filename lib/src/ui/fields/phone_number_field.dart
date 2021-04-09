@@ -6,11 +6,11 @@ import 'package:rave_flutter/src/ui/fields/base_field.dart';
 
 class PhoneNumberField extends BaseTextField {
   PhoneNumberField({
-    @required FormFieldSetter<String> onSaved,
-    FocusNode focusNode,
-    TextInputAction textInputAction,
+    required FormFieldSetter<String> onSaved,
+    FocusNode? focusNode,
+    TextInputAction? textInputAction,
     String hintText = '080XXXXXXXX',
-    ValueChanged<String> onFieldSubmitted,
+    ValueChanged<String>? onFieldSubmitted,
   }) : super(
           labelText: 'PHONE NUMBER',
           hintText: hintText,
@@ -18,13 +18,13 @@ class PhoneNumberField extends BaseTextField {
           focusNode: focusNode,
           onFieldSubmitted: onFieldSubmitted,
           textInputAction: textInputAction,
-          validator: (String value) => validatePhoneNum(value),
+          validator: (String? value) => validatePhoneNum(value),
           inputFormatters: [
             WhitelistingTextInputFormatter.digitsOnly,
           ],
         );
 
-  static String validatePhoneNum(String input) {
+  static String? validatePhoneNum(String? input) {
     return ValidatorUtils.isPhoneValid(input)
         ? null
         : Strings.invalidPhoneNumber;

@@ -37,7 +37,7 @@ class CardUtils {
     return year;
   }
 
-  static String getCleanedNumber(String text) {
+  static String getCleanedNumber(String? text) {
     if (text == null) {
       return '';
     }

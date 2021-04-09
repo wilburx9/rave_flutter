@@ -3,8 +3,8 @@ import 'package:rave_flutter/src/manager/base_transaction_manager.dart';
 
 class GhMMTransactionManager extends BaseTransactionManager {
   GhMMTransactionManager(
-      {@required BuildContext context,
-      @required TransactionComplete onTransactionComplete})
+      {required BuildContext context,
+      required TransactionComplete onTransactionComplete})
       : super(
           context: context,
           onTransactionComplete: onTransactionComplete,

@@ -19,19 +19,19 @@ import 'package:rave_flutter/src/services/transaction_service.dart';
 import 'package:rave_flutter/src/ui/common/webview_widget.dart';
 
 abstract class BaseTransactionManager {
-  final TransactionService service = TransactionService.instance;
+  final TransactionService? service = TransactionService.instance;
   final BuildContext context;
   final TransactionComplete onTransactionComplete;
   final RavePayInitializer initializer = Repository.instance.initializer;
   final transactionBloc = TransactionBloc.instance;
   final connectionBloc = ConnectionBloc.instance;
-  Payload payload;
-  String flwRef;
+  Payload? payload;
+  String? flwRef;
 
   BaseTransactionManager(
-      {@required this.context, @required this.onTransactionComplete});
+      {required this.context, required this.onTransactionComplete});
 
-  processTransaction(Payload payload) {
+  processTransaction(Payload? payload) {
     this.payload = payload;
     if (initializer.displayFee) {
       fetchFee();
@@ -46,7 +46,7 @@ abstract class BaseTransactionManager {
     setConnectionState(ConnectionState.waiting);
     try {
       var response =
-          await service.fetchFee(FeeCheckRequestBody.fromPayload(payload));
+          await service!.fetchFee(FeeCheckRequestBody.fromPayload(payload!));
       setConnectionState(ConnectionState.done);
       displayFeeDialog(response);
     } on RaveException catch (e) {
@@ -54,18 +54,18 @@ abstract class BaseTransactionManager {
     }
   }
 
-  reQueryTransaction({ValueChanged<ReQueryResponseModel> onComplete}) async {
+  reQueryTransaction({ValueChanged<ReQueryResponseModel>? onComplete}) async {
     onComplete ??= this.onComplete;
     setConnectionState(ConnectionState.waiting);
     try {
-      var response = await service.reQuery(payload.pbfPubKey, flwRef);
+      var response = await service!.reQuery(payload!.pbfPubKey, flwRef);
       onComplete(response);
     } on RaveException catch (e) {
       handleError(e: e);
     }
   }
 
-  onOtpRequested([String message = Strings.enterOtp]) {
+  onOtpRequested([String? message = Strings.enterOtp]) {
     transactionBloc.setState(TransactionState(
         state: State.otp,
         data: message,
@@ -74,12 +74,12 @@ abstract class BaseTransactionManager {
         }));
   }
 
-  showWebAuthorization(String authUrl) async {
+  showWebAuthorization(String? authUrl) async {
     await Navigator.of(context).push(
       MaterialPageRoute(
           builder: (_) => WebViewWidget(
-                authUrl: cleanUrl(authUrl),
-                callbackUrl: cleanUrl(payload.redirectUrl),
+                authUrl: cleanUrl(authUrl!),
+                callbackUrl: cleanUrl(payload!.redirectUrl!),
               ),
           fullscreenDialog: true),
     );
@@ -89,10 +89,10 @@ abstract class BaseTransactionManager {
   _validateCharge(otp) async {
     try {
       setConnectionState(ConnectionState.waiting);
-      var response = await service.validateCardCharge(ValidateChargeRequestBody(
+      var response = await service!.validateCardCharge(ValidateChargeRequestBody(
           transactionReference: flwRef,
           otp: otp,
-          pBFPubKey: payload.pbfPubKey));
+          pBFPubKey: payload!.pbfPubKey));
       setConnectionState(ConnectionState.done);
 
       var status = response.status;
@@ -159,7 +159,7 @@ abstract class BaseTransactionManager {
   }
 
   @mustCallSuper
-  handleError({@required RaveException e, Map rawResponse}) {
+  handleError({required RaveException e, Map? rawResponse}) {
     setConnectionState(ConnectionState.done);
     onTransactionComplete(RaveResult(
         status: RaveStatus.error,
@@ -171,7 +171,7 @@ abstract class BaseTransactionManager {
   onComplete(ReQueryResponseModel response) {
     setConnectionState(ConnectionState.done);
     onTransactionComplete(RaveResult(
-        status: response.dataStatus.toLowerCase() == "successful"
+        status: response.dataStatus!.toLowerCase() == "successful"
             ? RaveStatus.success
             : RaveStatus.error,
         rawResponse: response.rawResponse,

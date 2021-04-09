@@ -12,12 +12,12 @@ class RaveResult extends Equatable {
   final RaveStatus status;
 
   /// Raw response from rave. Can be null
-  final Map rawResponse;
+  final Map? rawResponse;
 
   /// Human readable message
-  final String message;
+  final String? message;
 
-  RaveResult({@required this.status, this.rawResponse, this.message});
+  RaveResult({required this.status, this.rawResponse, this.message});
 
   @override
   String toString() {
@@ -25,7 +25,7 @@ class RaveResult extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, rawResponse, message];
+  List<Object?> get props => [status, rawResponse, message];
 }
 
 enum RaveStatus { success, error, cancelled }

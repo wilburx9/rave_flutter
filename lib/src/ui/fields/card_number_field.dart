@@ -7,12 +7,12 @@ import 'package:rave_flutter/src/ui/fields/base_field.dart';
 
 class CardNumberField extends BaseTextField {
   CardNumberField({
-    @required TextEditingController controller,
-    @required FormFieldSetter<String> onSaved,
-    @required Widget suffix,
-    FocusNode focusNode,
-    TextInputAction textInputAction,
-    ValueChanged<String> onFieldSubmitted,
+    required TextEditingController? controller,
+    required FormFieldSetter<String> onSaved,
+    required Widget suffix,
+    FocusNode? focusNode,
+    TextInputAction? textInputAction,
+    ValueChanged<String>? onFieldSubmitted,
   }) : super(
           labelText: 'CARD NUMBER',
           hintText: '0000 0000 0000 0000',
@@ -22,7 +22,7 @@ class CardNumberField extends BaseTextField {
           focusNode: focusNode,
           onFieldSubmitted: onFieldSubmitted,
           textInputAction: textInputAction,
-          validator: (String value) => validateCardNum(value),
+          validator: (String? value) => validateCardNum(value),
           inputFormatters: [
             WhitelistingTextInputFormatter.digitsOnly,
             new LengthLimitingTextInputFormatter(19),
@@ -30,7 +30,7 @@ class CardNumberField extends BaseTextField {
           ],
         );
 
-  static String validateCardNum(String input) {
+  static String? validateCardNum(String? input) {
     return ValidatorUtils.isCardNumberValid(input)
         ? null
         : Strings.invalidCardNumber;

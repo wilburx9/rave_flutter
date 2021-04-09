@@ -5,7 +5,7 @@ import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class MobileMoneyFrancophonePaymentWidget extends BasePaymentPage {
   MobileMoneyFrancophonePaymentWidget(
-      {@required MMFrancophoneTransactionManager manager})
+      {required MMFrancophoneTransactionManager manager})
       : super(transactionManager: manager);
 
   @override
@@ -31,7 +31,7 @@ class _MobileMoneyFrancophonePaymentWidgetState
           textInputAction: TextInputAction.done,
           hintText: '054xxxxxxxxx',
           onFieldSubmitted: (value) => swapFocus(_phoneFocusNode),
-          onSaved: (value) => payload.phoneNumber = value),
+          onSaved: (value) => payload!.phoneNumber = value),
     ];
   }
 

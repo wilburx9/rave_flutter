@@ -15,7 +15,7 @@ import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class AccountPaymentWidget extends BasePaymentPage {
-  AccountPaymentWidget({@required AccountTransactionManager manager})
+  AccountPaymentWidget({required AccountTransactionManager manager})
       : super(transactionManager: manager);
 
   @override
@@ -24,16 +24,16 @@ class AccountPaymentWidget extends BasePaymentPage {
 
 class _AccountPaymentWidgetState
     extends BasePaymentPageState<AccountPaymentWidget> {
-  Future<List<BankModel>> _banks;
+  Future<List<BankModel>>? _banks;
   var _phoneFocusNode = FocusNode();
   var _bvnFocusNode = FocusNode();
   var _accountFocusNode = FocusNode();
-  BankModel _selectedBank;
-  DateTime _pickedDate;
+  BankModel? _selectedBank;
+  DateTime? _pickedDate;
 
   @override
   void initState() {
-    _banks = BankService.instance.fetchBanks;
+    _banks = BankService.instance!.fetchBanks;
     super.initState();
   }
 
@@ -64,7 +64,7 @@ class _AccountPaymentWidgetState
               ),
             ),
           );
-        } else if (snapshot.hasData && snapshot.data.isNotEmpty) {
+        } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           widget = Column(
             children: <Widget>[buildHeader(), buildMainFields(snapshot.data)],
           );
@@ -75,7 +75,7 @@ class _AccountPaymentWidgetState
             child: FlatButton(
                 onPressed: () {
                   setState(() {
-                    _banks = BankService.instance.fetchBanks;
+                    _banks = BankService.instance!.fetchBanks;
                   });
                 },
                 color: MyColors.buttercup,
@@ -102,26 +102,26 @@ class _AccountPaymentWidgetState
               _phoneFocusNode,
               _selectedBank == null
                   ? null
-                  : _selectedBank.showAccountNumField()
+                  : _selectedBank!.showAccountNumField()
                       ? _accountFocusNode
-                      : _selectedBank.showBVNField() ? _bvnFocusNode : null),
-          onSaved: (value) => payload.phoneNumber = value),
-      _selectedBank != null && _selectedBank.showAccountNumField()
+                      : _selectedBank!.showBVNField() ? _bvnFocusNode : null),
+          onSaved: (value) => payload!.phoneNumber = value),
+      _selectedBank != null && _selectedBank!.showAccountNumField()
           ? AccountNumberField(
               focusNode: _accountFocusNode,
-              textInputAction: _selectedBank.showBVNField()
+              textInputAction: _selectedBank!.showBVNField()
                   ? TextInputAction.next
                   : TextInputAction.done,
               onFieldSubmitted: (value) => swapFocus(_accountFocusNode,
-                  _selectedBank.showBVNField() ? _bvnFocusNode : null),
-              onSaved: (value) => payload.accountNumber = value)
+                  _selectedBank!.showBVNField() ? _bvnFocusNode : null),
+              onSaved: (value) => payload!.accountNumber = value)
           : SizedBox(),
-      _selectedBank != null && _selectedBank.showBVNField()
+      _selectedBank != null && _selectedBank!.showBVNField()
           ? BVNField(
               focusNode: _bvnFocusNode,
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (value) => swapFocus(_bvnFocusNode),
-              onSaved: (value) => payload.bvn = value)
+              onSaved: (value) => payload!.bvn = value)
           : SizedBox(),
       DropdownButtonHideUnderline(
         child: InputDecorator(
@@ -134,11 +134,11 @@ class _AccountPaymentWidgetState
             fillColor: Colors.grey[50],
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Colors.grey[400].withOpacity(.7), width: .5),
+                    color: Colors.grey[400]!.withOpacity(.7), width: .5),
                 borderRadius: BorderRadius.all(Radius.circular(1.5))),
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Colors.grey[400].withOpacity(.7), width: 1),
+                    color: Colors.grey[400]!.withOpacity(.7), width: 1),
                 borderRadius: BorderRadius.all(Radius.circular(1.5))),
             hintText: 'Select bank',
           ),
@@ -146,16 +146,16 @@ class _AccountPaymentWidgetState
           child: new DropdownButton<BankModel>(
             value: _selectedBank,
             isDense: true,
-            onChanged: (BankModel newValue) {
+            onChanged: (BankModel? newValue) {
               setState(() => _selectedBank = newValue);
-              payload.bank = _selectedBank;
+              payload!.bank = _selectedBank;
             },
             items: data
                 .cast<BankModel>()
                 .map((BankModel value) {
                   return new DropdownMenuItem<BankModel>(
                     value: value,
-                    child: new Text(value.name),
+                    child: new Text(value.name!),
                   );
                 })
                 .cast<DropdownMenuItem<BankModel>>()
@@ -163,7 +163,7 @@ class _AccountPaymentWidgetState
           ),
         ),
       ),
-      _selectedBank != null && _selectedBank.showDOBField()
+      _selectedBank != null && _selectedBank!.showDOBField()
           ? InkWell(
               onTap: _selectBirthday,
               child: IgnorePointer(
@@ -185,14 +185,14 @@ class _AccountPaymentWidgetState
 
   @override
   onFormValidated() {
-    payload..bank = _selectedBank;
+    payload!..bank = _selectedBank;
     super.onFormValidated();
   }
 
   void _selectBirthday() async {
     updateDate(date) {
       setState(() => _pickedDate = date);
-      payload.passCode = DateFormat('dd/MM/yyyy').format(_pickedDate);
+      payload!.passCode = DateFormat('dd/MM/yyyy').format(_pickedDate!);
     }
 
     var now = new DateTime.now();
@@ -227,7 +227,7 @@ class _AccountPaymentWidgetState
                 ),
               ));
     } else {
-      DateTime result = await showDatePicker(
+      DateTime? result = await showDatePicker(
           context: context,
           selectableDayPredicate: (DateTime val) =>
               val.year > now.year && val.month > now.month && val.day > now.day
@@ -241,7 +241,7 @@ class _AccountPaymentWidgetState
     }
   }
 
-  String geFormattedDate() => DateFormat.yMMMMd().format(_pickedDate);
+  String geFormattedDate() => DateFormat.yMMMMd().format(_pickedDate!);
 
   @override
   FocusNode getNextFocusNode() => _phoneFocusNode;

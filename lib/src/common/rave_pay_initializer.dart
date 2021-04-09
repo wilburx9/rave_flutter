@@ -5,9 +5,9 @@ import 'package:rave_flutter/src/models/sub_account.dart';
 
 class RavePayInitializer {
   /// Your customer email. Must be provided otherwise your customer will be promted to input it
-  String email;
+  String? email;
 
-  /// The amount to be charged in the supplied [currency]. Must be a valid non=null and
+  /// The amount to be charged in the supplied [currency]. Must be a
   /// positive double. Otherwise, the customer will be asked to input an
   /// amount (this is especially useful for donations).
   double amount;
@@ -18,35 +18,35 @@ class RavePayInitializer {
   /// Rave's merchant encryption key
   String encryptionKey;
 
-  /// Transaction reference. It cannot be null or empty
+  /// Transaction reference. It should not be empty
   String txRef;
 
   /// Order reference. Unique ref for the mobile money transaction to be provided by the merchant.
   /// Required for mobile money francophone africa payments
-  String orderRef;
+  String? orderRef;
 
   /// Custom description added by the merchant.
-  String narration;
+  String? narration;
 
-  /// An ISO 4217 currency code (e.g USD, NGN). I cannot be empty or null. Defaults to NGN
+  /// An ISO 4217 currency code (e.g USD, NGN). Should not be empty. Defaults to NGN
   String currency;
 
   /// ISO 3166-1 alpha-2 country code (e.g US, NG). Defaults to NG
   String country;
 
   /// Your customer's first name.
-  String fName;
+  String? fName;
 
   /// Your customer's last name.
-  String lName;
+  String? lName;
 
   /// Your custom data in key-value pairs
-  Map<String, String> meta;
+  Map<String, String?>? meta;
 
   /// As list of sub-accounts. Sub accounts are your vendor's accounts that you
   /// want to settle per transaction.
   /// See https://developer.flutterwave.com/docs/split-payment
-  List<SubAccount> subAccounts;
+  List<SubAccount>? subAccounts;
 
   /// plan id for recurrent payments. Only available for card payment.
   /// More info:
@@ -54,7 +54,7 @@ class RavePayInitializer {
   /// https://developer.flutterwave.com/reference#create-payment-plan
   ///
   /// https://developer.flutterwave.com/docs/recurring-billing
-  String paymentPlan;
+  String? paymentPlan;
 
   /// Whether to accept US and South African ACH payments.
   /// `US` and `USD` needs to be set as [country] and [currency] respectively
@@ -99,23 +99,24 @@ class RavePayInitializer {
 
   /// Your company's logo. Displayed on the top-left of the payment prompt.
   /// Displays Flutterwave's logo if null
-  Widget companyLogo;
+  Widget? companyLogo;
 
   /// Company name. Displayed on the top right of the payment prompt.
   /// If null and [staging] is true, a "Demo" text is displayed.
-  Widget companyName;
+  Widget? companyName;
 
   /// URL to redirect to when a transaction is completed. This is useful for 3DSecure payments so we can redirect your customer back to a custom page you want to show them.
   String redirectUrl;
 
   /// The text that is displayed on the pay button. Defaults to "Pay [currency][amount]"
-  String payButtonText;
+  String? payButtonText;
 
-  // TODO: Validate payment method required params
+
   RavePayInitializer({
-    @required this.amount,
-    @required this.publicKey,
-    @required this.encryptionKey,
+    required this.amount,
+    required this.publicKey,
+    required this.encryptionKey,
+    required this.txRef,
     this.currency = Strings.ngn,
     this.country = Strings.ng,
     this.narration = '',
@@ -132,9 +133,8 @@ class RavePayInitializer {
     this.acceptMobileMoneyFrancophoneAfricaPayments = false,
     this.isPreAuth = false,
     this.displayFee = true,
-    bool staging,
+    bool? staging,
     this.email,
-    this.txRef,
     this.orderRef,
     this.companyLogo,
     this.companyName,

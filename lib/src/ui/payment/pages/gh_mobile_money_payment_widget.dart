@@ -6,7 +6,7 @@ import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class GhMobileMoneyPaymentWidget extends BasePaymentPage {
-  GhMobileMoneyPaymentWidget({@required GhMMTransactionManager manager})
+  GhMobileMoneyPaymentWidget({required GhMMTransactionManager manager})
       : super(transactionManager: manager);
 
   @override
@@ -19,7 +19,7 @@ class _GhMobileMoneyPaymentWidgetState
   var _phoneFocusNode = FocusNode();
   var _voucherFocusNode = FocusNode();
   var _networks = ['MTN', 'Tigo', 'Vodafone'];
-  String _selectedNetwork;
+  String? _selectedNetwork;
 
   @override
   void dispose() {
@@ -43,11 +43,11 @@ class _GhMobileMoneyPaymentWidgetState
             fillColor: Colors.grey[50],
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Colors.grey[400].withOpacity(.7), width: .5),
+                    color: Colors.grey[400]!.withOpacity(.7), width: .5),
                 borderRadius: BorderRadius.all(Radius.circular(1.5))),
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: Colors.grey[400].withOpacity(.7), width: 1),
+                    color: Colors.grey[400]!.withOpacity(.7), width: 1),
                 borderRadius: BorderRadius.all(Radius.circular(1.5))),
             hintText: 'Select network',
           ),
@@ -55,14 +55,14 @@ class _GhMobileMoneyPaymentWidgetState
           child: new DropdownButton<String>(
             value: _selectedNetwork,
             isDense: true,
-            onChanged: (String newValue) {
+            onChanged: (String? newValue) {
               setState(() => _selectedNetwork = newValue);
-              payload.network = _selectedNetwork;
+              payload!.network = _selectedNetwork;
             },
-            items: _networks.map((String value) {
+            items: _networks.map((String? value) {
               return new DropdownMenuItem<String>(
                 value: value,
-                child: new Text(value),
+                child: new Text(value!),
               );
             }).toList(),
           ),
@@ -75,11 +75,8 @@ class _GhMobileMoneyPaymentWidgetState
               : TextInputAction.done,
           hintText: '233xxxxxxx',
           onFieldSubmitted: (value) => swapFocus(
-              _phoneFocusNode,
-              _networks.indexOf(_selectedNetwork) == 2
-                  ? _voucherFocusNode
-                  : null),
-          onSaved: (value) => payload.phoneNumber),
+              _phoneFocusNode, isVodaFoneSelected() ? _voucherFocusNode : null),
+          onSaved: (value) => payload!.phoneNumber),
       isVodaFoneSelected()
           ? BaseTextField(
               focusNode: _voucherFocusNode,
@@ -87,17 +84,16 @@ class _GhMobileMoneyPaymentWidgetState
               hintText: 'VOUCHER',
               onFieldSubmitted: (value) => swapFocus(_voucherFocusNode),
               validator: (value) =>
-                  value.trim().isEmpty ? Strings.invalidVoucher : null,
-              onSaved: (value) => payload.voucher)
+                  value!.trim().isEmpty ? Strings.invalidVoucher : null,
+              onSaved: (value) => payload!.voucher)
           : SizedBox(),
     ];
   }
 
-  bool isVodaFoneSelected() => _networks.indexOf(_selectedNetwork) == 2;
+  bool isVodaFoneSelected() => _networks.indexOf(_selectedNetwork ?? "") == 2;
 
   @override
   onFormValidated() {
-    // TODO: implement onFormValidated
     super.onFormValidated();
     return null;
   }

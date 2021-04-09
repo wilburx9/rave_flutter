@@ -285,7 +285,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         amount: amount,
         publicKey: publicKey,
         encryptionKey: encryptionKey,
-        subAccounts: subAccounts.isEmpty ? null : null)
+        subAccounts: subAccounts.isEmpty ? null : null, txRef: txRef)
       ..country =
           country = country != null && country.isNotEmpty ? country : "NG"
       ..currency = currency != null && currency.isNotEmpty ? currency : "NGN"
@@ -293,7 +293,6 @@ class _HomeWidgetState extends State<HomeWidget> {
       ..fName = firstName
       ..lName = lastName
       ..narration = narration ?? ''
-      ..txRef = txRef
       ..orderRef = orderRef
       ..acceptMpesaPayments = acceptMpesaPayment
       ..acceptAccountPayments = acceptAccountPayment

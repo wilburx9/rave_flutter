@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 /// to retain the dialog feel and look while adding the close IconButton
 class CustomAlertDialog extends StatelessWidget {
   const CustomAlertDialog({
-    Key key,
+    Key? key,
     this.title,
     this.titlePadding,
     this.contentPadding = const EdgeInsets.symmetric(vertical: 10),
@@ -18,12 +18,12 @@ class CustomAlertDialog extends StatelessWidget {
         topRight: _defaultRadiusLarge,
         bottomRight: _defaultRadiusSmall,
         bottomLeft: _defaultRadiusSmall),
-    @required this.content,
+    required this.content,
   })  : assert(content != null),
         super(key: key);
 
-  final Widget title;
-  final EdgeInsetsGeometry titlePadding;
+  final Widget? title;
+  final EdgeInsetsGeometry? titlePadding;
   final Widget content;
   final EdgeInsetsGeometry contentPadding;
   final bool expanded;
@@ -36,9 +36,9 @@ class CustomAlertDialog extends StatelessWidget {
 
     if (title != null && titlePadding != null) {
       children.add(Padding(
-        padding: titlePadding,
+        padding: titlePadding!,
         child: DefaultTextStyle(
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.headline6!,
           child: Semantics(child: title, namesRoute: true),
         ),
       ));
@@ -48,7 +48,7 @@ class CustomAlertDialog extends StatelessWidget {
       child: Padding(
         padding: contentPadding,
         child: DefaultTextStyle(
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.subtitle1!,
           child: content,
         ),
       ),
@@ -97,9 +97,9 @@ class CustomAlertDialog extends StatelessWidget {
 /// elevation and changing the Material type.
 class CustomDialog extends StatelessWidget {
   CustomDialog({
-    Key key,
-    @required this.child,
-    @required this.expanded,
+    Key? key,
+    required this.child,
+    required this.expanded,
     this.insetAnimationDuration = const Duration(milliseconds: 100),
     this.insetAnimationCurve = Curves.decelerate,
   }) : super(key: key);

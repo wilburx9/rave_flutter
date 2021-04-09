@@ -38,13 +38,13 @@ class RavePayWidget extends StatefulWidget {
 class _RavePayWidgetState extends BaseState<RavePayWidget>
     with TickerProviderStateMixin {
   final RavePayInitializer _initializer = Repository.instance.initializer;
-  AnimationController _animationController;
-  Animation _animation;
+  late AnimationController _animationController;
+  late Animation _animation;
   var _slideUpTween = Tween<Offset>(begin: Offset(0, 0.4), end: Offset.zero);
   var _slideRightTween =
       Tween<Offset>(begin: Offset(-0.4, 0), end: Offset.zero);
-  int _selectedIndex;
-  List<_Item> _items;
+  int? _selectedIndex;
+  late List<_Item> _items;
 
   @override
   void initState() {
@@ -73,11 +73,12 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
   Widget buildChild(BuildContext context) {
     var column = Column(
       children: _items.map((item) {
-        var index = _items.indexOf(item);
-        return _selectedIndex == index ? item.content : buildItemHeader(index);
-      }).toList() + [
-        FlutterwaveBadge()
-      ],
+            var index = _items.indexOf(item);
+            return _selectedIndex == index
+                ? item.content
+                : buildItemHeader(index);
+          }).toList() +
+          [FlutterwaveBadge()],
     );
     Widget child = SingleChildScrollView(
       child: AnimatedSize(
@@ -89,11 +90,11 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
           stream: TransactionBloc.instance.stream,
           builder: (_, snapshot) {
             var transactionState = snapshot.data;
-            Widget w;
+            late Widget w;
             if (!snapshot.hasData) {
               w = column;
             } else {
-              switch (transactionState.state) {
+              switch (transactionState!.state) {
                 case State.initial:
                   w = column;
                   break;
@@ -131,9 +132,9 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
       duration: Duration(milliseconds: 400),
       curve: Curves.linear,
       child: FadeTransition(
-        opacity: _animation,
+        opacity: _animation as Animation<double>,
         child: SlideTransition(
-          position: _slideUpTween.animate(_animation),
+          position: _slideUpTween.animate(_animation as Animation<double>),
           child: Stack(
             alignment: AlignmentDirectional.center,
             children: <Widget>[
@@ -158,8 +159,8 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
 
   Widget _buildHeader() {
     var displayEmail = _initializer.displayEmail && _initializer.email != null;
-    var displayAmount = _initializer.displayAmount &&
-        (_initializer.amount != null || !_initializer.amount.isNegative);
+    var displayAmount =
+        _initializer.displayAmount && !_initializer.amount.isNegative;
 
     var rightWidget = displayEmail || displayAmount
         ? Column(
@@ -167,7 +168,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
             children: <Widget>[
               if (displayEmail)
                 Text(
-                  _initializer.email,
+                  _initializer.email!,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Colors.grey[700], fontSize: 12.0),
@@ -251,7 +252,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
         children: <Widget>[
           header,
           SlideTransition(
-            position: _slideRightTween.animate(_animation),
+            position: _slideRightTween.animate(_animation as Animation<double>),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,7 +282,7 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
       );
     }
     return FadeTransition(
-      opacity: _animation,
+      opacity: _animation as Animation<double>,
       child: Padding(
         padding: const EdgeInsets.only(left: 20, bottom: 10, top: 5),
         child: header,

@@ -4,7 +4,7 @@ import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class MpesaPaymentWidget extends BasePaymentPage {
-  MpesaPaymentWidget({@required MpesaTransactionManager manager})
+  MpesaPaymentWidget({required MpesaTransactionManager manager})
       : super(transactionManager: manager);
 
   @override
@@ -29,7 +29,7 @@ class _MpesaPaymentWidgetState
           textInputAction: TextInputAction.done,
           hintText: '234xxxxxxxxx',
           onFieldSubmitted: (value) => swapFocus(_phoneFocusNode),
-          onSaved: (value) => payload.phoneNumber = value),
+          onSaved: (value) => payload!.phoneNumber = value),
     ];
   }
 

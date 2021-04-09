@@ -6,7 +6,7 @@ class WebViewWidget extends StatefulWidget {
   final String authUrl;
   final String callbackUrl;
 
-  WebViewWidget({@required this.authUrl, @required this.callbackUrl});
+  WebViewWidget({required this.authUrl, required this.callbackUrl});
 
   @override
   _WebViewWidgetState createState() => _WebViewWidgetState();

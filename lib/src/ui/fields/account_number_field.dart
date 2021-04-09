@@ -6,15 +6,15 @@ import 'package:rave_flutter/src/ui/fields/base_field.dart';
 
 class AccountNumberField extends BaseTextField {
   AccountNumberField({
-    @required FormFieldSetter<String> onSaved,
-    FocusNode focusNode,
-    TextInputAction textInputAction,
-    ValueChanged<String> onFieldSubmitted,
+    required FormFieldSetter<String> onSaved,
+    FocusNode? focusNode,
+    TextInputAction? textInputAction,
+    ValueChanged<String>? onFieldSubmitted,
   }) : super(
           labelText: 'ACCOUNT NUMBER',
           hintText: '1234567789',
           onSaved: onSaved,
-          validator: (String value) => validatePhoneNum(value),
+          validator: (String? value) => validatePhoneNum(value),
           focusNode: focusNode,
           onFieldSubmitted: onFieldSubmitted,
           textInputAction: textInputAction,
@@ -24,7 +24,7 @@ class AccountNumberField extends BaseTextField {
           ],
         );
 
-  static String validatePhoneNum(String input) {
+  static String? validatePhoneNum(String? input) {
     return ValidatorUtils.isAccountValid(input)
         ? null
         : Strings.invalidAccountNumber;

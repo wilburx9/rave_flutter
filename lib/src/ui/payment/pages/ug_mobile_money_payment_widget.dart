@@ -4,7 +4,7 @@ import 'package:rave_flutter/src/ui/fields/phone_number_field.dart';
 import 'package:rave_flutter/src/ui/payment/pages/base_payment_page.dart';
 
 class UgMobileMoneyPaymentWidget extends BasePaymentPage {
-  UgMobileMoneyPaymentWidget({@required UgMMTransactionManager manager})
+  UgMobileMoneyPaymentWidget({required UgMMTransactionManager manager})
       : super(transactionManager: manager);
 
   @override
@@ -30,7 +30,7 @@ class _UgMobileMoneyPaymentWidgetState
           textInputAction: TextInputAction.done,
           hintText: '256xxxxxxxxx',
           onFieldSubmitted: (value) => swapFocus(_phoneFocusNode),
-          onSaved: (value) => payload.phoneNumber),
+          onSaved: (value) => payload!.phoneNumber),
     ];
   }
 

@@ -7,10 +7,10 @@ import 'package:rave_flutter/src/ui/fields/base_field.dart';
 
 class ExpiryDateField extends BaseTextField {
   ExpiryDateField({
-    @required FormFieldSetter<String> onSaved,
-    FocusNode focusNode,
-    TextInputAction textInputAction,
-    ValueChanged<String> onFieldSubmitted,
+    required FormFieldSetter<String> onSaved,
+    FocusNode? focusNode,
+    TextInputAction? textInputAction,
+    ValueChanged<String>? onFieldSubmitted,
   }) : super(
           labelText: 'CARD EXPIRY',
           hintText: 'MM/YY',
@@ -26,13 +26,13 @@ class ExpiryDateField extends BaseTextField {
           ],
         );
 
-  static String validateDate(String value) {
-    if (value.isEmpty) {
+  static String? validateDate(String? value) {
+    if (value!.isEmpty) {
       return Strings.invalidExpiry;
     }
 
-    int year;
-    int month;
+    int? year;
+    int? month;
     // The value contains a forward slash if the month and year has been
     // entered.
     if (value.contains(new RegExp(r'(\/)'))) {

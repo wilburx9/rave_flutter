@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rave_flutter/src/common/my_colors.dart';
 import 'package:rave_flutter/src/common/rave_pay_initializer.dart';
@@ -19,8 +21,8 @@ class RavePayManager {
   @Deprecated(
       "'initilize' doesn't properly communicate the purpose of this function. Use the `prompt` function. Will be removed in version 1.0.0")
   Future<RaveResult> initialize({
-    @required BuildContext context,
-    @required RavePayInitializer initializer,
+    required BuildContext context,
+    required RavePayInitializer initializer,
   }) async {
     return prompt(context: context, initializer: initializer);
   }
@@ -37,12 +39,9 @@ class RavePayManager {
   /// Please, enable embedded_views_preview on iOS. See https://stackoverflow.com/a/55290868/6181476
   ///  {@endtemplate}
   Future<RaveResult> prompt({
-    @required BuildContext context,
-    @required RavePayInitializer initializer,
+    required BuildContext context,
+    required RavePayInitializer initializer,
   }) async {
-    assert(context != null);
-    assert(initializer != null);
-
     // Validate the initializer params
     var error = ValidatorUtils.validateInitializer(initializer);
     if (error != null) {
@@ -54,7 +53,7 @@ class RavePayManager {
 
     Repository.bootStrap(initializer);
 
-    var result = showDialog<RaveResult>(
+    var result = showDialog<RaveResult?>(
       context: context,
       barrierDismissible: false,
       builder: (_) => Theme(
@@ -64,7 +63,7 @@ class RavePayManager {
     );
 
     // Return a cancelled response if result is null
-    return result == null ? RaveResult(status: RaveStatus.cancelled) : result;
+    return result == null ? RaveResult(status: RaveStatus.cancelled) : result as FutureOr<RaveResult>;
   }
 
   ThemeData _getDefaultTheme(BuildContext context) {

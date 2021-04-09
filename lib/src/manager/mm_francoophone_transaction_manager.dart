@@ -9,8 +9,8 @@ import 'package:rave_flutter/src/manager/base_transaction_manager.dart';
 
 class MMFrancophoneTransactionManager extends BaseTransactionManager {
   MMFrancophoneTransactionManager(
-      {@required BuildContext context,
-      @required TransactionComplete onTransactionComplete})
+      {required BuildContext context,
+      required TransactionComplete onTransactionComplete})
       : super(
           context: context,
           onTransactionComplete: onTransactionComplete,
@@ -20,9 +20,9 @@ class MMFrancophoneTransactionManager extends BaseTransactionManager {
   charge() async {
     setConnectionState(ConnectionState.waiting);
     try {
-      var response = await service.charge(
+      var response = await service!.charge(
         ChargeRequestBody.fromPayload(
-            payload: payload..isMobileMoneyFranco = true,
+            payload: payload!..isMobileMoneyFranco = true,
             type: "mobilemoneyfranco"),
       );
       setConnectionState(ConnectionState.done);
@@ -35,7 +35,7 @@ class MMFrancophoneTransactionManager extends BaseTransactionManager {
       }
 
       onTransactionComplete(RaveResult(
-          status: response.status.toLowerCase() == "success"
+          status: response.status!.toLowerCase() == "success"
               ? RaveStatus.success
               : RaveStatus.error,
           rawResponse: response.rawResponse,

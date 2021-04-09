@@ -1,7 +1,7 @@
 class BankModel {
-  final String name;
-  final String code;
-  final bool internetBanking;
+  final String? name;
+  final String? code;
+  final bool? internetBanking;
 
   BankModel.fromJson(Map map)
       : this.name = map['bankname'],
@@ -14,5 +14,5 @@ class BankModel {
   bool showDOBField() =>
       code == '057' || code == '033'; // 057 is for ZENITH BANK PLC
 
-  bool showAccountNumField() => !internetBanking;
+  bool showAccountNumField() => !internetBanking!;
 }

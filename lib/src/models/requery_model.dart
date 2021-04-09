@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 class ReQueryResponseModel extends Equatable {
-  final String status;
-  final String chargeResponseCode;
-  final String dataStatus;
-  final Map rawResponse;
-  final String message;
-  final bool hasData;
+  final String? status;
+  final String? chargeResponseCode;
+  final String? dataStatus;
+  final Map? rawResponse;
+  final String? message;
+  final bool? hasData;
 
   ReQueryResponseModel({
     this.status,
@@ -19,7 +19,7 @@ class ReQueryResponseModel extends Equatable {
 
   factory ReQueryResponseModel.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic> data = json["data"] ?? {};
-    String message = data["vbvrespmessage"]?.toString();
+    String? message = data["vbvrespmessage"]?.toString();
     if (message == null || message.toUpperCase() == "N/A") {
       message = data["chargeResponseMessage"];
     }
@@ -33,5 +33,5 @@ class ReQueryResponseModel extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, chargeResponseCode, dataStatus];
+  List<Object?> get props => [status, chargeResponseCode, dataStatus];
 }

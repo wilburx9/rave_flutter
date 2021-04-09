@@ -4,9 +4,9 @@ import 'package:rave_flutter/src/repository/repository.dart';
 import 'package:rave_flutter/src/services/http_service.dart';
 
 class BankService {
-  static BankService get instance => getIt<BankService>();
+  static BankService? get instance => getIt<BankService>();
 
-  final HttpService _httpService;
+  final HttpService? _httpService;
 
   static final String _basePath = "/flwv3-pug/getpaidx/api";
   final String _bankEndpoint = "$_basePath/flwpbf-banks.js";
@@ -21,13 +21,13 @@ class BankService {
 
   Future<List<BankModel>> get fetchBanks => _banksCache.runOnce(() async {
         final response = await this
-            ._httpService
-            .dio
+            ._httpService!
+            .dio!
             .get(_bankEndpoint, queryParameters: {'json': '1'});
 
         var banks =
             (response.data as List).map((m) => BankModel.fromJson(m)).toList();
-        banks.sort((a, b) => a.name.compareTo(b.name)); // Sort alphabetically
+        banks.sort((a, b) => a.name!.compareTo(b.name!)); // Sort alphabetically
         return banks;
       });
 }

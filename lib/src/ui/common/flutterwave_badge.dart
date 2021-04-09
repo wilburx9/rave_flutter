@@ -28,7 +28,7 @@ class FlutterwaveBadge extends StatelessWidget{
                 padding: const EdgeInsets.only(right: 6, top: 12, bottom: 12),
                 child: Text(
                   'SECURED BY FLUTTERWAVE',
-                  style: Theme.of(context).textTheme.button.copyWith(
+                  style: Theme.of(context).textTheme.button!.copyWith(
                     fontSize: 10,
                     color: MyColors.buttercup
                   ),

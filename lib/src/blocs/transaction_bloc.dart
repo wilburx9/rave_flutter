@@ -7,9 +7,9 @@ class TransactionBloc {
   static TransactionBloc get instance => getIt<TransactionBloc>();
   final _controller = StreamController<TransactionState>.broadcast();
 
-  Stream<TransactionState> _stream;
+  late Stream<TransactionState> _stream;
 
-  Stream<TransactionState> get stream => _stream;
+  Stream<TransactionState>? get stream => _stream;
 
   TransactionBloc._() {
     _stream = _controller.stream;
@@ -25,10 +25,10 @@ class TransactionBloc {
 
 class TransactionState {
   final State state;
-  final ValueChanged<dynamic> callback;
+  final ValueChanged<dynamic>? callback;
   final data;
 
-  TransactionState({@required this.state, this.callback, this.data});
+  TransactionState({required this.state, this.callback, this.data});
 
   TransactionState._defaults()
       : this.state = State.initial,
