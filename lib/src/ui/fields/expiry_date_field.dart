@@ -20,9 +20,9 @@ class ExpiryDateField extends BaseTextField {
           onFieldSubmitted: onFieldSubmitted,
           textInputAction: textInputAction,
           inputFormatters: [
-            WhitelistingTextInputFormatter.digitsOnly,
-            new LengthLimitingTextInputFormatter(4),
-            new CardMonthInputFormatter()
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(4),
+            CardMonthInputFormatter()
           ],
         );
 
@@ -35,8 +35,8 @@ class ExpiryDateField extends BaseTextField {
     int? month;
     // The value contains a forward slash if the month and year has been
     // entered.
-    if (value.contains(new RegExp(r'(\/)'))) {
-      var split = value.split(new RegExp(r'(\/)'));
+    if (value.contains(new RegExp(r'(/)'))) {
+      var split = value.split(new RegExp(r'(/)'));
       // The value before the slash is the month while the value to right of
       // it is the year.
       month = int.tryParse(split[0]);

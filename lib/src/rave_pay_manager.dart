@@ -53,7 +53,7 @@ class RavePayManager {
 
     Repository.bootStrap(initializer);
 
-    var result = showDialog<RaveResult?>(
+    var result = await showDialog<RaveResult?>(
       context: context,
       barrierDismissible: false,
       builder: (_) => Theme(
@@ -63,7 +63,7 @@ class RavePayManager {
     );
 
     // Return a cancelled response if result is null
-    return result == null ? RaveResult(status: RaveStatus.cancelled) : result as FutureOr<RaveResult>;
+    return result ?? RaveResult(status: RaveStatus.cancelled);
   }
 
   ThemeData _getDefaultTheme(BuildContext context) {

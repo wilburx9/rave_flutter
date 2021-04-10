@@ -20,7 +20,7 @@ class PhoneNumberField extends BaseTextField {
           textInputAction: textInputAction,
           validator: (String? value) => validatePhoneNum(value),
           inputFormatters: [
-            WhitelistingTextInputFormatter.digitsOnly,
+            FilteringTextInputFormatter.digitsOnly,
           ],
         );
 

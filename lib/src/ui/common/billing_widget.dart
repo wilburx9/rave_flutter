@@ -13,7 +13,7 @@ class BillingWidget extends StatefulWidget {
 
 class _BillingWidgetState extends State<BillingWidget> {
   var _formKey = GlobalKey<FormState>();
-  var _autoValidate = false;
+  var _autoValidate = AutovalidateMode.disabled;
   String? address;
   String? city;
   String? state;
@@ -26,7 +26,7 @@ class _BillingWidgetState extends State<BillingWidget> {
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Form(
         key: _formKey,
-        autovalidate: _autoValidate,
+        autovalidateMode: _autoValidate,
         child: Column(
           children: <Widget>[
             Text(
@@ -72,8 +72,11 @@ class _BillingWidgetState extends State<BillingWidget> {
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(top: 20, bottom: 10),
-              child: FlatButton(
-                color: MyColors.buttercup,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                    backgroundColor: MyColors.buttercup,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 18, horizontal: 20)),
                 child: Text(
                   "Continue",
                   style: TextStyle(
@@ -81,7 +84,6 @@ class _BillingWidgetState extends State<BillingWidget> {
                       color: Colors.white,
                       fontSize: 15),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
                 onPressed: _validateInputs,
               ),
             )
@@ -101,12 +103,10 @@ class _BillingWidgetState extends State<BillingWidget> {
         "city": city,
         "state": state,
         "zip": zip,
-        "counntry": country
+        "country": country
       });
     } else {
-      setState(() {
-        _autoValidate = true;
-      });
+      setState(() => _autoValidate = AutovalidateMode.always);
     }
   }
 

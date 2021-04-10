@@ -24,7 +24,7 @@ class CardNumberField extends BaseTextField {
           textInputAction: textInputAction,
           validator: (String? value) => validateCardNum(value),
           inputFormatters: [
-            WhitelistingTextInputFormatter.digitsOnly,
+            FilteringTextInputFormatter.digitsOnly,
             new LengthLimitingTextInputFormatter(19),
             new CardNumberInputFormatter()
           ],

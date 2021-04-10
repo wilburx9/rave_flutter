@@ -30,7 +30,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   var _amountFocusNode = FocusNode();
   late Animation _animation;
   var _slideInTween = Tween<Offset>(begin: Offset(0, -0.5), end: Offset.zero);
-  bool _autoValidate = false;
+  var _autoValidate = AutovalidateMode.disabled;
   Payload? payload;
 
   bool _cameWithValidAmount = true;
@@ -136,10 +136,12 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
     var payButton = Container(
       width: double.infinity,
       margin: EdgeInsets.only(top: 20, bottom: 15),
-      child: FlatButton(
+      child: TextButton(
         onPressed: _validateInputs,
-        color: MyColors.buttercup,
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        style: TextButton.styleFrom(
+          backgroundColor: MyColors.buttercup,
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        ),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -180,7 +182,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
     return Form(
       key: formKey,
-      autovalidate: _autoValidate,
+      autovalidateMode: _autoValidate,
       child: Column(
         children: amountAndEmailFields
           ..insert(0, topWidget)
@@ -265,7 +267,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
   _validateInputs() {
     var formState = formKey.currentState!;
     if (!formState.validate()) {
-      setState(() => _autoValidate = true);
+      setState(() => _autoValidate = AutovalidateMode.always);
       return;
     }
 
@@ -300,7 +302,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
   Widget buildTopWidget() => SizedBox();
 
-  bool get autoValidate => _autoValidate;
+  AutovalidateMode get autoValidate => _autoValidate;
 
   bool get supported => true;
 

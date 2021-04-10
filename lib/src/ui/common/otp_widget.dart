@@ -15,7 +15,7 @@ class OtpWidget extends StatefulWidget {
 
 class _OtpWidgetState extends State<OtpWidget> {
   var _formKey = GlobalKey<FormState>();
-  var _autoValidate = false;
+  var _autoValidate = AutovalidateMode.disabled;
   String? _otp;
   var heightBox = SizedBox(height: 20.0);
 
@@ -25,7 +25,7 @@ class _OtpWidgetState extends State<OtpWidget> {
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Form(
         key: _formKey,
-        autovalidate: _autoValidate,
+        autovalidateMode: _autoValidate,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,7 +52,7 @@ class _OtpWidgetState extends State<OtpWidget> {
               ),
               autoFocus: true,
               inputFormatters: [
-                WhitelistingTextInputFormatter.digitsOnly,
+                FilteringTextInputFormatter.digitsOnly
               ],
               obscureText: true,
               hintText: "OTP",
@@ -64,18 +64,17 @@ class _OtpWidgetState extends State<OtpWidget> {
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(top: 20, bottom: 10),
-              child: FlatButton(
-                color: MyColors.buttercup,
+              child: TextButton(
+                style: TextButton.styleFrom(backgroundColor: MyColors.buttercup, padding: EdgeInsets.symmetric(
+                  vertical: 13,
+                  horizontal: 20,
+                )),
                 child: Text(
                   "Continue",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       fontSize: 15),
-                ),
-                padding: EdgeInsets.symmetric(
-                  vertical: 13,
-                  horizontal: 20,
                 ),
                 onPressed: _validateInputs,
               ),
@@ -93,9 +92,7 @@ class _OtpWidgetState extends State<OtpWidget> {
       form.save();
       widget.onPinInputted!(_otp);
     } else {
-      setState(() {
-        _autoValidate = true;
-      });
+      setState(() => _autoValidate = AutovalidateMode.always);
     }
   }
 }

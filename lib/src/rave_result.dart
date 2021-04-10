@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 class RaveResult extends Equatable {
   /// The status of the transaction. Whether

@@ -398,8 +398,13 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(border: Border(top: border, bottom: border)),
-      child: FlatButton(
-        color: Colors.grey[100],
+      child: TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: Colors.grey[100],
+          padding: EdgeInsets.symmetric(vertical: 17, horizontal: 20),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(0))),
+        ),
         child: Row(
           children: <Widget>[
             SvgPicture.asset(
@@ -413,9 +418,6 @@ class _RavePayWidgetState extends BaseState<RavePayWidget>
             Flexible(child: Text('Pay with ${item.title}')),
           ],
         ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(0))),
-        padding: EdgeInsets.symmetric(vertical: 17, horizontal: 20),
         onPressed: () {
           setState(() {
             _selectedIndex = index;

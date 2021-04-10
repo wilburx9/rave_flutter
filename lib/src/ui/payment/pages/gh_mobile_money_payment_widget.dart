@@ -37,7 +37,7 @@ class _GhMobileMoneyPaymentWidgetState
             border: OutlineInputBorder(),
             isDense: true,
             filled: true,
-            errorText: autoValidate && _selectedNetwork == null
+            errorText: autoValidate == AutovalidateMode.always && _selectedNetwork == null
                 ? 'Select a network'
                 : null,
             fillColor: Colors.grey[50],

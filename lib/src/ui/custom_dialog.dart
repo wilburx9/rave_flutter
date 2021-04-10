@@ -19,8 +19,7 @@ class CustomAlertDialog extends StatelessWidget {
         bottomRight: _defaultRadiusSmall,
         bottomLeft: _defaultRadiusSmall),
     required this.content,
-  })  : assert(content != null),
-        super(key: key);
+  }) : super(key: key);
 
   final Widget? title;
   final EdgeInsetsGeometry? titlePadding;

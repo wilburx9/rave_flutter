@@ -19,7 +19,7 @@ class Button extends StatelessWidget {
             pressedOpacity: 0.5,
             onPressed: onPressed,
           )
-        : RaisedButton(
+        : ElevatedButton(
             onPressed: onPressed,
             child: childText == null ? Text(text.toUpperCase()) : childText,
           );

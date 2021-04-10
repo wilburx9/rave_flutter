@@ -29,7 +29,7 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   var formKey = GlobalKey<FormState>();
-  var autoValidate = false;
+  var autoValidate = AutovalidateMode.disabled;
   bool acceptCardPayment = true;
   bool acceptAccountPayment = true;
   bool acceptMpesaPayment = false;
@@ -133,7 +133,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Form(
                     key: formKey,
-                    autovalidate: autoValidate,
+                    autovalidateMode: autoValidate,
                     child: Column(
                       children: <Widget>[
                         TextFormField(
@@ -272,7 +272,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   void validateInputs() {
     var formState = formKey.currentState;
     if (!formState.validate()) {
-      setState(() => autoValidate = true);
+      setState(() => autoValidate = AutovalidateMode.always);
       return;
     }
 
@@ -285,7 +285,8 @@ class _HomeWidgetState extends State<HomeWidget> {
         amount: amount,
         publicKey: publicKey,
         encryptionKey: encryptionKey,
-        subAccounts: subAccounts.isEmpty ? null : null, txRef: txRef)
+        subAccounts: subAccounts.isEmpty ? null : subAccounts,
+        txRef: txRef)
       ..country =
           country = country != null && country.isNotEmpty ? country : "NG"
       ..currency = currency != null && currency.isNotEmpty ? currency : "NGN"
@@ -310,7 +311,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     var response = await RavePayManager()
         .prompt(context: context, initializer: initializer);
     print(response);
-    scaffoldKey.currentState
+    ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(response?.message)));
   }
 }

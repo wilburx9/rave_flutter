@@ -19,8 +19,8 @@ class CVVField extends BaseTextField {
           onFieldSubmitted: onFieldSubmitted,
           textInputAction: textInputAction,
           inputFormatters: [
-            WhitelistingTextInputFormatter.digitsOnly,
-            new LengthLimitingTextInputFormatter(4),
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(4),
           ],
         );
 
