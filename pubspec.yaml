@@ -22,7 +22,9 @@ dependencies:
   tripledes: ^2.1.0
   webview_flutter: ^0.3.19+6
 
-
+dependency_overrides:
+  webview_flutter: ^0.3.19+6
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
