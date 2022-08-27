@@ -61,7 +61,7 @@ class _PinWidgetState extends State<PinWidget> {
               ),
               autoFocus: true,
               inputFormatters: [
-                WhitelistingTextInputFormatter.digitsOnly,
+                FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(4),
               ],
               obscureText: true,

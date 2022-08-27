@@ -19,7 +19,7 @@ class CVVField extends BaseTextField {
           onFieldSubmitted: onFieldSubmitted,
           textInputAction: textInputAction,
           inputFormatters: [
-            WhitelistingTextInputFormatter.digitsOnly,
+            FilteringTextInputFormatter.digitsOnly,
             new LengthLimitingTextInputFormatter(4),
           ],
         );

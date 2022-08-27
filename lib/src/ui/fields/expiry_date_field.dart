@@ -20,7 +20,7 @@ class ExpiryDateField extends BaseTextField {
           onFieldSubmitted: onFieldSubmitted,
           textInputAction: textInputAction,
           inputFormatters: [
-            WhitelistingTextInputFormatter.digitsOnly,
+            FilteringTextInputFormatter.digitsOnly,
             new LengthLimitingTextInputFormatter(4),
             new CardMonthInputFormatter()
           ],
