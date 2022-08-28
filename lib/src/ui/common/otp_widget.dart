@@ -25,7 +25,7 @@ class _OtpWidgetState extends State<OtpWidget> {
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Form(
         key: _formKey,
-        autovalidate: _autoValidate,
+        autovalidateMode: AutovalidateMode.always,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,7 +52,7 @@ class _OtpWidgetState extends State<OtpWidget> {
               ),
               autoFocus: true,
               inputFormatters: [
-                WhitelistingTextInputFormatter.digitsOnly,
+                FilteringTextInputFormatter.digitsOnly,
               ],
               obscureText: true,
               hintText: "OTP",

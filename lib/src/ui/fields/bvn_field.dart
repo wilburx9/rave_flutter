@@ -19,7 +19,7 @@ class BVNField extends BaseTextField {
           onFieldSubmitted: onFieldSubmitted,
           textInputAction: textInputAction,
           inputFormatters: [
-            WhitelistingTextInputFormatter.digitsOnly,
+            FilteringTextInputFormatter.digitsOnly,
             LengthLimitingTextInputFormatter(11)
           ],
         );

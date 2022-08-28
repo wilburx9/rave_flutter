@@ -180,7 +180,7 @@ abstract class BasePaymentPageState<T extends BasePaymentPage> extends State<T>
 
     return Form(
       key: formKey,
-      autovalidate: _autoValidate,
+      autovalidateMode: AutovalidateMode.always,
       child: Column(
         children: amountAndEmailFields
           ..insert(0, topWidget)

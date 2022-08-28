@@ -1,7 +1,6 @@
 name: rave_flutter
 description: A new Flutter plugin for making payment with Flutterwave's rave.
 version: 0.0.9-alpha+2
-author: Wilberforce Uwadiegwu <faradaywilly@gmail.com>
 homepage: https://github.com/wilburt/rave_flutter
 
 environment:
@@ -11,16 +10,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^0.18.1
-  http: ^0.12.2
-  intl: ^0.16.1
-  meta: ^1.1.8
-  async: ^2.4.2
-  dio: ^3.0.10
-  get_it: ^4.0.4
-  equatable: ^1.2.4
+  flutter_svg: ^1.1.4
+  http: ^0.13.5
+  intl: ^0.17.0
+#  meta: ^1.8.0
+#  async: ^2.9.0
+  dio: ^4.0.6
+  get_it: ^7.2.0
+  equatable: ^2.0.5
   tripledes: ^2.1.0
-  webview_flutter: ^0.3.22+1
+  webview_flutter: ^3.0.4
 
 
 dev_dependencies:

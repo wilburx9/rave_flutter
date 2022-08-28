@@ -133,7 +133,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Form(
                     key: formKey,
-                    autovalidate: autoValidate,
+                      autovalidateMode: AutovalidateMode.always,
                     child: Column(
                       children: <Widget>[
                         TextFormField(
